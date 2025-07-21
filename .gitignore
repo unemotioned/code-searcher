@@ -25,3 +25,6 @@ target/
 
 # JavaFX lib cache
 javafx-sdk*/
+
+# test DB directory
+db/
