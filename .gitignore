@@ -7,6 +7,9 @@
 .classpath
 .project
 
+# NeoVim
+.factorypath
+
 # Build output
 /out/
 build/
@@ -28,3 +31,4 @@ javafx-sdk*/
 
 # test DB directory
 db/
+
