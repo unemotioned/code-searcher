@@ -1,0 +1,27 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Eclipse
+.settings/
+.classpath
+.project
+
+# Build output
+/out/
+build/
+bin/
+target/
+
+# Logs
+*.log
+
+# Compiled files
+*.class
+
+# Maven
+.mvn/
+!**/src/main/**/maven-wrapper.jar
+
+# JavaFX lib cache
+javafx-sdk*/
