@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class SheetHash {
-    private String mainSheetHash;
-    private String hierarchySheetHash;
+    private String sheet;
+    private String hash;
 }
