@@ -12,6 +12,7 @@
     <typeAliases>
         <typeAlias alias="filePath" type="com.mcs.modelsearcher.file.model.vo.FilePath"/>
         <typeAlias alias="sheetHash" type="com.mcs.modelsearcher.hash.model.vo.SheetHash"/>
+        <typeAlias alias="excel" type="com.mcs.modelsearcher.excel.model.vo.Excel"/>
     </typeAliases>
 
     <environments default="dev">
@@ -27,5 +28,6 @@
     <mappers>
         <mapper resource="mapper/file-mapper.xml"/>
         <mapper resource="mapper/hash-mapper.xml"/>
+        <mapper resource="mapper/excel-mapper.xml"/>
     </mappers>
 </configuration>
