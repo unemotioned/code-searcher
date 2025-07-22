@@ -17,7 +17,9 @@ public class FileController {
 
         if (!isPathValid) {
             String newPath = chooseFile(stage);
-            insertPath(newPath);
+            if (newPath != null) {
+                insertPath(newPath);
+            }
         } else {
             // TODO: hash each sheets and compare
             System.out.println("Hash each sheets.");
@@ -76,12 +78,13 @@ public class FileController {
         return filePath.getFilePath();
     }
 
-    public void selFileBtnClick(Stage stage) {
+    public String selFileBtnClick(Stage stage) {
         delInvalidPath();
         String path = chooseFile(stage);
         if (path != null) {
+            filePath.setFilePath(path);
             insertPath(path);
         }
-        filePath.setFilePath(service.selPath());
+        return path;
     }
 }

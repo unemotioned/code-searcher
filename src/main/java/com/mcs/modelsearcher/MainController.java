@@ -23,7 +23,7 @@ public class MainController {
 
     @FXML
     protected void onSelFileClick() {
-        fileCon.selFileBtnClick(fileChooserStage);
-        filePathLabel.setText(fileCon.getFilePath());
+        String newPath = fileCon.selFileBtnClick(fileChooserStage);
+        filePathLabel.setText(newPath);
     }
 }
