@@ -83,9 +83,11 @@ public class HashController {
                 System.out.println("Load DATA table from DB to UI.");
             } else {
                 updateHash(sheetHash);
+                // TODO: remove previous Data table and create new one
             }
         } else {
             insertHash(sheetHash);
+            // TODO: create new Data table
         }
     }
 
