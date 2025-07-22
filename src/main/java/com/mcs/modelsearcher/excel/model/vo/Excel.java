@@ -14,9 +14,9 @@ public class Excel {
     private int no;
     private String modelNo;
     private String rev;
-    private String application1;
-    private String application2;
-    private String application3;
+    private String apply1;
+    private String apply2;
+    private String apply3;
     private boolean bluePrint;
     private Date bluePrintDate;
     private String category;
@@ -26,6 +26,6 @@ public class Excel {
     private String vendor;
     private int unitPrice;
     private int mgmtCost; // percentage
-    private int estimatePrice;
+    private int estPrice;
     private String note;
 }

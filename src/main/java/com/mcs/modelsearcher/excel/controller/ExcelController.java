@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.Iterator;
 
 public class ExcelController {
-
     ExcelService eServ;
     FileService fServ;
 
@@ -37,7 +36,7 @@ public class ExcelController {
 
             Iterator<Row> rowIterator = sheet.iterator();
 
-            int headerRowIndex = 3;
+            int headerRowIndex = 4;
 
             ArrayList<Excel> excelList = new ArrayList<>();
 
@@ -45,16 +44,16 @@ public class ExcelController {
                 Excel excel = new Excel();
                 Row row = rowIterator.next();
 
-                if (row.getRowNum() <= headerRowIndex) {
+                if (row.getRowNum() < headerRowIndex) {
                     continue;
                 }
 
                 excel.setNo((int) getNumericCellValue(row, 1));
                 excel.setModelNo(getStringCellValue(row, 2));
                 excel.setRev(getStringCellValue(row, 3));
-                excel.setApplication1(getStringCellValue(row, 4));
-                excel.setApplication2(getStringCellValue(row, 5));
-                excel.setApplication3(getStringCellValue(row, 6));
+                excel.setApply1(getStringCellValue(row, 4));
+                excel.setApply2(getStringCellValue(row, 5));
+                excel.setApply3(getStringCellValue(row, 6));
                 excel.setBluePrint(getBooleanCellValue(row));
                 excel.setBluePrintDate(getDateCellValue(row));
                 excel.setCategory(getStringCellValue(row, 9));
@@ -64,13 +63,16 @@ public class ExcelController {
                 excel.setVendor(getStringCellValue(row, 13));
                 excel.setUnitPrice((int) getNumericCellValue(row, 14));
                 excel.setMgmtCost((int) getNumericCellValue(row, 15));
-                excel.setEstimatePrice((int) getNumericCellValue(row, 16));
+                excel.setEstPrice((int) getNumericCellValue(row, 16));
                 excel.setNote(getStringCellValue(row, 17));
 
                 excelList.add(excel);
             }
+            for (Excel excel : excelList) {
+                System.out.println(excel.toString());
+            }
+
             // TODO: do insert
-            System.out.println(excelList);
 
         } catch (IOException e) {
             System.out.println("Error while opening Excel file: " + e.getMessage());
