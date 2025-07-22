@@ -6,17 +6,19 @@
 <mapper namespace="filePath">
 
     <select id="selPath" resultType="string">
-        SELECT file_path
-        FROM file LIMIT 1;
+        select file_path
+        from file limit 1;
     </select>
 
     <delete id="delInvalidPath">
-        DELETE FROM file
+        delete
+        from file
+        where 1 == 1;
     </delete>
 
     <insert id="insertPath" parameterType="filePath">
-        INSERT INTO file (file_path)
-        VALUES (#{filePath})
+        insert into file (file_path)
+        values (#{filePath});
     </insert>
 
 </mapper>
