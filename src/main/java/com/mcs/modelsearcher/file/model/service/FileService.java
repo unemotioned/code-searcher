@@ -12,6 +12,20 @@ public class FileService {
         dao = new FileDao();
     }
 
+    public String selectPath() {
+        SqlSession session = SqlSessionTemplate.getSqlSession();
+        String path = dao.selectPath(session);
+        session.close();
+        return path;
+    }
+
+    public int deleteInvalidPath() {
+        SqlSession session = SqlSessionTemplate.getSqlSession();
+        int result = dao.deleteInvalidPath(session);
+        session.close();
+        return result;
+    }
+
     public int insertPath(String path) {
         SqlSession session = SqlSessionTemplate.getSqlSession();
         int result = dao.insertPath(session, path);

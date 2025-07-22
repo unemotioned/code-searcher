@@ -5,8 +5,17 @@
 
 <mapper namespace="filePath">
 
-    <insert id="insertPath" parameterType="com.mcs.modelsearcher.file.model.vo.FilePath">
-        INSERT INTO FILE (file_path)
+    <select id="selectPath" resultType="string">
+        SELECT file_path
+        FROM file LIMIT 1;
+    </select>
+
+    <delete id="deleteInvalidPath">
+        DELETE FROM file
+    </delete>
+
+    <insert id="insertPath" parameterType="filePath">
+        INSERT INTO file (file_path)
         VALUES (#{filePath})
     </insert>
 
