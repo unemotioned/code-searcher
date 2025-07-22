@@ -72,7 +72,13 @@ public class ExcelController {
                 System.out.println(excel.toString());
             }
 
-            // TODO: do insert
+            // do insert
+            int newDataTableResult = eServ.newDataTable(excelList);
+            if (newDataTableResult == 0) {
+                System.out.println("Created new DATA table");
+            } else {
+                System.out.println("Failed to create new DATA table");
+            }
 
         } catch (IOException e) {
             System.out.println("Error while opening Excel file: " + e.getMessage());

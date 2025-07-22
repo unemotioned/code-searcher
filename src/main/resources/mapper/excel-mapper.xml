@@ -11,4 +11,41 @@
         where 1 == 1;
     </delete>
 
+   <insert id="newDataTable" parameterType="excel">
+       INSERT INTO data (insert_no,
+                         component_code,
+                         rev,
+                         apply_1,
+                         apply_2,
+                         apply_3,
+                         blueprint,
+                         blueprintDate,
+                         category,
+                         name,
+                         spec,
+                         maker,
+                         vendor,
+                         unit_price,
+                         mgmt_cost,
+                         est_price,
+                         note)
+       VALUES (#{no},
+               #{modelNo},
+               #{rev},
+               #{apply1},
+               #{apply2},
+               #{apply3},
+               #{bluePrint},
+               #{bluePrintDate},
+               #{category},
+               #{name},
+               #{spec},
+               #{maker},
+               #{vendor},
+               #{unitPrice},
+               #{mgmtCost},
+               #{estPrice},
+               #{note});
+   </insert>
+
 </mapper>
