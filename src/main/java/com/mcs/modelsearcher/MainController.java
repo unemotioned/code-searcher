@@ -10,20 +10,27 @@ public class MainController {
     @FXML
     private Label filePathLabel;
 
-    FileController fileCon = new FileController();
+    @Setter
+    FileController fileController;
 
     @Setter
     private Stage fileChooserStage;
 
     @FXML
     public void initialize() {
-        fileCon.selPath();
-        filePathLabel.setText(fileCon.getFilePath());
+    }
+
+    public void refreshFilePathLabel() {
+        if (fileController != null && fileController.getFilePath() != null) {
+            filePathLabel.setText(fileController.getFilePath());
+        } else {
+            filePathLabel.setText("No file selected");
+        }
     }
 
     @FXML
     protected void onSelFileClick() {
-        String newPath = fileCon.selFileBtnClick(fileChooserStage);
+        String newPath = fileController.selFileBtnClick(fileChooserStage);
         filePathLabel.setText(newPath);
     }
 }

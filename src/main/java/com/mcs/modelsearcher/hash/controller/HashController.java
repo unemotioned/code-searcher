@@ -26,8 +26,6 @@ public class HashController {
     }
 
     public void performHash() {
-        System.out.println("Excel path: " + excelPath);
-
         try (FileInputStream fis = new FileInputStream(excelPath); Workbook workbook = WorkbookFactory.create(fis)) {
             for (Sheet sheet : workbook) {
                 StringBuilder combinedData = combineCells(sheet);
@@ -67,7 +65,7 @@ public class HashController {
             byte[] hashBytes = digest.digest(data.getBytes());
             StringBuilder sb = new StringBuilder();
             for (byte b : hashBytes) {
-                // %02x -> into 2 digits hex code
+                // %02x -> into 2 digit hex code
                 sb.append(String.format("%02x", b));
             }
             return sb.toString();
@@ -81,6 +79,7 @@ public class HashController {
 
         if (refHash != null) {
             if (refHash.equals(sheetHash.getHash())) {
+                System.out.println("DB is up to date");
                 System.out.println("Load DATA table from DB to UI.");
             } else {
                 updateHash(sheetHash);

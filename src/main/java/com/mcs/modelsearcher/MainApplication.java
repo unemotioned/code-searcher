@@ -20,6 +20,8 @@ public class MainApplication extends Application {
         // Get the controller and pass the stage
         MainController controller = fxmlLoader.getController();
         controller.setFileChooserStage(stage);
+        controller.setFileController(fileController);
+        controller.refreshFilePathLabel();
 
         stage.setTitle("Model number searcher");
         stage.setScene(scene);
