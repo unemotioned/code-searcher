@@ -10,4 +10,9 @@ public class ExcelController {
         super();
         service = new ExcelService();
     }
+
+    public void deleteDataTable() {
+        int deleteRowResult = service.deleteDataTable();
+        System.out.println("Delete row: " + deleteRowResult);
+    }
 }

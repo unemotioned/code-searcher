@@ -1,5 +1,6 @@
 package com.mcs.modelsearcher.hash.controller;
 
+import com.mcs.modelsearcher.excel.controller.ExcelController;
 import com.mcs.modelsearcher.file.controller.FileController;
 import com.mcs.modelsearcher.hash.model.service.HashService;
 import com.mcs.modelsearcher.hash.model.vo.SheetHash;
@@ -14,6 +15,7 @@ public class HashController {
     FileController fCon;
     SheetHash sheetHash;
     HashService fServ;
+    ExcelController excelCon;
 
     String excelPath;
 
@@ -83,11 +85,12 @@ public class HashController {
                 System.out.println("Load DATA table from DB to UI.");
             } else {
                 updateHash(sheetHash);
-                // TODO: remove previous Data table and create new one
+                // TODO: clear previous Data table and insert fresh
+                excelCon.deleteDataTable();
             }
         } else {
             insertHash(sheetHash);
-            // TODO: create new Data table
+            // TODO: insert fresh to data table
         }
     }
 

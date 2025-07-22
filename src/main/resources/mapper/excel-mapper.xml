@@ -5,4 +5,10 @@
 
 <mapper namespace="excel">
 
+    <delete id="deleteDataTable">
+        delete
+        from data
+        where 1 == 1;
+    </delete>
+
 </mapper>
