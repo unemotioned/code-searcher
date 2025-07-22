@@ -26,7 +26,8 @@ public class FileController {
             if (file.exists()) {
                 filePath.setFilePath(prevPath);
 
-                HashController hCon = new HashController();
+                // pass current instance of FileController object
+                HashController hCon = new HashController(this);
                 hCon.performHash();
             } else {
                 delInvalidPath();

@@ -17,11 +17,12 @@ public class HashController {
 
     String excelPath;
 
-    public HashController() {
-        fCon = new FileController();
+    public HashController(FileController fileController) {
+        fCon = fileController;
         sheetHash = new SheetHash();
         fServ = new HashService();
-        excelPath = fCon.selPath();
+
+        excelPath = fCon.getFilePath();
     }
 
     public void performHash() {
