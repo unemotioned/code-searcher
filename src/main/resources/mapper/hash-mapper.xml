@@ -8,18 +8,18 @@
     <select id="selectHash" parameterType="string" resultType="string">
         select hash
         from hash
-        where sheet = #{sheet};
+        where sheet = #{sheet}
     </select>
 
     <insert id="insertHash" parameterType="sheetHash">
         insert into hash (sheet, hash)
-        values (#{sheet}, #{hash});
+        values (#{sheet}, #{hash})
     </insert>
 
     <update id="updateHash" parameterType="sheetHash">
         update hash
         set hash = #{hash}
-        where sheet = #{sheet};
+        where sheet = #{sheet}
     </update>
 
 </mapper>
