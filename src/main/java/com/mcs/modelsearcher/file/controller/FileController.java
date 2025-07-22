@@ -1,6 +1,7 @@
 package com.mcs.modelsearcher.file.controller;
 
 import com.mcs.modelsearcher.file.model.service.FileService;
+import com.mcs.modelsearcher.file.model.vo.FilePath;
 import javafx.application.Platform;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -8,6 +9,7 @@ import javafx.stage.Stage;
 import java.io.File;
 
 public class FileController {
+    FilePath filePath = new FilePath();
     FileService service = new FileService();
 
     public void openFile(Stage stage) {
@@ -28,7 +30,10 @@ public class FileController {
 
         if (prevPath != null) {
             File file = new File(prevPath);
+
             if (file.exists()) {
+                filePath.setFilePath(prevPath);
+
                 isPathValid = true;
             } else {
                 deleteInvalidPath();
@@ -39,7 +44,7 @@ public class FileController {
 
     private void deleteInvalidPath() {
         int deletePathResult = service.deleteInvalidPath();
-        System.out.println("Path deleted: " + deletePathResult);
+        System.out.println("Number of deleted path: " + deletePathResult);
     }
 
     public String chooseFile(Stage stage) {
@@ -66,5 +71,14 @@ public class FileController {
         } else {
             System.out.println("insertPath: success");
         }
+    }
+
+    public String getFilePath() {
+        return filePath.getFilePath();
+    }
+
+    public void selectFileButtonClicked() {
+        deleteInvalidPath();
+        insertPath(chooseFile(null));
     }
 }
