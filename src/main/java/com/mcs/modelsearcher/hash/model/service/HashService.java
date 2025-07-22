@@ -1,0 +1,37 @@
+package com.mcs.modelsearcher.hash.model.service;
+
+import com.mcs.modelsearcher.common.SqlSessionTemplate;
+import com.mcs.modelsearcher.hash.model.dao.HashDao;
+import com.mcs.modelsearcher.hash.model.vo.SheetHash;
+import org.apache.ibatis.session.SqlSession;
+
+public class HashService {
+    HashDao dao;
+
+    public HashService() {
+        super();
+        dao = new HashDao();
+    }
+
+    public String selectHash(String sheetName) {
+        SqlSession session = SqlSessionTemplate.getSqlSession();
+        String refHash = dao.selectHash(session, sheetName);
+        session.close();
+        return refHash;
+    }
+
+    public int insertHash(SheetHash sheetHash) {
+        SqlSession session = SqlSessionTemplate.getSqlSession();
+        int result = dao.insertHash(session, sheetHash);
+        session.close();
+        return result;
+    }
+
+    public int updateHash(SheetHash sheetHash) {
+        SqlSession session = SqlSessionTemplate.getSqlSession();
+        int result = -1;
+        result = dao.updateHash(session, sheetHash);
+        session.close();
+        return result;
+    }
+}

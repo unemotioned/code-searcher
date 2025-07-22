@@ -2,6 +2,7 @@ package com.mcs.modelsearcher.file.controller;
 
 import com.mcs.modelsearcher.file.model.service.FileService;
 import com.mcs.modelsearcher.file.model.vo.FilePath;
+import com.mcs.modelsearcher.hash.controller.HashController;
 import javafx.application.Platform;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -9,39 +10,36 @@ import javafx.stage.Stage;
 import java.io.File;
 
 public class FileController {
-    FilePath filePath = new FilePath();
-    FileService service = new FileService();
+    FilePath filePath;
+    FileService service;
 
-    public void openFile(Stage stage) {
-        boolean isPathValid = selPath();
-
-        if (!isPathValid) {
-            String newPath = chooseFile(stage);
-            if (newPath != null) {
-                insertPath(newPath);
-            }
-        } else {
-            // TODO: hash each sheets and compare
-            System.out.println("Hash each sheets.");
-        }
+    public FileController() {
+        filePath = new FilePath();
+        service = new FileService();
     }
 
-    public boolean selPath() {
-        boolean isPathValid = false;
-        String prevPath = service.selPath();
+    public void openFile(Stage stage) {
+        String prevPath = selPath();
 
         if (prevPath != null) {
             File file = new File(prevPath);
-
             if (file.exists()) {
                 filePath.setFilePath(prevPath);
 
-                isPathValid = true;
+                HashController hCon = new HashController();
+                hCon.performHash();
             } else {
                 delInvalidPath();
+
+                String newPath = chooseFile(stage);
+                insertPath(newPath);
+                filePath.setFilePath(newPath);
             }
         }
-        return isPathValid;
+    }
+
+    public String selPath() {
+        return service.selPath();
     }
 
     private void delInvalidPath() {

@@ -1,4 +1,115 @@
 package com.mcs.modelsearcher.hash.controller;
 
+import com.mcs.modelsearcher.file.controller.FileController;
+import com.mcs.modelsearcher.hash.model.service.HashService;
+import com.mcs.modelsearcher.hash.model.vo.SheetHash;
+import org.apache.poi.ss.usermodel.*;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class HashController {
+    FileController fCon;
+    SheetHash sheetHash;
+    HashService fServ;
+
+    String excelPath;
+
+    public HashController() {
+        fCon = new FileController();
+        sheetHash = new SheetHash();
+        fServ = new HashService();
+        excelPath = fCon.selPath();
+    }
+
+    public void performHash() {
+        System.out.println("Excel path: " + excelPath);
+
+        try (FileInputStream fis = new FileInputStream(excelPath); Workbook workbook = WorkbookFactory.create(fis)) {
+            for (Sheet sheet : workbook) {
+                StringBuilder combinedData = combineCells(sheet);
+
+                String hashed = hashData(combinedData.toString());
+                String sheetName = sheet.getSheetName();
+                sheetHash.setSheet(sheetName);
+                sheetHash.setHash(hashed);
+
+                checkHash(sheetHash);
+            }
+        } catch (IOException e) {
+            System.out.println("Error while hashing Excel file: " + e.getMessage());
+        }
+    }
+
+    private static StringBuilder combineCells(Sheet sheet) {
+        StringBuilder combinedData = new StringBuilder();
+
+        for (Row row : sheet) {
+            for (Cell cell : row) {
+                switch (cell.getCellType()) {
+                    case STRING -> combinedData.append(cell.getStringCellValue());
+                    case NUMERIC -> combinedData.append(cell.getNumericCellValue());
+                    case BOOLEAN -> combinedData.append(cell.getBooleanCellValue());
+                    case FORMULA -> combinedData.append(cell.getCellFormula());
+                    case BLANK -> combinedData.append(" ");
+                }
+            }
+        }
+        return combinedData;
+    }
+
+    public String hashData(String data) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(data.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashBytes) {
+                // %02x -> into 2 digits hex code
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Hashing failed", e);
+        }
+    }
+
+    public void checkHash(SheetHash sheetHash) {
+        String refHash = selectHash(sheetHash.getSheet());
+
+        if (refHash != null) {
+            if (refHash.equals(sheetHash.getHash())) {
+                System.out.println("Load DATA table from DB to UI.");
+            } else {
+                updateHash(sheetHash);
+            }
+        } else {
+            insertHash(sheetHash);
+        }
+    }
+
+    public String selectHash(String sheetName) {
+        return fServ.selectHash(sheetName);
+    }
+
+    public void insertHash(SheetHash sheetHash) {
+        int result = fServ.insertHash(sheetHash);
+
+        if (result == 1) {
+            System.out.println("Insertion success.");
+        } else {
+            System.out.println("Insertion failed.");
+        }
+    }
+
+    public void updateHash(SheetHash sheetHash) {
+        int hashUpdateResult = fServ.updateHash(sheetHash);
+
+        if (hashUpdateResult == 1) {
+            System.out.println("Update success.");
+        } else {
+            System.out.println("Update failed.");
+        }
+    }
 }
