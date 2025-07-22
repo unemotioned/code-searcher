@@ -13,7 +13,7 @@ public class FileController {
     FileService service = new FileService();
 
     public void openFile(Stage stage) {
-        boolean isPathValid = selectPath();
+        boolean isPathValid = selPath();
 
         if (!isPathValid) {
             String newPath = chooseFile(stage);
@@ -24,9 +24,9 @@ public class FileController {
         }
     }
 
-    public boolean selectPath() {
+    public boolean selPath() {
         boolean isPathValid = false;
-        String prevPath = service.selectPath();
+        String prevPath = service.selPath();
 
         if (prevPath != null) {
             File file = new File(prevPath);
@@ -36,15 +36,15 @@ public class FileController {
 
                 isPathValid = true;
             } else {
-                deleteInvalidPath();
+                delInvalidPath();
             }
         }
         return isPathValid;
     }
 
-    private void deleteInvalidPath() {
-        int deletePathResult = service.deleteInvalidPath();
-        System.out.println("Number of deleted path: " + deletePathResult);
+    private void delInvalidPath() {
+        int delPathResult = service.delInvalidPath();
+        System.out.println("Number of deleted path: " + delPathResult);
     }
 
     public String chooseFile(Stage stage) {
@@ -57,7 +57,6 @@ public class FileController {
         } else {
             System.out.println("File not selected");
             Platform.exit(); // gracefully exit
-            System.exit(0); // fully exit
 
             return null;
         }
@@ -77,8 +76,12 @@ public class FileController {
         return filePath.getFilePath();
     }
 
-    public void selectFileButtonClicked() {
-        deleteInvalidPath();
-        insertPath(chooseFile(null));
+    public void selFileBtnClick(Stage stage) {
+        delInvalidPath();
+        String path = chooseFile(stage);
+        if (path != null) {
+            insertPath(path);
+        }
+        filePath.setFilePath(service.selPath());
     }
 }

@@ -12,16 +12,16 @@ public class FileService {
         dao = new FileDao();
     }
 
-    public String selectPath() {
+    public String selPath() {
         SqlSession session = SqlSessionTemplate.getSqlSession();
-        String path = dao.selectPath(session);
+        String path = dao.selPath(session);
         session.close();
         return path;
     }
 
-    public int deleteInvalidPath() {
+    public int delInvalidPath() {
         SqlSession session = SqlSessionTemplate.getSqlSession();
-        int result = dao.deleteInvalidPath(session);
+        int result = dao.delInvalidPath(session);
         session.close();
         return result;
     }

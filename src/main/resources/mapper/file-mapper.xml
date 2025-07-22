@@ -5,12 +5,12 @@
 
 <mapper namespace="filePath">
 
-    <select id="selectPath" resultType="string">
+    <select id="selPath" resultType="string">
         SELECT file_path
         FROM file LIMIT 1;
     </select>
 
-    <delete id="deleteInvalidPath">
+    <delete id="delInvalidPath">
         DELETE FROM file
     </delete>
 

@@ -17,6 +17,10 @@ public class MainApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
 
+        // Get the controller and pass the stage
+        MainController controller = fxmlLoader.getController();
+        controller.setFileChooserStage(stage);
+
         stage.setTitle("Model number searcher");
         stage.setScene(scene);
         stage.show();

@@ -3,21 +3,27 @@ package com.mcs.modelsearcher;
 import com.mcs.modelsearcher.file.controller.FileController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
+import lombok.Setter;
 
 public class MainController {
     @FXML
-    private Label filePath;
+    private Label filePathLabel;
 
-    FileController fileController = new FileController();
+    FileController fileCon = new FileController();
+
+    @Setter
+    private Stage fileChooserStage;
 
     @FXML
     public void initialize() {
-        fileController.selectPath();
-        filePath.setText(fileController.getFilePath());
+        fileCon.selPath();
+        filePathLabel.setText(fileCon.getFilePath());
     }
 
     @FXML
-    protected void onSelectFileClick() {
-        fileController.selectFileButtonClicked();
+    protected void onSelFileClick() {
+        fileCon.selFileBtnClick(fileChooserStage);
+        filePathLabel.setText(fileCon.getFilePath());
     }
 }
