@@ -20,6 +20,12 @@ public class SqlSessionTemplate {
     }
 
     public static SqlSession getSqlSession() {
-        return sqlSessionFactory.openSession(true);
+        SqlSession session = sqlSessionFactory.openSession(true);
+        try {
+            session.getConnection().createStatement().execute("PRAGMA foreign_keys = ON;");
+        } catch (Exception e) {
+            System.out.println("Failed to enable foreign keys: " + e.getMessage());
+        }
+        return session;
     }
 }
