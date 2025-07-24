@@ -13,6 +13,7 @@
         <typeAlias alias="filePath" type="com.mcs.modelsearcher.file.model.vo.FilePath"/>
         <typeAlias alias="sheetHash" type="com.mcs.modelsearcher.hash.model.vo.SheetHash"/>
         <typeAlias alias="excel" type="com.mcs.modelsearcher.excel.model.vo.Excel"/>
+        <typeAlias alias="hierarchy" type="com.mcs.modelsearcher.excel.model.vo.Hierarchy"/>
     </typeAliases>
 
     <environments default="dev">

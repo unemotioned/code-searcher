@@ -30,7 +30,8 @@ public class HashController {
 
     public void performHash() {
         try (FileInputStream fis = new FileInputStream(excelPath); Workbook workbook = WorkbookFactory.create(fis)) {
-            for (Sheet sheet : workbook) {
+            for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
+                Sheet sheet = workbook.getSheetAt(i);
                 StringBuilder combinedData = combineCells(sheet);
 
                 String hashed = hashData(combinedData.toString());
@@ -38,7 +39,7 @@ public class HashController {
                 sheetHash.setSheet(sheetName);
                 sheetHash.setHash(hashed);
 
-                checkHash(sheetHash);
+                checkHash(sheetHash, i);
             }
         } catch (IOException e) {
             System.out.println("HashController.performHash(): Error while hashing Excel file." + e.getMessage());
@@ -77,8 +78,9 @@ public class HashController {
         }
     }
 
-    public void checkHash(SheetHash sheetHash) {
+    public void checkHash(SheetHash sheetHash, int sheetIndex) {
         String refHash = selectHash(sheetHash.getSheet());
+        String todo = "";
 
         if (refHash != null) {
             if (refHash.equals(sheetHash.getHash())) {
@@ -86,12 +88,31 @@ public class HashController {
                 System.out.println("HashController.checkHash(): Load DATA table from DB to UI");
             } else {
                 updateHash(sheetHash);
-                excelCon.deleteDataTable();
-                excelCon.newDataTable();
+                todo = "update";
+                sheetSpecificDBAction(todo, sheetIndex);
             }
         } else {
             insertHash(sheetHash);
+            sheetSpecificDBAction(todo, sheetIndex);
+        }
+    }
+
+    public void sheetSpecificDBAction(String todo, int sheetIndex) {
+        int bomSheet = 0;
+        int hierarchySheet = 1;
+
+        if (sheetIndex == bomSheet) {
+            // To update, delete every records inside the table and insert fresh.
+            if (todo.equals("update")) {
+                excelCon.deleteDataTable();
+            }
             excelCon.newDataTable();
+
+        } else if (sheetIndex == hierarchySheet) {
+            if (todo.equals("update")) {
+                excelCon.deleteHierarchyTable();
+            }
+            excelCon.newHierarchyTable();
         }
     }
 

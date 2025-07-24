@@ -2,6 +2,7 @@ package com.mcs.modelsearcher.excel.controller;
 
 import com.mcs.modelsearcher.excel.model.service.ExcelService;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
+import com.mcs.modelsearcher.excel.model.vo.Hierarchy;
 import com.mcs.modelsearcher.file.model.service.FileService;
 import org.apache.poi.ss.usermodel.*;
 
@@ -31,9 +32,8 @@ public class ExcelController {
 
         try (FileInputStream fis = new FileInputStream(excelPath); Workbook workbook = WorkbookFactory.create(fis)) {
             Sheet sheet = workbook.getSheetAt(0);
-            String sheetName = sheet.getSheetName();
             // DEBUG
-            System.out.println("sheetName: " + sheetName);
+            System.out.println("sheetName: " + sheet.getSheetName());
 
             Iterator<Row> rowIterator = sheet.iterator();
 
@@ -49,7 +49,7 @@ public class ExcelController {
                     continue;
                 }
 
-                excel.setNo((int) getNumericCellValue(row, 1));
+                excel.setInsertNo((int) getNumericCellValue(row, 1));
                 excel.setModelNo(getStringCellValue(row, 2));
                 excel.setRev(getStringCellValue(row, 3));
                 excel.setApply1(getStringCellValue(row, 4));
@@ -78,6 +78,58 @@ public class ExcelController {
             // do insert
             int newDataTableResult = eServ.newDataTable(excelList);
             if (newDataTableResult == 1) {
+                System.out.println("ExcelController: newDataTable() success");
+            } else {
+                System.out.println("ExcelController: newDataTable() fail");
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error while opening Excel file: " + e.getMessage());
+        }
+    }
+
+    public void deleteHierarchyTable() {
+        int deleteRowResult = eServ.deleteHierarchyTable();
+        System.out.println("ExcelController.deleteHierarchyTable(): deleted row(s): " + deleteRowResult);
+    }
+
+    public void newHierarchyTable() {
+        fServ = new FileService();
+        String excelPath = fServ.selectPath();
+
+        try (FileInputStream fis = new FileInputStream(excelPath); Workbook workbook = WorkbookFactory.create(fis)) {
+            Sheet sheet = workbook.getSheetAt(0);
+            // DEBUG
+            System.out.println("sheetName: " + sheet.getSheetName());
+
+            Iterator<Row> rowIterator = sheet.iterator();
+
+            int headerRowIndex = 1;
+
+            ArrayList<Hierarchy> hList = new ArrayList<>();
+
+            while (rowIterator.hasNext()) {
+                Hierarchy hierarchy = new Hierarchy();
+                Row row = rowIterator.next();
+
+                if (row.getRowNum() < headerRowIndex) {
+                    continue;
+                }
+
+                hierarchy.setParent_no((int) getNumericCellValue(row, 0));
+                hierarchy.setChild_no((int) getNumericCellValue(row, 1));
+
+                hList.add(hierarchy);
+            }
+
+            // DEBUG
+            for (Hierarchy hierarchy : hList) {
+                System.out.println(hierarchy.toString());
+            }
+
+            // do insert
+            int newHierarchyTableResult = eServ.newHierarchyTable(hList);
+            if (newHierarchyTableResult == 1) {
                 System.out.println("ExcelController: newDataTable() success");
             } else {
                 System.out.println("ExcelController: newDataTable() fail");

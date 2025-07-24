@@ -12,7 +12,7 @@
     </delete>
 
    <insert id="newDataTable" parameterType="excel">
-       INSERT INTO data (insert_no,
+       insert into data (insert_no,
                          component_code,
                          rev,
                          apply_1,
@@ -29,7 +29,7 @@
                          mgmt_cost,
                          est_price,
                          note)
-       VALUES (#{no},
+       values (#{insertNo},
                #{modelNo},
                #{rev},
                #{apply1},
@@ -47,5 +47,16 @@
                #{estPrice},
                #{note})
    </insert>
+
+    <delete id="deleteHierarchyTable">
+        delete
+        from hierarchy
+        where 1 == 1;
+    </delete>
+
+    <insert id="newHierarchyTable" parameterType="hierarchy">
+        insert into hierarchy (parent_no, child_no)
+        values (#{parent_no}, #{child_no})
+    </insert>
 
 </mapper>

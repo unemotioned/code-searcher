@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 
 public class Excel {
-    private int no;
+    private int insertNo;
     private String modelNo;
     private String rev;
     private String apply1;
