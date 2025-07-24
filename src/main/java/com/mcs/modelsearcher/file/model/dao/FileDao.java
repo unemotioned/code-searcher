@@ -3,8 +3,8 @@ package com.mcs.modelsearcher.file.model.dao;
 import org.apache.ibatis.session.SqlSession;
 
 public class FileDao {
-    public String selPath(SqlSession session) {
-        return session.selectOne("filePath.selPath");
+    public String selectPath(SqlSession session) {
+        return session.selectOne("filePath.selectPath");
     }
 
     public int delInvalidPath(SqlSession session) {

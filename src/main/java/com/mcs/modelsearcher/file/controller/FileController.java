@@ -19,7 +19,7 @@ public class FileController {
     }
 
     public void openFile(Stage stage) {
-        String prevPath = selPath();
+        String prevPath = selectPath();
 
         if (prevPath != null) {
             File file = new File(prevPath);
@@ -39,8 +39,8 @@ public class FileController {
         }
     }
 
-    public String selPath() {
-        return service.selPath();
+    public String selectPath() {
+        return service.selectPath();
     }
 
     private void delInvalidPath() {
@@ -56,7 +56,7 @@ public class FileController {
         if (file != null) {
             return file.getAbsolutePath();
         } else {
-            System.out.println("File not selected");
+            System.out.println("FileController.chooseFile(): File not selected");
             Platform.exit(); // gracefully exit
 
             return null;
@@ -66,10 +66,10 @@ public class FileController {
     public void insertPath(String path) {
         int insertPath = service.insertPath(path);
 
-        if (insertPath == 0) {
-            System.out.println("insertPath: fail");
+        if (insertPath == 1) {
+            System.out.println("FileController.insertPath(): success");
         } else {
-            System.out.println("insertPath: success");
+            System.out.println("FileController.insertPath(): fail");
         }
     }
 

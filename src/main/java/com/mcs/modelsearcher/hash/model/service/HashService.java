@@ -29,8 +29,7 @@ public class HashService {
 
     public int updateHash(SheetHash sheetHash) {
         SqlSession session = SqlSessionTemplate.getSqlSession();
-        int result = -1;
-        result = dao.updateHash(session, sheetHash);
+        int result = dao.updateHash(session, sheetHash);
         session.close();
         return result;
     }

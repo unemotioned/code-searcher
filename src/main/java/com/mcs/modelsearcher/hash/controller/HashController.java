@@ -41,7 +41,7 @@ public class HashController {
                 checkHash(sheetHash);
             }
         } catch (IOException e) {
-            System.out.println("Error while hashing Excel file: " + e.getMessage());
+            System.out.println("HashController.performHash(): Error while hashing Excel file." + e.getMessage());
         }
     }
 
@@ -73,7 +73,7 @@ public class HashController {
             }
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Hashing failed", e);
+            throw new RuntimeException("HashController.hashData(): Hash failed.", e);
         }
     }
 
@@ -83,8 +83,8 @@ public class HashController {
         if (refHash != null) {
 
             if (refHash.equals(sheetHash.getHash())) {
-                System.out.println("DB is up to date");
-                System.out.println("Load DATA table from DB to UI.");
+                System.out.println("HashController.checkHash(): DB is up to date");
+                System.out.println("HashController.checkHash(): Load DATA table from DB to UI");
             } else {
                 updateHash(sheetHash);
                 excelCon.deleteDataTable();
@@ -104,9 +104,9 @@ public class HashController {
         int result = fServ.insertHash(sheetHash);
 
         if (result == 1) {
-            System.out.println("Insertion success.");
+            System.out.println("HashController.insertHash(): success");
         } else {
-            System.out.println("Insertion failed.");
+            System.out.println("HashController.insertHash(): fail");
         }
     }
 
@@ -114,9 +114,9 @@ public class HashController {
         int hashUpdateResult = fServ.updateHash(sheetHash);
 
         if (hashUpdateResult == 1) {
-            System.out.println("Update success.");
+            System.out.println("HashController.updateHash(): success");
         } else {
-            System.out.println("Update failed.");
+            System.out.println("HashController.updateHash(): fail");
         }
     }
 }

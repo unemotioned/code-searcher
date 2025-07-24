@@ -22,12 +22,12 @@ public class ExcelController {
 
     public void deleteDataTable() {
         int deleteRowResult = eServ.deleteDataTable();
-        System.out.println("Delete row: " + deleteRowResult);
+        System.out.println("ExcelController.deleteDataTable(): deleted row(s): " + deleteRowResult);
     }
 
     public void newDataTable() {
         fServ = new FileService();
-        String excelPath = fServ.selPath();
+        String excelPath = fServ.selectPath();
 
         try (FileInputStream fis = new FileInputStream(excelPath); Workbook workbook = WorkbookFactory.create(fis)) {
             Sheet sheet = workbook.getSheetAt(0);
@@ -75,9 +75,9 @@ public class ExcelController {
             // do insert
             int newDataTableResult = eServ.newDataTable(excelList);
             if (newDataTableResult == 0) {
-                System.out.println("Created new DATA table");
+                System.out.println("ExcelController: newDataTable() success");
             } else {
-                System.out.println("Failed to create new DATA table");
+                System.out.println("ExcelController: newDataTable() fail");
             }
 
         } catch (IOException e) {
