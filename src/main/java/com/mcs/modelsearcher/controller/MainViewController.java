@@ -1,4 +1,4 @@
-package com.mcs.modelsearcher;
+package com.mcs.modelsearcher.controller;
 
 import com.mcs.modelsearcher.file.controller.FileController;
 import javafx.fxml.FXML;
@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import lombok.Setter;
 
-public class MainController {
+public class MainViewController {
     @FXML
     private Label filePathLabel;
 

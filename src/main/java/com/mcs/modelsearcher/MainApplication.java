@@ -1,5 +1,6 @@
 package com.mcs.modelsearcher;
 
+import com.mcs.modelsearcher.controller.MainViewController;
 import com.mcs.modelsearcher.file.controller.FileController;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -19,10 +20,10 @@ public class MainApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
 
         // Get the controller and pass the stage
-        MainController controller = fxmlLoader.getController();
-        controller.setFileChooserStage(stage);
-        controller.setFileController(fileController);
-        controller.refreshFilePathLabel();
+        MainViewController con = fxmlLoader.getController();
+        con.setFileChooserStage(stage);
+        con.setFileController(fileController);
+        con.refreshFilePathLabel();
 
         stage.setTitle("Model number searcher");
         stage.setScene(scene);
