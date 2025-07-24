@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
 public class HashController {
     FileController fCon;
     SheetHash sheetHash;
-    HashService fServ;
+    HashService hServ;
     ExcelController excelCon;
 
     String excelPath;
@@ -22,8 +22,8 @@ public class HashController {
     public HashController(FileController fileController) {
         fCon = fileController;
         sheetHash = new SheetHash();
-        fServ = new HashService();
         excelCon = new ExcelController();
+        hServ = new HashService();
 
         excelPath = fCon.getFilePath();
     }
@@ -117,11 +117,11 @@ public class HashController {
     }
 
     public String selectHash(String sheetName) {
-        return fServ.selectHash(sheetName);
+        return hServ.selectHash(sheetName);
     }
 
     public void insertHash(SheetHash sheetHash) {
-        int result = fServ.insertHash(sheetHash);
+        int result = hServ.insertHash(sheetHash);
 
         if (result == 1) {
             System.out.println("HashController.insertHash(): success");
@@ -131,7 +131,7 @@ public class HashController {
     }
 
     public void updateHash(SheetHash sheetHash) {
-        int hashUpdateResult = fServ.updateHash(sheetHash);
+        int hashUpdateResult = hServ.updateHash(sheetHash);
 
         if (hashUpdateResult == 1) {
             System.out.println("HashController.updateHash(): success");
