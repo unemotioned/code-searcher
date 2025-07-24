@@ -51,22 +51,24 @@ public class ExcelController {
                 }
 
                 excel.setInsertNo(getStringCellValue(row, 1));
-                excel.setModelNo(getStringCellValue(row, 2));
+                excel.setPartCode(getStringCellValue(row, 2));
                 excel.setRev(getStringCellValue(row, 3));
                 excel.setApply1(getStringCellValue(row, 4));
                 excel.setApply2(getStringCellValue(row, 5));
-                excel.setApply3(getStringCellValue(row, 6));
-                excel.setBluePrint(getBooleanCellValue(row));
-                excel.setBluePrintDate(getDateCellValue(row));
-                excel.setCategory(getStringCellValue(row, 9));
-                excel.setName(getStringCellValue(row, 10));
-                excel.setSpec(getStringCellValue(row, 11));
-                excel.setMaker(getStringCellValue(row, 12));
-                excel.setVendor(getStringCellValue(row, 13));
-                excel.setUnitPrice((int) getNumericCellValue(row, 14));
-                excel.setMgmtCost((int) getNumericCellValue(row, 15));
-                excel.setEstPrice((int) getNumericCellValue(row, 16));
-                excel.setNote(getStringCellValue(row, 17));
+                excel.setBlueprintDate(getDateCellValue(row));
+                excel.setClientBlueprint(getBooleanCellValue(row, 7));
+                excel.setScan(getBooleanCellValue(row, 8));
+                excel.setBlueprint(getBooleanCellValue(row, 9));
+                excel.setCategory(getStringCellValue(row, 10));
+                excel.setName(getStringCellValue(row, 11));
+                excel.setSpec(getStringCellValue(row, 12));
+                excel.setMaker(getStringCellValue(row, 13));
+                excel.setVendor(getStringCellValue(row, 14));
+                excel.setUnitPrice((int) getNumericCellValue(row, 15));
+                excel.setMgmtCost((int) getNumericCellValue(row, 16));
+                excel.setEstPrice((int) getNumericCellValue(row, 17));
+                excel.setRefPrice((int) getNumericCellValue(row, 18));
+                excel.setNote(getStringCellValue(row, 19));
 
                 excelList.add(excel);
             }
@@ -161,22 +163,15 @@ public class ExcelController {
         }
     }
 
-    private boolean getBooleanCellValue(Row row) {
-        Cell cell = row.getCell(7);
+    private boolean getBooleanCellValue(Row row, int index) {
+        Cell cell = row.getCell(index);
         if (cell == null) return false;
-
-        if (cell.getCellType() == CellType.BOOLEAN) {
-            return cell.getBooleanCellValue();
-        } else if (cell.getCellType() == CellType.STRING) {
-            return Boolean.parseBoolean(cell.getStringCellValue());
-        } else if (cell.getCellType() == CellType.NUMERIC) {
-            return cell.getNumericCellValue() != 0;
-        }
-        return false;
+        String value = cell.toString().trim();
+        return value.equals("○");
     }
 
     private Date getDateCellValue(Row row) {
-        Cell cell = row.getCell(8);
+        Cell cell = row.getCell(6);
         if (cell == null) return null;
         if (DateUtil.isCellDateFormatted(cell)) {
             return cell.getDateCellValue();

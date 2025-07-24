@@ -11,43 +11,46 @@
         where 1 == 1;
     </delete>
 
-   <insert id="newDataTable" parameterType="excel">
-       insert into data (insert_no,
-                         component_code,
-                         rev,
-                         apply_1,
-                         apply_2,
-                         apply_3,
-                         blueprint,
-                         blueprintDate,
-                         category,
-                         name,
-                         spec,
-                         maker,
-                         vendor,
-                         unit_price,
-                         mgmt_cost,
-                         est_price,
-                         note)
-       values (#{insertNo},
-               #{modelNo},
-               #{rev},
-               #{apply1},
-               #{apply2},
-               #{apply3},
-               #{bluePrint},
-               #{bluePrintDate},
-               #{category},
-               #{name},
-               #{spec},
-               #{maker},
-               #{vendor},
-               #{unitPrice},
-               #{mgmtCost},
-               #{estPrice},
-               #{note})
-   </insert>
-
+    <insert id="newDataTable" parameterType="excel">
+        insert into data (insert_no,
+                          part_code,
+                          rev,
+                          apply_1,
+                          apply_2,
+                          blueprint_date,
+                          client_blueprint,
+                          scan,
+                          blueprint,
+                          category,
+                          name,
+                          spec,
+                          maker,
+                          vendor,
+                          unit_price,
+                          mgmt_cost,
+                          est_price,
+                          ref_price,
+                          note)
+        values (#{insertNo},
+                #{partCode},
+                #{rev},
+                #{apply1},
+                #{apply2},
+                #{blueprintDate},
+                #{clientBlueprint},
+                #{scan},
+                #{blueprint},
+                #{category},
+                #{name},
+                #{spec},
+                #{maker},
+                #{vendor},
+                #{unitPrice},
+                #{mgmtCost},
+                #{estPrice},
+                #{refPrice},
+                #{note})
+    </insert>
     <delete id="clearHierarchyTable">
         delete
         from hierarchy
