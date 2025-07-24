@@ -3,7 +3,7 @@ package com.mcs.modelsearcher.excel.controller;
 import com.mcs.modelsearcher.excel.model.service.ExcelService;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.excel.model.vo.Hierarchy;
-import com.mcs.modelsearcher.file.model.service.FileService;
+import com.mcs.modelsearcher.file.controller.FileController;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileInputStream;
@@ -14,11 +14,15 @@ import java.util.Iterator;
 
 public class ExcelController {
     ExcelService eServ;
-    FileService fServ;
+    FileController fCon;
 
-    public ExcelController() {
-        super();
+    String excelPath;
+
+    public ExcelController(FileController fileController) {
+        fCon = fileController;
         eServ = new ExcelService();
+
+        excelPath = fCon.getFilePath();
     }
 
     public void clearDataTable() {
@@ -27,9 +31,6 @@ public class ExcelController {
     }
 
     public void newDataTable() {
-        fServ = new FileService();
-        String excelPath = fServ.selectPath();
-
         try (FileInputStream fis = new FileInputStream(excelPath); Workbook workbook = WorkbookFactory.create(fis)) {
             Sheet sheet = workbook.getSheetAt(0);
             // DEBUG
@@ -94,9 +95,6 @@ public class ExcelController {
     }
 
     public void newHierarchyTable() {
-        fServ = new FileService();
-        String excelPath = fServ.selectPath();
-
         try (FileInputStream fis = new FileInputStream(excelPath); Workbook workbook = WorkbookFactory.create(fis)) {
             Sheet sheet = workbook.getSheetAt(0);
             // DEBUG

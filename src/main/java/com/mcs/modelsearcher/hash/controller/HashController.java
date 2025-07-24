@@ -12,18 +12,20 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class HashController {
-    FileController fCon;
     SheetHash sheetHash;
+
+    FileController fCon;
     HashService hServ;
     ExcelController excelCon;
 
     String excelPath;
 
     public HashController(FileController fileController) {
-        fCon = fileController;
         sheetHash = new SheetHash();
-        excelCon = new ExcelController();
+
+        fCon = fileController;
         hServ = new HashService();
+        excelCon = new ExcelController(fCon);
 
         excelPath = fCon.getFilePath();
     }
