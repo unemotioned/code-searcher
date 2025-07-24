@@ -16,9 +16,9 @@ public class ExcelService {
         dao = new ExcelDao();
     }
 
-    public int deleteDataTable() {
+    public int clearDataTable() {
         SqlSession session = SqlSessionTemplate.getSqlSession();
-        int result = dao.deleteDataTable(session);
+        int result = dao.clearDataTable(session);
         session.close();
         return result;
     }
@@ -38,9 +38,9 @@ public class ExcelService {
         return result;
     }
 
-    public int deleteHierarchyTable() {
+    public int clearHierarchyTable() {
         SqlSession session = SqlSessionTemplate.getSqlSession();
-        int result = dao.deleteHierarchyTable(session);
+        int result = dao.clearHierarchyTable(session);
         session.close();
         return result;
     }

@@ -5,7 +5,7 @@
 
 <mapper namespace="excel">
 
-    <delete id="deleteDataTable">
+    <delete id="clearDataTable">
         delete
         from data
         where 1 == 1;
@@ -48,7 +48,7 @@
                #{note})
    </insert>
 
-    <delete id="deleteHierarchyTable">
+    <delete id="clearHierarchyTable">
         delete
         from hierarchy
         where 1 == 1;

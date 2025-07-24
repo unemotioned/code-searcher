@@ -104,13 +104,13 @@ public class HashController {
         if (sheetIndex == bomSheet) {
             // To update, delete every records inside the table and insert fresh.
             if (todo.equals("update")) {
-                excelCon.deleteDataTable();
+                excelCon.clearDataTable();
             }
             excelCon.newDataTable();
 
         } else if (sheetIndex == hierarchySheet) {
             if (todo.equals("update")) {
-                excelCon.deleteHierarchyTable();
+                excelCon.clearHierarchyTable();
             }
             excelCon.newHierarchyTable();
         }

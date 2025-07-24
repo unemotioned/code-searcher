@@ -21,8 +21,8 @@ public class ExcelController {
         eServ = new ExcelService();
     }
 
-    public void deleteDataTable() {
-        int deleteRowResult = eServ.deleteDataTable();
+    public void clearDataTable() {
+        int deleteRowResult = eServ.clearDataTable();
         System.out.println("ExcelController.deleteDataTable(): deleted row(s): " + deleteRowResult);
     }
 
@@ -88,8 +88,8 @@ public class ExcelController {
         }
     }
 
-    public void deleteHierarchyTable() {
-        int deleteRowResult = eServ.deleteHierarchyTable();
+    public void clearHierarchyTable() {
+        int deleteRowResult = eServ.clearHierarchyTable();
         System.out.println("ExcelController.deleteHierarchyTable(): deleted row(s): " + deleteRowResult);
     }
 
