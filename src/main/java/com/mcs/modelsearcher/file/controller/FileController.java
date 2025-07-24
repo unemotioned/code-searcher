@@ -75,10 +75,12 @@ public class FileController {
 
     public String selFileBtnClick(Stage stage) {
         String path = chooseFile(stage);
+
         if (path != null) {
             delInvalidPath();
             insertPath(path);
             filePath.setFilePath(path);
+            new HashController(this).performHash();
             return path;
         } else {
             return "No file selected";
