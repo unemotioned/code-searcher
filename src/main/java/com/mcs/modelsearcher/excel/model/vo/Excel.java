@@ -9,9 +9,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-
 public class Excel {
-    private int insertNo;
+    private String insertNo;
     private String modelNo;
     private String rev;
     private String apply1;

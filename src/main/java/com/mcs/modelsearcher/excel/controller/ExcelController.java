@@ -50,7 +50,7 @@ public class ExcelController {
                     continue;
                 }
 
-                excel.setInsertNo((int) getNumericCellValue(row, 1));
+                excel.setInsertNo(getStringCellValue(row, 1));
                 excel.setModelNo(getStringCellValue(row, 2));
                 excel.setRev(getStringCellValue(row, 3));
                 excel.setApply1(getStringCellValue(row, 4));
@@ -114,8 +114,8 @@ public class ExcelController {
                     continue;
                 }
 
-                hierarchy.setParent_no((int) getNumericCellValue(row, 0));
-                hierarchy.setChild_no((int) getNumericCellValue(row, 1));
+                hierarchy.setParent_no(getStringCellValue(row, 0));
+                hierarchy.setChild_no(getStringCellValue(row, 1));
 
                 hList.add(hierarchy);
             }
