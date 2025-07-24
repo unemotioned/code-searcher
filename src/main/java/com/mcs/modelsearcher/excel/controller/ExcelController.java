@@ -32,6 +32,7 @@ public class ExcelController {
         try (FileInputStream fis = new FileInputStream(excelPath); Workbook workbook = WorkbookFactory.create(fis)) {
             Sheet sheet = workbook.getSheetAt(0);
             String sheetName = sheet.getSheetName();
+            // DEBUG
             System.out.println("sheetName: " + sheetName);
 
             Iterator<Row> rowIterator = sheet.iterator();
@@ -68,13 +69,15 @@ public class ExcelController {
 
                 excelList.add(excel);
             }
+
+            // DEBUG
             for (Excel excel : excelList) {
                 System.out.println(excel.toString());
             }
 
             // do insert
             int newDataTableResult = eServ.newDataTable(excelList);
-            if (newDataTableResult == 0) {
+            if (newDataTableResult == 1) {
                 System.out.println("ExcelController: newDataTable() success");
             } else {
                 System.out.println("ExcelController: newDataTable() fail");

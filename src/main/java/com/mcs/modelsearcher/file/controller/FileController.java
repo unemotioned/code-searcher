@@ -3,7 +3,6 @@ package com.mcs.modelsearcher.file.controller;
 import com.mcs.modelsearcher.file.model.service.FileService;
 import com.mcs.modelsearcher.file.model.vo.FilePath;
 import com.mcs.modelsearcher.hash.controller.HashController;
-import javafx.application.Platform;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -19,24 +18,22 @@ public class FileController {
     }
 
     public void openFile(Stage stage) {
-        String prevPath = selectPath();
+        String path = selectPath();
 
-        if (prevPath != null) {
-            File file = new File(prevPath);
-            if (file.exists()) {
-                filePath.setFilePath(prevPath);
-
-                // pass current instance of FileController object
-                HashController hCon = new HashController(this);
-                hCon.performHash();
-            } else {
-                delInvalidPath();
-
-                String newPath = chooseFile(stage);
-                insertPath(newPath);
-                filePath.setFilePath(newPath);
-            }
+        if (path != null && new File(path).exists()) {
+            filePath.setFilePath(path);
+            new HashController(this).performHash();
+            return;
         }
+
+        if (path != null) {
+            delInvalidPath();
+        }
+
+        String newPath = chooseFile(stage);
+        insertPath(newPath);
+        filePath.setFilePath(newPath);
+        new HashController(this).performHash();
     }
 
     public String selectPath() {
@@ -57,8 +54,6 @@ public class FileController {
             return file.getAbsolutePath();
         } else {
             System.out.println("FileController.chooseFile(): File not selected");
-            Platform.exit(); // gracefully exit
-
             return null;
         }
     }
@@ -78,12 +73,14 @@ public class FileController {
     }
 
     public String selFileBtnClick(Stage stage) {
-        delInvalidPath();
         String path = chooseFile(stage);
         if (path != null) {
-            filePath.setFilePath(path);
+            delInvalidPath();
             insertPath(path);
+            filePath.setFilePath(path);
+            return path;
+        } else {
+            return "No file selected";
         }
-        return path;
     }
 }

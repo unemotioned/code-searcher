@@ -2,6 +2,7 @@ package com.mcs.modelsearcher;
 
 import com.mcs.modelsearcher.file.controller.FileController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -30,5 +31,12 @@ public class MainApplication extends Application {
 
     public static void main(String[] args) {
         launch();
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("MainApplication.stop(): application closing ...");
+        // exit gracefully
+        Platform.exit();
     }
 }

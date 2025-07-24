@@ -73,7 +73,7 @@ public class HashController {
             }
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("HashController.hashData(): Hash failed.", e);
+            throw new RuntimeException("Hash failed", e);
         }
     }
 
