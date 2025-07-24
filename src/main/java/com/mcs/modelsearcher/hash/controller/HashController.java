@@ -82,21 +82,16 @@ public class HashController {
 
         if (refHash != null) {
 
-            // NOTE: placed for debugging purpose
-            excelCon.newDataTable();
-
             if (refHash.equals(sheetHash.getHash())) {
                 System.out.println("DB is up to date");
                 System.out.println("Load DATA table from DB to UI.");
             } else {
                 updateHash(sheetHash);
-                // TODO: clear previous Data table and insert fresh
                 excelCon.deleteDataTable();
                 excelCon.newDataTable();
             }
         } else {
             insertHash(sheetHash);
-            // TODO: insert fresh to data table
             excelCon.newDataTable();
         }
     }
