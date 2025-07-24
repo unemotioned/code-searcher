@@ -68,7 +68,7 @@ public class HashController {
             byte[] hashBytes = digest.digest(data.getBytes());
             StringBuilder sb = new StringBuilder();
             for (byte b : hashBytes) {
-                // %02x -> into 2 digit hex code
+                // %02x -> binary into 2 digit hex code
                 sb.append(String.format("%02x", b));
             }
             return sb.toString();
@@ -81,7 +81,6 @@ public class HashController {
         String refHash = selectHash(sheetHash.getSheet());
 
         if (refHash != null) {
-
             if (refHash.equals(sheetHash.getHash())) {
                 System.out.println("HashController.checkHash(): DB is up to date");
                 System.out.println("HashController.checkHash(): Load DATA table from DB to UI");

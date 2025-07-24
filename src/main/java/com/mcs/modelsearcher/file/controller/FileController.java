@@ -20,20 +20,21 @@ public class FileController {
     public void openFile(Stage stage) {
         String path = selectPath();
 
-        if (path != null && new File(path).exists()) {
-            filePath.setFilePath(path);
-            new HashController(this).performHash();
-            return;
+        if (path == null || !new File(path).exists()) {
+            if (path != null) {
+                delInvalidPath();
+            }
+
+            path = chooseFile(stage);
+            if (path != null) {
+                insertPath(path);
+            }
         }
 
         if (path != null) {
-            delInvalidPath();
+            filePath.setFilePath(path);
+            new HashController(this).performHash();
         }
-
-        String newPath = chooseFile(stage);
-        insertPath(newPath);
-        filePath.setFilePath(newPath);
-        new HashController(this).performHash();
     }
 
     public String selectPath() {
