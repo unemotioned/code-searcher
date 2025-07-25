@@ -9,7 +9,6 @@ import org.apache.poi.ss.usermodel.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 
 public class ExcelController {
@@ -33,8 +32,6 @@ public class ExcelController {
     public void newDataTable() {
         try (FileInputStream fis = new FileInputStream(excelPath); Workbook workbook = WorkbookFactory.create(fis)) {
             Sheet sheet = workbook.getSheetAt(0);
-            // DEBUG
-            System.out.println("sheetName: " + sheet.getSheetName());
 
             Iterator<Row> rowIterator = sheet.iterator();
 
@@ -71,11 +68,6 @@ public class ExcelController {
                 excel.setNote(getStringCellValue(row, 19));
 
                 excelList.add(excel);
-            }
-
-            // DEBUG
-            for (Excel excel : excelList) {
-                System.out.println(excel.toString());
             }
 
             // do insert
@@ -122,12 +114,6 @@ public class ExcelController {
                 hList.add(hierarchy);
             }
 
-            // DEBUG
-            for (Hierarchy hierarchy : hList) {
-                System.out.println(hierarchy.toString());
-            }
-
-            // do insert
             int newHierarchyTableResult = eServ.newHierarchyTable(hList);
             if (newHierarchyTableResult == 1) {
                 System.out.println("ExcelController: newDataTable() success");
@@ -143,7 +129,13 @@ public class ExcelController {
     private String getStringCellValue(Row row, int index) {
         Cell cell = row.getCell(index);
         if (cell == null) return "";
-        return cell.getCellType() == CellType.STRING ? cell.getStringCellValue() : cell.toString();
+
+        if (cell.getCellType() == CellType.NUMERIC) {
+            // truncate to integer
+            return String.valueOf((int) cell.getNumericCellValue());
+        } else {
+            return String.valueOf(cell.toString());
+        }
     }
 
     private double getNumericCellValue(Row row, int index) {
@@ -161,21 +153,5 @@ public class ExcelController {
             default:
                 return 0;
         }
-    }
-
-    private boolean getBooleanCellValue(Row row, int index) {
-        Cell cell = row.getCell(index);
-        if (cell == null) return false;
-        String value = cell.toString().trim();
-        return value.equals("○");
-    }
-
-    private Date getDateCellValue(Row row) {
-        Cell cell = row.getCell(6);
-        if (cell == null) return null;
-        if (DateUtil.isCellDateFormatted(cell)) {
-            return cell.getDateCellValue();
-        }
-        return null;
     }
 }

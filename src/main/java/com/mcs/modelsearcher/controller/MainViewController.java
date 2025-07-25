@@ -142,16 +142,5 @@ public class MainViewController {
         estPrice.setCellValueFactory(new PropertyValueFactory<>("estPrice"));
         refPrice.setCellValueFactory(new PropertyValueFactory<>("refPrice"));
         note.setCellValueFactory(new PropertyValueFactory<>("note"));
-
-        insertNo.getStyleClass().add("center-align");
-        clientBlueprint.getStyleClass().add("center-align");
-        scan.getStyleClass().add("center-align");
-        selfBlueprint.getStyleClass().add("center-align");
-
-        rev.getStyleClass().add("right-align");
-        unitPrice.getStyleClass().add("right-align");
-        mgmtCost.getStyleClass().add("right-align");
-        estPrice.getStyleClass().add("right-align");
-        refPrice.getStyleClass().add("right-align");
     }
 }
