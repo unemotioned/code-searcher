@@ -58,4 +58,11 @@ public class ExcelService {
         session.close();
         return result;
     }
+
+    public ArrayList<Excel> selectWithPartCode(String keyword) {
+        SqlSession session = SqlSessionTemplate.getSqlSession();
+        ArrayList<Excel> excelList = (ArrayList<Excel>) (dao.selectWithPartCode(session, keyword));
+        session.close();
+        return excelList;
+    }
 }

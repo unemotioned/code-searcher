@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.sql.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,10 +15,10 @@ public class Excel {
     private String rev;
     private String apply1;
     private String apply2;
-    private Date blueprintDate;
-    private boolean clientBlueprint;
-    private boolean scan;
-    private boolean selfBlueprint;
+    private String blueprintDate;
+    private String clientBlueprint;
+    private String scan;
+    private String selfBlueprint;
     private String category;
     private String name;
     private String spec;

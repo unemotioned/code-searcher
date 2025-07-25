@@ -51,6 +51,7 @@
                 #{refPrice},
                 #{note})
     </insert>
+
     <delete id="clearHierarchyTable">
         delete
         from hierarchy
@@ -61,5 +62,29 @@
         insert into hierarchy (parent_no, child_no)
         values (#{parent_no}, #{child_no})
     </insert>
+
+    <select id="selectWithPartCode" parameterType="string" resultType="excel">
+        select insert_no        as insertNo,
+               part_code        as partCode,
+               rev              as rev,
+               apply_1          as apply1,
+               apply_2          as apply2,
+               blueprint_date   as blueprintDate,
+               client_blueprint as clientBlueprint,
+               scan             as scan,
+               self_blueprint   as selfBlueprint,
+               category         as category,
+               name             as name,
+               spec             as spec,
+               maker            as maker,
+               vendor           as vendor,
+               unit_price       as unitPrice,
+               mgmt_cost        as mgmtCost,
+               est_price        as estPrice,
+               ref_price        as refPrice,
+               note             as note
+        from data
+        where part_code like '%' || #{partCode} || '%'
+    </select>
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.mcs.modelsearcher.controller;
 
+import com.mcs.modelsearcher.excel.controller.SearchController;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.file.controller.FileController;
 import javafx.application.Platform;
@@ -46,6 +47,8 @@ public class MainViewController {
     @Setter private Stage fileChooserStage;
     // @formatter:on
 
+    SearchController searchCon;
+
     @FXML
     public void initialize() {
         insertNo.setCellValueFactory(new PropertyValueFactory<>("insertNo"));
@@ -82,6 +85,9 @@ public class MainViewController {
         // show it on the tableView
         ObservableList<Excel> excel = FXCollections.observableArrayList();
         excelData.setItems(excel);
+
+        searchCon = new SearchController();
+        searchCon.selectWithPartCode(keyword.trim().toUpperCase());
     }
 
     public void refreshFilePathLabel() {
