@@ -15,7 +15,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import lombok.Setter;
 
-import java.util.Date;
+import java.sql.Date;
+import java.util.List;
 
 public class MainViewController {
     // @formatter:off
@@ -29,9 +30,9 @@ public class MainViewController {
     @FXML private TableColumn<Excel, String> apply1;
     @FXML private TableColumn<Excel, String> apply2;
     @FXML private TableColumn<Excel, Date> blueprintDate;
-    @FXML private TableColumn<Excel, Boolean> clientBlueprint;
-    @FXML private TableColumn<Excel, Boolean> scan;
-    @FXML private TableColumn<Excel, Boolean> selfBlueprint;
+    @FXML private TableColumn<Excel, String> clientBlueprint;
+    @FXML private TableColumn<Excel, String> scan;
+    @FXML private TableColumn<Excel, String> selfBlueprint;
     @FXML private TableColumn<Excel, String> category;
     @FXML private TableColumn<Excel, String> name;
     @FXML private TableColumn<Excel, String> spec;
@@ -57,7 +58,7 @@ public class MainViewController {
         apply1.setCellValueFactory(new PropertyValueFactory<>("apply1"));
         apply2.setCellValueFactory(new PropertyValueFactory<>("apply2"));
         blueprintDate.setCellValueFactory(new PropertyValueFactory<>("blueprintDate"));
-        clientBlueprint.setCellValueFactory(new PropertyValueFactory<>("blueprint"));
+        clientBlueprint.setCellValueFactory(new PropertyValueFactory<>("clientBlueprint"));
         scan.setCellValueFactory(new PropertyValueFactory<>("scan"));
         selfBlueprint.setCellValueFactory(new PropertyValueFactory<>("selfBlueprint"));
         category.setCellValueFactory(new PropertyValueFactory<>("category"));
@@ -74,20 +75,18 @@ public class MainViewController {
         // focus on the text field on start
         Platform.runLater(() -> partCodeInput.requestFocus());
 
-        // call searchPartCode() on every input
+        // do search on every input
         partCodeInput.textProperty().addListener((observable, oldValue, newValue) -> searchPartCode());
     }
 
     public void searchPartCode() {
-        String keyword = partCodeInput.getText();
-        System.out.println("keyword: " + keyword);
-
-        // show it on the tableView
-        ObservableList<Excel> excel = FXCollections.observableArrayList();
-        excelData.setItems(excel);
+        String keyword = partCodeInput.getText().trim().toUpperCase();
 
         searchCon = new SearchController();
-        searchCon.selectWithPartCode(keyword.trim().toUpperCase());
+        List<Excel> result = searchCon.selectWithPartCode(keyword);
+        // convert list to observable
+        ObservableList<Excel> observableResult = FXCollections.observableArrayList(result);
+        excelData.setItems(observableResult);
     }
 
     public void refreshFilePathLabel() {

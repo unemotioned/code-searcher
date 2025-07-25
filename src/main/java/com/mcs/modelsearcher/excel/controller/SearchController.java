@@ -12,11 +12,7 @@ public class SearchController {
         eServ = new ExcelService();
     }
 
-    public void selectWithPartCode(String keyword) {
-        ArrayList<Excel> excelList = eServ.selectWithPartCode(keyword);
-
-        for (Excel excel : excelList) {
-            System.out.println(excel);
-        }
+    public ArrayList<Excel> selectWithPartCode(String keyword) {
+        return eServ.selectWithPartCode(keyword);
     }
 }
