@@ -12,7 +12,7 @@
     <Label fx:id="filePathLabel"/>
     <Button text="Select file" onAction="#onSelFileClick"/>
 
-    <TextField fx:id="partCodeInput" promptText="partCodeSearch" prefHeight="26.0" prefWidth="100.0"/>
+    <TextField fx:id="partCodeInput" promptText="부품코드 검색" prefHeight="26.0" prefWidth="100.0"/>
     <TableView fx:id="excelData">
         <columns>
             <TableColumn fx:id="insertNo" text="등록 No"/>

@@ -52,25 +52,7 @@ public class MainViewController {
 
     @FXML
     public void initialize() {
-        insertNo.setCellValueFactory(new PropertyValueFactory<>("insertNo"));
-        partCode.setCellValueFactory(new PropertyValueFactory<>("partCode"));
-        rev.setCellValueFactory(new PropertyValueFactory<>("rev"));
-        apply1.setCellValueFactory(new PropertyValueFactory<>("apply1"));
-        apply2.setCellValueFactory(new PropertyValueFactory<>("apply2"));
-        blueprintDate.setCellValueFactory(new PropertyValueFactory<>("blueprintDate"));
-        clientBlueprint.setCellValueFactory(new PropertyValueFactory<>("clientBlueprint"));
-        scan.setCellValueFactory(new PropertyValueFactory<>("scan"));
-        selfBlueprint.setCellValueFactory(new PropertyValueFactory<>("selfBlueprint"));
-        category.setCellValueFactory(new PropertyValueFactory<>("category"));
-        name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        spec.setCellValueFactory(new PropertyValueFactory<>("spec"));
-        maker.setCellValueFactory(new PropertyValueFactory<>("maker"));
-        vendor.setCellValueFactory(new PropertyValueFactory<>("vendor"));
-        unitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
-        mgmtCost.setCellValueFactory(new PropertyValueFactory<>("mgmtCost"));
-        estPrice.setCellValueFactory(new PropertyValueFactory<>("estPrice"));
-        refPrice.setCellValueFactory(new PropertyValueFactory<>("refPrice"));
-        note.setCellValueFactory(new PropertyValueFactory<>("note"));
+        setTableColumn();
 
         // focus on the text field on start
         Platform.runLater(() -> partCodeInput.requestFocus());
@@ -114,5 +96,38 @@ public class MainViewController {
     protected void onSelFileClick() {
         String newPath = fileController.selFileBtnClick(fileChooserStage);
         filePathLabel.setText(newPath);
+    }
+
+    public void setTableColumn() {
+        insertNo.setCellValueFactory(new PropertyValueFactory<>("insertNo"));
+        partCode.setCellValueFactory(new PropertyValueFactory<>("partCode"));
+        rev.setCellValueFactory(new PropertyValueFactory<>("rev"));
+        apply1.setCellValueFactory(new PropertyValueFactory<>("apply1"));
+        apply2.setCellValueFactory(new PropertyValueFactory<>("apply2"));
+        blueprintDate.setCellValueFactory(new PropertyValueFactory<>("blueprintDate"));
+        clientBlueprint.setCellValueFactory(new PropertyValueFactory<>("clientBlueprint"));
+        scan.setCellValueFactory(new PropertyValueFactory<>("scan"));
+        selfBlueprint.setCellValueFactory(new PropertyValueFactory<>("selfBlueprint"));
+        category.setCellValueFactory(new PropertyValueFactory<>("category"));
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        spec.setCellValueFactory(new PropertyValueFactory<>("spec"));
+        maker.setCellValueFactory(new PropertyValueFactory<>("maker"));
+        vendor.setCellValueFactory(new PropertyValueFactory<>("vendor"));
+        unitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+        mgmtCost.setCellValueFactory(new PropertyValueFactory<>("mgmtCost"));
+        estPrice.setCellValueFactory(new PropertyValueFactory<>("estPrice"));
+        refPrice.setCellValueFactory(new PropertyValueFactory<>("refPrice"));
+        note.setCellValueFactory(new PropertyValueFactory<>("note"));
+
+        insertNo.getStyleClass().add("center-align");
+        clientBlueprint.getStyleClass().add("center-align");
+        scan.getStyleClass().add("center-align");
+        selfBlueprint.getStyleClass().add("center-align");
+
+        rev.getStyleClass().add("right-align");
+        unitPrice.getStyleClass().add("right-align");
+        mgmtCost.getStyleClass().add("right-align");
+        estPrice.getStyleClass().add("right-align");
+        refPrice.getStyleClass().add("right-align");
     }
 }
