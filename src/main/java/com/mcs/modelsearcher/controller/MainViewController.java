@@ -77,6 +77,19 @@ public class MainViewController {
 
         // do search on every input
         partCodeInput.textProperty().addListener((observable, oldValue, newValue) -> searchPartCode());
+
+        rowDoubleClick();
+    }
+
+    private void rowDoubleClick() {
+        excelData.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                Excel selectedItem = excelData.getSelectionModel().getSelectedItem();
+                if (selectedItem != null) {
+                    System.out.println("Double-clicked: " + selectedItem.getInsertNo());
+                }
+            }
+        });
     }
 
     public void searchPartCode() {
