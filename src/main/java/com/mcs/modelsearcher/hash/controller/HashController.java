@@ -84,17 +84,12 @@ public class HashController {
         String refHash = selectHash(sheetHash.getSheet());
         String todo = "";
 
-        if (refHash != null) {
-            if (refHash.equals(sheetHash.getHash())) {
-                System.out.println("HashController.checkHash(): DB is up to date");
-                System.out.println("HashController.checkHash(): Load DATA table from DB to UI");
-            } else {
-                updateHash(sheetHash);
-                todo = "update";
-                sheetSpecificDBAction(todo, sheetIndex);
-            }
-        } else {
+        if (refHash == null) {
             insertHash(sheetHash);
+            sheetSpecificDBAction(todo, sheetIndex);
+        } else if (!refHash.equals(sheetHash.getHash())) {
+            updateHash(sheetHash);
+            todo = "update";
             sheetSpecificDBAction(todo, sheetIndex);
         }
     }
