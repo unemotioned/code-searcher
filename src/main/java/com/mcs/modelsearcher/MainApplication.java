@@ -18,7 +18,7 @@ public class MainApplication extends Application {
         fileController.openFile(stage);
 
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load(), 1900, 980);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/mcs/modelsearcher/style/main-view.css")).toExternalForm());
 
         // Get the controller and pass the stage
@@ -27,7 +27,7 @@ public class MainApplication extends Application {
         con.setFileController(fileController);
         con.refreshFilePathLabel();
 
-        stage.setTitle("Model number searcher");
+        stage.setTitle("Component code searcher");
         stage.setScene(scene);
         stage.show();
     }
