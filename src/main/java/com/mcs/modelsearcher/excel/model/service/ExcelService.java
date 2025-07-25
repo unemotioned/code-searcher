@@ -7,6 +7,7 @@ import com.mcs.modelsearcher.excel.model.vo.Hierarchy;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ExcelService {
     ExcelDao dao;
@@ -59,9 +60,9 @@ public class ExcelService {
         return result;
     }
 
-    public ArrayList<Excel> selectWithPartCode(String keyword) {
+    public ArrayList<Excel> doSearch(HashMap<String,String> userInput) {
         SqlSession session = SqlSessionTemplate.getSqlSession();
-        ArrayList<Excel> excelList = (ArrayList<Excel>) (dao.selectWithPartCode(session, keyword));
+        ArrayList<Excel> excelList = (ArrayList<Excel>) (dao.doSearch(session, userInput));
         session.close();
         return excelList;
     }

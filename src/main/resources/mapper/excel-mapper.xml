@@ -63,7 +63,7 @@
         values (#{parent_no}, #{child_no})
     </insert>
 
-    <select id="selectWithPartCode" parameterType="string" resultType="excel">
+    <select id="doSearch" parameterType="hashmap" resultType="excel">
         select insert_no        as insertNo,
                part_code        as partCode,
                rev              as rev,
@@ -84,7 +84,32 @@
                ref_price        as refPrice,
                note             as note
         from data
-        where part_code like '%' || #{partCode} || '%'
+        <where>
+            <if test="partCode != null and partCode != ''">
+                part_code like '%' || #{partCode} || '%'
+            </if>
+            <if test="apply1 != null and apply1 != ''">
+                and apply1 like '%' || #{apply1} || '%'
+            </if>
+            <if test="apply2 != null and apply2 != ''">
+                and apply2 like '%' || #{apply2} || '%'
+            </if>
+            <if test="category != null and category != ''">
+                and category like '%' || #{category} || '%'
+            </if>
+            <if test="name != null and name != ''">
+                and name like '%' || #{name} || '%'
+            </if>
+            <if test="spec != null and spec != ''">
+                and spec like '%' || #{spec} || '%'
+            </if>
+            <if test="vendor != null and vendor != ''">
+                and vendor like '%' || #{vendor} || '%'
+            </if>
+            <if test="note != null and note != ''">
+                and note like '%' || #{note} || '%'
+            </if>
+        </where>
     </select>
 
 </mapper>
