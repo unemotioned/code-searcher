@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
-
-<?import javafx.scene.control.Button?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.mcs.modelsearcher.controller.MainViewController">
     <padding>
@@ -13,4 +11,30 @@
 
     <Label fx:id="filePathLabel"/>
     <Button text="Select file" onAction="#onSelFileClick"/>
+
+    <TextField fx:id="partCodeInput" promptText="partCodeSearch" prefHeight="26.0" prefWidth="100.0"/>
+    <TableView fx:id="excelData">
+        <columns>
+            <TableColumn fx:id="insertNo" text="등록 No"/>
+            <TableColumn fx:id="partCode" text="부품 코드"/>
+            <TableColumn fx:id="rev" text="Rev."/>
+            <TableColumn fx:id="apply1" text="적용1"/>
+            <TableColumn fx:id="apply2" text="적용2"/>
+            <TableColumn fx:id="blueprintDate" text="고객도면 작성일"/>
+            <TableColumn fx:id="clientBlueprint" text="고객도면"/>
+            <TableColumn fx:id="scan" text="스캔"/>
+            <TableColumn fx:id="selfBlueprint" text="자체도면"/>
+            <TableColumn fx:id="category" text="대분류"/>
+            <TableColumn fx:id="name" text="Name"/>
+            <TableColumn fx:id="spec" text="규격"/>
+            <TableColumn fx:id="maker" text="Maker"/>
+            <TableColumn fx:id="vendor" text="구입처"/>
+            <TableColumn fx:id="unitPrice" text="구입단가"/>
+            <TableColumn fx:id="mgmtCost" text="관리비"/>
+            <TableColumn fx:id="estPrice" text="견적단가"/>
+            <TableColumn fx:id="refPrice" text="을지단가"/>
+            <TableColumn fx:id="note" text="비 고"/>
+        </columns>
+
+    </TableView>
 </VBox>
