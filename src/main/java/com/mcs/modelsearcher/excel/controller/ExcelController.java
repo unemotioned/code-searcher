@@ -49,7 +49,7 @@ public class ExcelController {
 
                 excel.setInsertNo(getStringCellValue(row, 1));
                 excel.setPartCode(getStringCellValue(row, 2));
-                excel.setRev(getStringCellValue(row, 3));
+                excel.setRev(getRevValue(row));
                 excel.setApply1(getStringCellValue(row, 4));
                 excel.setApply2(getStringCellValue(row, 5));
                 excel.setBlueprintDate(getStringCellValue(row, 6));
@@ -70,7 +70,6 @@ public class ExcelController {
                 excelList.add(excel);
             }
 
-            // do insert
             int newDataTableResult = eServ.newDataTable(excelList);
             if (newDataTableResult == 1) {
                 System.out.println("ExcelController: newDataTable() success");
@@ -131,7 +130,6 @@ public class ExcelController {
         if (cell == null) return "";
 
         if (cell.getCellType() == CellType.NUMERIC) {
-            // truncate to integer
             return String.valueOf((int) cell.getNumericCellValue());
         } else {
             return String.valueOf(cell.toString());
@@ -153,5 +151,11 @@ public class ExcelController {
             default:
                 return 0;
         }
+    }
+
+    private String getRevValue(Row row) {
+        int revIndex = 3;
+        Cell cell = row.getCell(revIndex);
+        return cell.getStringCellValue();
     }
 }

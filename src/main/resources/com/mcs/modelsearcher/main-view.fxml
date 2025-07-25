@@ -17,7 +17,7 @@
         <columns>
             <TableColumn fx:id="insertNo" text="등록 No" styleClass="center-align"/>
             <TableColumn fx:id="partCode" text="부품 코드"/>
-            <TableColumn fx:id="rev" text="Rev." styleClass="right-align"/>
+            <TableColumn fx:id="rev" text="Rev." styleClass="center-align"/>
             <TableColumn fx:id="apply1" text="적용1"/>
             <TableColumn fx:id="apply2" text="적용2"/>
             <TableColumn fx:id="blueprintDate" text="고객도면 작성일"/>
