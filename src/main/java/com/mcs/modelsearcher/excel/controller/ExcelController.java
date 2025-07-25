@@ -58,7 +58,7 @@ public class ExcelController {
                 excel.setBlueprintDate(getDateCellValue(row));
                 excel.setClientBlueprint(getBooleanCellValue(row, 7));
                 excel.setScan(getBooleanCellValue(row, 8));
-                excel.setBlueprint(getBooleanCellValue(row, 9));
+                excel.setSelfBlueprint(getBooleanCellValue(row, 9));
                 excel.setCategory(getStringCellValue(row, 10));
                 excel.setName(getStringCellValue(row, 11));
                 excel.setSpec(getStringCellValue(row, 12));

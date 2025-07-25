@@ -18,7 +18,7 @@ public class Excel {
     private Date blueprintDate;
     private boolean clientBlueprint;
     private boolean scan;
-    private boolean blueprint;
+    private boolean selfBlueprint;
     private String category;
     private String name;
     private String spec;
