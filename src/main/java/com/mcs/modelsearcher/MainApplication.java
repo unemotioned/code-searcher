@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class MainApplication extends Application {
     @Override
@@ -18,6 +19,7 @@ public class MainApplication extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/mcs/modelsearcher/style/main-view.css")).toExternalForm());
 
         // Get the controller and pass the stage
         MainViewController con = fxmlLoader.getController();

@@ -35,6 +35,5 @@
             <TableColumn fx:id="refPrice" text="을지단가"/>
             <TableColumn fx:id="note" text="비 고"/>
         </columns>
-
     </TableView>
 </VBox>
