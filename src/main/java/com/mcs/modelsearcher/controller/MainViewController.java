@@ -7,11 +7,10 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.stage.Stage;
 import lombok.Setter;
 
@@ -50,6 +49,10 @@ public class MainViewController {
 
     SearchController searchCon;
 
+    public MainViewController() {
+        searchCon = new SearchController();
+    }
+
     @FXML
     public void initialize() {
         setTableColumn();
@@ -60,15 +63,37 @@ public class MainViewController {
         // do search on every input
         partCodeInput.textProperty().addListener((observable, oldValue, newValue) -> searchPartCode());
 
-        rowDoubleClick();
+        doubleRightClickRow();
+        copyCellOnDoubleClick();
     }
 
-    private void rowDoubleClick() {
+    private void doubleRightClickRow() {
         excelData.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) {
+            if (event.isSecondaryButtonDown()) {
                 Excel selectedItem = excelData.getSelectionModel().getSelectedItem();
                 if (selectedItem != null) {
-                    System.out.println("Double-clicked: " + selectedItem.getInsertNo());
+                    System.out.println("Right-clicked: " + selectedItem.getPartCode());
+                }
+            }
+        });
+    }
+
+    private void copyCellOnDoubleClick() {
+        excelData.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                TablePosition<?, ?> position = excelData.getSelectionModel().getSelectedCells().getFirst();
+                int row = position.getRow();
+                int column = position.getColumn();
+
+                Object cellData = excelData.getColumns().get(column).getCellData(row);
+
+                System.out.println("Clicked Cell Value: " + cellData);
+
+                if (cellData != null) {
+                    final Clipboard clipboard = Clipboard.getSystemClipboard();
+                    final ClipboardContent content = new ClipboardContent();
+                    content.putString(cellData.toString());
+                    clipboard.setContent(content);
                 }
             }
         });
@@ -77,7 +102,6 @@ public class MainViewController {
     public void searchPartCode() {
         String keyword = partCodeInput.getText().trim().toUpperCase();
 
-        searchCon = new SearchController();
         List<Excel> result = searchCon.selectWithPartCode(keyword);
         // convert list to observable
         ObservableList<Excel> observableResult = FXCollections.observableArrayList(result);
