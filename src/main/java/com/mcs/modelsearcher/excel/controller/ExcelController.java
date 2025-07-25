@@ -61,10 +61,10 @@ public class ExcelController {
                 excel.setSpec(getStringCellValue(row, 12));
                 excel.setMaker(getStringCellValue(row, 13));
                 excel.setVendor(getStringCellValue(row, 14));
-                excel.setUnitPrice((int) getNumericCellValue(row, 15));
-                excel.setMgmtCost((int) getNumericCellValue(row, 16));
-                excel.setEstPrice((int) getNumericCellValue(row, 17));
-                excel.setRefPrice((int) getNumericCellValue(row, 18));
+                excel.setUnitPrice(getPriceCellValue(row, 15));
+                excel.setMgmtCost(getPriceCellValue(row, 16));
+                excel.setEstPrice(getPriceCellValue(row, 17));
+                excel.setRefPrice(getPriceCellValue(row, 18));
                 excel.setNote(getStringCellValue(row, 19));
 
                 excelList.add(excel);
@@ -138,15 +138,15 @@ public class ExcelController {
         }
     }
 
-    private double getNumericCellValue(Row row, int index) {
+    private int getPriceCellValue(Row row, int index) {
         Cell cell = row.getCell(index);
         if (cell == null) return 0;
         switch (cell.getCellType()) {
             case NUMERIC:
-                return cell.getNumericCellValue();
+                return (int) cell.getNumericCellValue();
             case STRING:
                 try {
-                    return Double.parseDouble(cell.getStringCellValue());
+                    return (int) Double.parseDouble(cell.getStringCellValue());
                 } catch (NumberFormatException e) {
                     return 0;
                 }
