@@ -4,6 +4,8 @@ import com.mcs.modelsearcher.excel.controller.SearchController;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.file.controller.FileController;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import lombok.Setter;
 
@@ -54,9 +57,13 @@ public class MainViewController {
 
     @Setter FileController fileController;
     @Setter private Stage fileChooserStage;
+
+    @FXML private TextField lastFocusedTextField;
     // @formatter:on
 
     SearchController searchCon;
+
+    private List<TextField> textFields;
 
     public MainViewController() {
         searchCon = new SearchController();
@@ -81,6 +88,8 @@ public class MainViewController {
 
         doubleRightClickRow();
         copyCellOnDoubleClick();
+
+        focusControl();
     }
 
     private void doubleRightClickRow() {
@@ -166,5 +175,75 @@ public class MainViewController {
         estPrice.setCellValueFactory(new PropertyValueFactory<>("estPrice"));
         refPrice.setCellValueFactory(new PropertyValueFactory<>("refPrice"));
         note.setCellValueFactory(new PropertyValueFactory<>("note"));
+    }
+
+    public void focusControl() {
+        // order matters
+        textFields = List.of(partCodeInput, apply1Input, apply2Input, categoryInput, nameInput, specInput, vendorInput, noteInput);
+
+        // Handle text field behavior
+        for (TextField tf : textFields) {
+            tf.setOnKeyPressed(event -> {
+                switch (event.getCode()) {
+                    case TAB:
+                        event.consume();
+                        focusNextTextField(tf, event.isShiftDown());
+                        break;
+                    case DOWN:
+                        event.consume();
+                        excelData.requestFocus();
+                        break;
+                    // do nothing on other key press
+                    default:
+                        break;
+                }
+            });
+
+            // Track last focused TextField
+            tf.focusedProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal) {
+                    lastFocusedTextField = tf;
+                }
+            });
+        }
+
+        // Track if ArrowUp was already pressed on the top row
+        final BooleanProperty upPressedAtTopRow = new SimpleBooleanProperty(false);
+
+        excelData.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.UP) {
+                TableView.TableViewSelectionModel<?> selectionModel = excelData.getSelectionModel();
+                int selectedIndex = selectionModel.getSelectedIndex();
+
+                if (selectedIndex == 0) {
+                    if (upPressedAtTopRow.get()) {
+                        // Second consecutive UP at top row — shift focus back
+                        event.consume();
+                        if (lastFocusedTextField != null) {
+                            lastFocusedTextField.requestFocus();
+                        } else {
+                            textFields.getLast().requestFocus();
+                        }
+                        // reset
+                        upPressedAtTopRow.set(false);
+                    } else {
+                        // First UP at top row — mark but allow normal behavior
+                        upPressedAtTopRow.set(true);
+                    }
+                } else {
+                    // reset if not at top
+                    upPressedAtTopRow.set(false);
+                }
+            } else {
+                // reset on any other key
+                upPressedAtTopRow.set(false);
+            }
+        });
+    }
+
+    private void focusNextTextField(TextField current, boolean reverse) {
+        int index = textFields.indexOf(current);
+        int nextIndex = reverse ? (index - 1 + textFields.size()) % textFields.size() : (index + 1) % textFields.size();
+        textFields.get(nextIndex).requestFocus();
     }
 }
