@@ -4,8 +4,6 @@ import com.mcs.modelsearcher.excel.controller.SearchController;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.file.controller.FileController;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,7 +14,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Setter;
@@ -56,13 +53,9 @@ public class MainViewController {
 
     @Setter FileController fileController;
     @Setter private Stage fileChooserStage;
-
-    @FXML private TextField lastFocusedTextField;
     // @formatter:on
 
     SearchController searchCon;
-
-    private List<TextField> textFields;
 
     public MainViewController() {
         searchCon = new SearchController();
@@ -77,9 +70,6 @@ public class MainViewController {
 
         doubleRightClickRow();
         copyCellOnDoubleClick();
-
-        // tab and arrow up/down
-        focusControl();
     }
 
     private void doubleRightClickRow() {
@@ -131,18 +121,28 @@ public class MainViewController {
         });
     }
 
-    public void refreshFilePathLabel() {
-        if (fileController != null && fileController.getFilePath() != null) {
-            filePathLabel.setText(fileController.getFilePath());
-        } else {
-            filePathLabel.setText("No file selected");
-        }
-    }
-
     @FXML
     protected void onSelFileClick() {
         String newPath = fileController.selFileBtnClick(fileChooserStage);
         filePathLabel.setText(newPath);
+    }
+
+    @FXML
+    public void onInsertBtnClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mcs/modelsearcher/insert-popup.fxml"));
+            Parent root = loader.load();
+            InsertPopupController insertCon = loader.getController();
+
+            Stage stage = new Stage();
+            insertCon.setStage(stage);
+
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL); // disable main-view
+            stage.showAndWait();
+        } catch (IOException e) {
+            System.out.println("Error opening insert popup: " + e.getMessage());
+        }
     }
 
     public void setTableColumn() {
@@ -167,91 +167,11 @@ public class MainViewController {
         note.setCellValueFactory(new PropertyValueFactory<>("note"));
     }
 
-    public void focusControl() {
-        // order matters
-        textFields = List.of(uniSearch);
-
-        // Handle text field behavior
-        for (TextField tf : textFields) {
-            tf.setOnKeyPressed(event -> {
-                switch (event.getCode()) {
-                    case TAB:
-                        event.consume();
-                        focusNextTextField(tf, event.isShiftDown());
-                        break;
-                    case DOWN:
-                        event.consume();
-                        excelData.requestFocus();
-                        break;
-                    // do nothing on other key press
-                    default:
-                        break;
-                }
-            });
-
-            // Track last focused TextField
-            tf.focusedProperty().addListener((obs, oldVal, newVal) -> {
-                if (newVal) {
-                    lastFocusedTextField = tf;
-                }
-            });
-        }
-
-        // Track if ArrowUp was already pressed on the top row
-        final BooleanProperty upPressedAtTopRow = new SimpleBooleanProperty(false);
-
-        excelData.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.UP) {
-                TableView.TableViewSelectionModel<?> selectionModel = excelData.getSelectionModel();
-                int selectedIndex = selectionModel.getSelectedIndex();
-
-                if (selectedIndex == 0) {
-                    if (upPressedAtTopRow.get()) {
-                        // Second consecutive UP at top row — shift focus back
-                        event.consume();
-                        if (lastFocusedTextField != null) {
-                            lastFocusedTextField.requestFocus();
-                        } else {
-                            textFields.getLast().requestFocus();
-                        }
-                        // reset
-                        upPressedAtTopRow.set(false);
-                    } else {
-                        // First UP at top row — mark but allow normal behavior
-                        upPressedAtTopRow.set(true);
-                    }
-                } else {
-                    // reset if not at top
-                    upPressedAtTopRow.set(false);
-                }
-            } else {
-                // reset on any other key
-                upPressedAtTopRow.set(false);
-            }
-        });
-    }
-
-    private void focusNextTextField(TextField current, boolean reverse) {
-        int index = textFields.indexOf(current);
-        int nextIndex = reverse ? (index - 1 + textFields.size()) % textFields.size() : (index + 1) % textFields.size();
-        textFields.get(nextIndex).requestFocus();
-    }
-
-    @FXML
-    public void onInsertBtnClick() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mcs/modelsearcher/insert-popup.fxml"));
-            Parent root = loader.load();
-            InsertPopupController insertCon = loader.getController();
-
-            Stage stage = new Stage();
-            insertCon.setStage(stage);
-
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL); // disable main-view
-            stage.showAndWait();
-        } catch (IOException e) {
-            System.out.println("Error opening insert popup: " + e.getMessage());
+    public void refreshFilePathLabel() {
+        if (fileController != null && fileController.getFilePath() != null) {
+            filePathLabel.setText(fileController.getFilePath());
+        } else {
+            filePathLabel.setText("No file selected");
         }
     }
 }
