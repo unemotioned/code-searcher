@@ -4,6 +4,7 @@ import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.excel.model.vo.Hierarchy;
 import org.apache.ibatis.session.SqlSession;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,5 +27,9 @@ public class ExcelDao {
 
     public List<Excel> doSearch(SqlSession session, HashMap<String, String> userInput) {
         return session.selectList("excel.doSearch", userInput);
+    }
+
+    public List<Excel> uniSearch(SqlSession session, ArrayList<String> keywordList) {
+        return session.selectList("excel.uniSearch", keywordList);
     }
 }

@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.mcs.modelsearcher.controller.MainViewController"
       prefWidth="1900" prefHeight="980">
@@ -22,6 +23,9 @@
     <TextField fx:id="specInput" promptText="규격 검색" prefHeight="26.0" prefWidth="100.0"/>
     <TextField fx:id="vendorInput" promptText="구입처 검색" prefHeight="26.0" prefWidth="100.0"/>
     <TextField fx:id="noteInput" promptText="비고 검색" prefHeight="26.0" prefWidth="100.0"/>
+
+    <TextField fx:id="uniSearch" promptText="uni search" prefHeight="26.0" prefWidth="100.0"/>
+
     <TableView fx:id="excelData">
         <columns>
             <TableColumn fx:id="insertNo" text="등록 No" styleClass="center-align"/>

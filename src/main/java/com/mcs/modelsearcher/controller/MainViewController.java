@@ -23,8 +23,10 @@ import lombok.Setter;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class MainViewController {
     // @formatter:off
@@ -38,6 +40,8 @@ public class MainViewController {
     @FXML public TextField specInput;
     @FXML public TextField vendorInput;
     @FXML public TextField noteInput;
+
+    @FXML public TextField uniSearch;
 
     @FXML private TableView<Excel> excelData;
     @FXML private TableColumn<Excel, String> insertNo;
@@ -79,7 +83,7 @@ public class MainViewController {
         setTableColumn();
 
         // focus on the text field on start
-        Platform.runLater(() -> partCodeInput.requestFocus());
+        Platform.runLater(() -> uniSearch.requestFocus());
 
         // searching
         getTextFieldInput();
@@ -133,6 +137,23 @@ public class MainViewController {
         specInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
         vendorInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
         noteInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
+
+        uniSearch.textProperty().addListener((observable, oldValue, newValue) -> uniSearch());
+    }
+
+    public void uniSearch() {
+        String input = uniSearch.getText().trim();
+        StringTokenizer tokenizer = new StringTokenizer(input);
+
+        ArrayList<String> keywordList = new ArrayList<>();
+        while (tokenizer.hasMoreTokens()) {
+            keywordList.add(tokenizer.nextToken());
+        }
+
+        List<Excel> result = searchCon.uniSearch(keywordList);
+
+        ObservableList<Excel> observableResult = FXCollections.observableArrayList(result);
+        excelData.setItems(observableResult);
     }
 
     public void doSearch() {

@@ -112,4 +112,50 @@
         </where>
     </select>
 
+    <select id="uniSearch" parameterType="arraylist" resultType="excel">
+        select insert_no        as insertNo,
+               part_code        as partCode,
+               rev              as rev,
+               apply_1          as apply1,
+               apply_2          as apply2,
+               blueprint_date   as blueprintDate,
+               client_blueprint as clientBlueprint,
+               scan             as scan,
+               self_blueprint   as selfBlueprint,
+               category         as category,
+               name             as name,
+               spec             as spec,
+               maker            as maker,
+               vendor           as vendor,
+               unit_price       as unitPrice,
+               mgmt_cost        as mgmtCost,
+               est_price        as estPrice,
+               ref_price        as refPrice,
+               note             as note
+        from data
+        where 1 == 1
+        <foreach collection="list" item="kw">
+        and (
+            part_code           like '%' || #{kw} || '%'
+            or rev              like '%' || #{kw} || '%'
+            or apply_1          like '%' || #{kw} || '%'
+            or apply_2          like '%' || #{kw} || '%'
+            or blueprint_date   like '%' || #{kw} || '%'
+            or client_blueprint like '%' || #{kw} || '%'
+            or scan             like '%' || #{kw} || '%'
+            or self_blueprint   like '%' || #{kw} || '%'
+            or category         like '%' || #{kw} || '%'
+            or name             like '%' || #{kw} || '%'
+            or spec             like '%' || #{kw} || '%'
+            or maker            like '%' || #{kw} || '%'
+            or vendor           like '%' || #{kw} || '%'
+            or unit_price       like '%' || #{kw} || '%'
+            or mgmt_cost        like '%' || #{kw} || '%'
+            or est_price        like '%' || #{kw} || '%'
+            or ref_price        like '%' || #{kw} || '%'
+            or note             like '%' || #{kw} || '%'
+        )
+        </foreach>
+    </select>
+
 </mapper>
