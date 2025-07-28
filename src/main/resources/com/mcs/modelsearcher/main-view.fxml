@@ -12,6 +12,7 @@
 
     <Label fx:id="filePathLabel"/>
     <Button text="Select file" onAction="#onSelFileClick"/>
+    <Button text="새부품 정보 삽입" onAction="#onInsertBtnClick"/>
 
     <TextField fx:id="partCodeInput" promptText="부품코드 검색" prefHeight="26.0" prefWidth="100.0"/>
     <TextField fx:id="apply1Input" promptText="적용1 검색" prefHeight="26.0" prefWidth="100.0"/>

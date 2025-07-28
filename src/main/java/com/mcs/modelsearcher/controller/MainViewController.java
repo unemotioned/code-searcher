@@ -9,14 +9,19 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Setter;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -251,5 +256,23 @@ public class MainViewController {
         int index = textFields.indexOf(current);
         int nextIndex = reverse ? (index - 1 + textFields.size()) % textFields.size() : (index + 1) % textFields.size();
         textFields.get(nextIndex).requestFocus();
+    }
+
+    @FXML
+    public void onInsertBtnClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mcs/modelsearcher/insert-popup.fxml"));
+            Parent root = loader.load();
+            InsertPopupController insertCon = loader.getController();
+
+            Stage stage = new Stage();
+            insertCon.setStage(stage);
+
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL); // disable main-view
+            stage.showAndWait();
+        } catch (IOException e) {
+            System.out.println("Error opening insert popup: " + e.getMessage());
+        }
     }
 }
