@@ -1,8 +1,14 @@
 package com.mcs.modelsearcher.controller;
 
+import com.mcs.modelsearcher.excel.model.vo.Excel;
+import com.mcs.modelsearcher.file.controller.FileController;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.apache.poi.ss.usermodel.*;
+
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class InsertPopupController {
     // @formatter:off
@@ -27,37 +33,114 @@ public class InsertPopupController {
     @FXML private TextField note;
     // @formatter:on
 
+    FileController fCon;
+    String filePath;
+    Excel record;
+
     private Stage popupStage;
+
+    public InsertPopupController() {
+        fCon = new FileController();
+        filePath = fCon.selectPath();
+    }
 
     public void setStage(Stage stage) {
         this.popupStage = stage;
     }
 
     @FXML
+    public void initialize() {
+        insertNo.setText(getLastInsertNo());
+    }
+
+    public String getLastInsertNo() {
+        String lastInsertNo = "";
+        int insertNoCellIndex = 1;
+
+        try (FileInputStream fis = new FileInputStream(filePath); Workbook workbook = WorkbookFactory.create(fis)) {
+            Sheet sheet = workbook.getSheetAt(0);
+
+            for (Row row : sheet) {
+                Cell cell = row.getCell(insertNoCellIndex);
+
+                if (cell != null && cell.getCellType() != CellType.BLANK) {
+                    lastInsertNo = cell.toString();
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println("InsertPopCon.getLastInsertNo: " + e.getMessage());
+        }
+
+        return String.valueOf(fabricateInsertNo(lastInsertNo));
+    }
+
+    private int fabricateInsertNo(String lastInsertNo) {
+        if (lastInsertNo == null || lastInsertNo.isEmpty()) {
+            return -1;
+        }
+
+        try {
+            int dashIndex = lastInsertNo.indexOf('-');
+            String numberPart = (dashIndex != -1) ? lastInsertNo.substring(0, dashIndex).trim() : lastInsertNo.trim();
+
+            double parsedDouble = Double.parseDouble(numberPart);
+            return (int) parsedDouble + 1;
+
+        } catch (NumberFormatException e) {
+            System.out.println("Error parsing insert number: " + e.getMessage());
+            return -1;
+        }
+    }
+
+    @FXML
     public void onSaveClick() {
-        String insertNo = this.insertNo.getText();
-        String partCode = this.partCode.getText();
-        String rev = this.rev.getText();
-        String apply1 = this.apply1.getText();
-        String apply2 = this.apply2.getText();
-        String blueprintDate = this.blueprintDate.getText();
-        String clientBlueprint = this.clientBlueprint.getText();
-        String scan = this.scan.getText();
-        String selfBlueprint = this.selfBlueprint.getText();
-        String category = this.category.getText();
-        String name = this.name.getText();
-        String spec = this.spec.getText();
-        String maker = this.maker.getText();
-        String vendor = this.vendor.getText();
-        String unitPrice = this.unitPrice.getText();
-        String mgmtCost = this.mgmtCost.getText();
-        String estPrice = this.estPrice.getText();
-        String refPrice = this.refPrice.getText();
-        String note = this.note.getText();
+        record = new Excel();
 
-        // TODO: Save to Excel and database
+        record.setInsertNo(insertNo.getText());
+        record.setPartCode(partCode.getText());
+        record.setRev(rev.getText());
+        record.setApply1(apply1.getText());
+        record.setApply2(apply2.getText());
+        record.setBlueprintDate(blueprintDate.getText());
+        record.setClientBlueprint(clientBlueprint.getText());
+        record.setScan(scan.getText());
+        record.setSelfBlueprint(selfBlueprint.getText());
+        record.setCategory(category.getText());
+        record.setName(name.getText());
+        record.setSpec(spec.getText());
+        record.setMaker(maker.getText());
+        record.setVendor(vendor.getText());
+        record.setUnitPrice(priceInputToInt(unitPrice));
+        record.setMgmtCost(priceInputToInt(mgmtCost));
+        record.setEstPrice(priceInputToInt(estPrice));
+        record.setRefPrice(priceInputToInt(refPrice));
+        record.setNote(note.getText());
 
-        // close
-        popupStage.close();
+        System.out.println("Record: " + record.toString());
+
+        // TODO: Save to Excel and DB
+
+        if (popupStage != null) {
+            popupStage.close();
+        }
+    }
+
+    public int priceInputToInt(TextField tf) {
+        try {
+            if (tf != null) {
+                return Integer.parseInt(tf.getText().trim());
+            } else {
+                return 0;
+            }
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+    public void onCancel() {
+        if (popupStage != null) {
+            popupStage.close();
+        }
     }
 }
