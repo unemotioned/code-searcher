@@ -76,19 +76,13 @@ public class MainViewController {
         // focus on the text field on start
         Platform.runLater(() -> partCodeInput.requestFocus());
 
-        // do search on every input
-        partCodeInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
-        apply1Input.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
-        apply2Input.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
-        categoryInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
-        nameInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
-        specInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
-        vendorInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
-        noteInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
+        // searching
+        getTextFieldInput();
 
         doubleRightClickRow();
         copyCellOnDoubleClick();
 
+        // tab and arrow up/down
         focusControl();
     }
 
@@ -122,6 +116,18 @@ public class MainViewController {
                 }
             }
         });
+    }
+
+    public void getTextFieldInput() {
+        // do search on every input
+        partCodeInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
+        apply1Input.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
+        apply2Input.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
+        categoryInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
+        nameInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
+        specInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
+        vendorInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
+        noteInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
     }
 
     public void doSearch() {
