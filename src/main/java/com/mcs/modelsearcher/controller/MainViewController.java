@@ -24,22 +24,12 @@ import lombok.Setter;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 
 public class MainViewController {
     // @formatter:off
     @FXML private Label filePathLabel;
-
-    @FXML public TextField partCodeInput;
-    @FXML public TextField apply1Input;
-    @FXML public TextField apply2Input;
-    @FXML public TextField categoryInput;
-    @FXML public TextField nameInput;
-    @FXML public TextField specInput;
-    @FXML public TextField vendorInput;
-    @FXML public TextField noteInput;
 
     @FXML public TextField uniSearch;
 
@@ -128,16 +118,6 @@ public class MainViewController {
     }
 
     public void getTextFieldInput() {
-        // do search on every input
-        partCodeInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
-        apply1Input.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
-        apply2Input.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
-        categoryInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
-        nameInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
-        specInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
-        vendorInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
-        noteInput.textProperty().addListener((observable, oldValue, newValue) -> doSearch());
-
         uniSearch.textProperty().addListener((observable, oldValue, newValue) -> uniSearch());
     }
 
@@ -152,23 +132,6 @@ public class MainViewController {
 
         List<Excel> result = searchCon.uniSearch(keywordList);
 
-        ObservableList<Excel> observableResult = FXCollections.observableArrayList(result);
-        excelData.setItems(observableResult);
-    }
-
-    public void doSearch() {
-        HashMap<String, String> userInput = new HashMap<>();
-        userInput.put("partCode", partCodeInput.getText().trim().toUpperCase());
-        userInput.put("apply1", apply1Input.getText().trim());
-        userInput.put("apply2", apply2Input.getText().trim());
-        userInput.put("category", categoryInput.getText().trim());
-        userInput.put("name", nameInput.getText().trim().toUpperCase());
-        userInput.put("spec", specInput.getText().trim().toUpperCase());
-        userInput.put("vendor", vendorInput.getText().trim());
-        userInput.put("note", noteInput.getText().trim());
-
-        List<Excel> result = searchCon.doSearch(userInput);
-        // convert list to observable
         ObservableList<Excel> observableResult = FXCollections.observableArrayList(result);
         excelData.setItems(observableResult);
     }
@@ -211,7 +174,7 @@ public class MainViewController {
 
     public void focusControl() {
         // order matters
-        textFields = List.of(partCodeInput, apply1Input, apply2Input, categoryInput, nameInput, specInput, vendorInput, noteInput);
+        textFields = List.of(uniSearch);
 
         // Handle text field behavior
         for (TextField tf : textFields) {

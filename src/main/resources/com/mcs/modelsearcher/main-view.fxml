@@ -15,15 +15,6 @@
     <Button text="Select file" onAction="#onSelFileClick"/>
     <Button text="새부품 정보 삽입" onAction="#onInsertBtnClick"/>
 
-    <TextField fx:id="partCodeInput" promptText="부품코드 검색" prefHeight="26.0" prefWidth="100.0"/>
-    <TextField fx:id="apply1Input" promptText="적용1 검색" prefHeight="26.0" prefWidth="100.0"/>
-    <TextField fx:id="apply2Input" promptText="적용2 검색" prefHeight="26.0" prefWidth="100.0"/>
-    <TextField fx:id="categoryInput" promptText="대분류 검색" prefHeight="26.0" prefWidth="100.0"/>
-    <TextField fx:id="nameInput" promptText="Name 검색" prefHeight="26.0" prefWidth="100.0"/>
-    <TextField fx:id="specInput" promptText="규격 검색" prefHeight="26.0" prefWidth="100.0"/>
-    <TextField fx:id="vendorInput" promptText="구입처 검색" prefHeight="26.0" prefWidth="100.0"/>
-    <TextField fx:id="noteInput" promptText="비고 검색" prefHeight="26.0" prefWidth="100.0"/>
-
     <TextField fx:id="uniSearch" promptText="uni search" prefHeight="26.0" prefWidth="100.0"/>
 
     <TableView fx:id="excelData">

@@ -14,6 +14,10 @@ public class SearchController {
         eServ = new ExcelService();
     }
 
+    /**
+     * @deprecated use uniSearch instead
+     */
+    @Deprecated
     public ArrayList<Excel> doSearch(HashMap<String, String> userInput) {
         return eServ.doSearch(userInput);
     }
