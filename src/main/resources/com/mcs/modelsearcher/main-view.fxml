@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.mcs.modelsearcher.controller.MainViewController"
       prefWidth="1900" prefHeight="980">
@@ -24,7 +23,7 @@
             <TableColumn fx:id="rev" text="Rev." styleClass="center-align"/>
             <TableColumn fx:id="apply1" text="적용1"/>
             <TableColumn fx:id="apply2" text="적용2"/>
-            <TableColumn fx:id="blueprintDate" text="고객도면 작성일"/>
+            <TableColumn fx:id="blueprintDate" text="고객도면 작성일" styleClass="center-align"/>
             <TableColumn fx:id="clientBlueprint" text="고객도면" styleClass="center-align"/>
             <TableColumn fx:id="scan" text="스캔" styleClass="center-align"/>
             <TableColumn fx:id="selfBlueprint" text="자체도면" styleClass="center-align"/>

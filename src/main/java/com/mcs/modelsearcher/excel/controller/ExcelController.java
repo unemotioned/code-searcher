@@ -9,6 +9,7 @@ import org.apache.poi.ss.usermodel.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 public class ExcelController {
@@ -52,7 +53,7 @@ public class ExcelController {
                 excel.setRev(getRevValue(row));
                 excel.setApply1(getStringCellValue(row, 4));
                 excel.setApply2(getStringCellValue(row, 5));
-                excel.setBlueprintDate(getStringCellValue(row, 6));
+                excel.setBlueprintDate(getDateCellValue(row));
                 excel.setClientBlueprint(getStringCellValue(row, 7));
                 excel.setScan(getStringCellValue(row, 8));
                 excel.setSelfBlueprint(getStringCellValue(row, 9));
@@ -157,5 +158,21 @@ public class ExcelController {
         int revIndex = 3;
         Cell cell = row.getCell(revIndex);
         return cell.getStringCellValue();
+    }
+
+    private String getDateCellValue(Row row) {
+        int dateIndex = 6;
+        Cell cell = row.getCell(dateIndex);
+
+        if (cell == null || cell.getCellType() == CellType.BLANK) {
+            return null;
+        }
+
+        if (cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell)) {
+            Date dateValue = cell.getDateCellValue();
+            return new java.text.SimpleDateFormat("yyyy-MM-dd").format(dateValue);
+        }
+
+        return null;
     }
 }
