@@ -72,11 +72,8 @@ public class MainViewController {
     public void initialize() {
         setTableColumn();
 
-        // focus on the text field on start
         Platform.runLater(() -> uniSearch.requestFocus());
-
-        // searching
-        getTextFieldInput();
+        uniSearch();
 
         doubleRightClickRow();
         copyCellOnDoubleClick();
@@ -117,23 +114,21 @@ public class MainViewController {
         });
     }
 
-    public void getTextFieldInput() {
-        uniSearch.textProperty().addListener((observable, oldValue, newValue) -> uniSearch());
-    }
-
     public void uniSearch() {
-        String input = uniSearch.getText().trim();
-        StringTokenizer tokenizer = new StringTokenizer(input);
+        uniSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            String input = uniSearch.getText().trim();
+            StringTokenizer tokenizer = new StringTokenizer(input);
 
-        ArrayList<String> keywordList = new ArrayList<>();
-        while (tokenizer.hasMoreTokens()) {
-            keywordList.add(tokenizer.nextToken());
-        }
+            ArrayList<String> keywordList = new ArrayList<>();
+            while (tokenizer.hasMoreTokens()) {
+                keywordList.add(tokenizer.nextToken());
+            }
 
-        List<Excel> result = searchCon.uniSearch(keywordList);
+            List<Excel> result = searchCon.uniSearch(keywordList);
 
-        ObservableList<Excel> observableResult = FXCollections.observableArrayList(result);
-        excelData.setItems(observableResult);
+            ObservableList<Excel> observableResult = FXCollections.observableArrayList(result);
+            excelData.setItems(observableResult);
+        });
     }
 
     public void refreshFilePathLabel() {
