@@ -136,7 +136,8 @@
         where 1 == 1
         <foreach collection="list" item="kw">
         and (
-            part_code           like '%' || #{kw} || '%'
+               insert_no        like '%' || #{kw} || '%'
+            or part_code        like '%' || #{kw} || '%'
             or rev              like '%' || #{kw} || '%'
             or apply_1          like '%' || #{kw} || '%'
             or apply_2          like '%' || #{kw} || '%'
