@@ -187,9 +187,11 @@ public class InsertPopupController {
                 if (i == dateCellIndex) {
                     setDateCell(workbook, cell, cellStyle, data[i]);
                 } else if (i == percentCellIndex) {
+                    // TODO: percent cell format to percent
+                    //  and add "%" to input
                     System.out.println("percent");
                 } else if (i >= priceCellStart && i <= priceCellEnd) {
-                    System.out.println("price");
+                    setPriceCell(workbook, cell, cellStyle, data[i]);
                 } else {
                     cell.setCellValue(data[i]);
                     cell.setCellStyle(cellStyle);
@@ -202,6 +204,50 @@ public class InsertPopupController {
             }
         } catch (IOException e) {
             System.out.println("Error saving file" + e.getMessage());
+        }
+    }
+
+    private void setPriceCell(Workbook workbook, Cell cell, CellStyle baseStyle, String input) {
+        if (input == null || input.trim().isEmpty()) {
+            cell.setBlank();
+            cell.setCellStyle(baseStyle);
+            return;
+        }
+
+        CellStyle numberStyle = workbook.createCellStyle();
+        DataFormat format = workbook.createDataFormat();
+
+        numberStyle.cloneStyleFrom(baseStyle);
+        numberStyle.setDataFormat(format.getFormat("#,##0_);(#,##0)"));
+        numberStyle.setAlignment(HorizontalAlignment.RIGHT);
+
+        try {
+            double numericValue = Double.parseDouble(input.replace(",", ""));
+            cell.setCellValue(numericValue);
+        } catch (NumberFormatException e) {
+            System.out.println("Error parsing insert number: " + e.getMessage());
+            cell.setBlank();
+        }
+
+        cell.setCellStyle(numberStyle);
+    }
+
+    private void setDateCell(Workbook workbook, Cell cell, CellStyle baseStyle, String input) {
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyMMdd");
+        try {
+            Date date = sdfInput.parse(input);
+
+            cell.setCellValue(date);
+
+            CellStyle dateStyle = workbook.createCellStyle();
+            dateStyle.cloneStyleFrom(baseStyle);
+            dateStyle.setDataFormat((short) 14);
+
+            cell.setCellStyle(dateStyle);
+        } catch (ParseException e) {
+            System.out.println("Invalid date format in blueprintDate: " + input);
+            cell.setCellValue(input);
+            cell.setCellStyle(baseStyle);
         }
     }
 
@@ -244,25 +290,6 @@ public class InsertPopupController {
         style.setFont(font);
 
         return style;
-    }
-
-    private void setDateCell(Workbook workbook, Cell cell, CellStyle baseStyle, String input) {
-        SimpleDateFormat sdfInput = new SimpleDateFormat("yyMMdd");
-        try {
-            Date date = sdfInput.parse(input);
-
-            cell.setCellValue(date);
-
-            CellStyle dateStyle = workbook.createCellStyle();
-            dateStyle.cloneStyleFrom(baseStyle);
-            dateStyle.setDataFormat((short) 14);
-
-            cell.setCellStyle(dateStyle);
-        } catch (ParseException e) {
-            System.out.println("Invalid date format in blueprintDate: " + input);
-            cell.setCellValue(input);
-            cell.setCellStyle(baseStyle);
-        }
     }
 
     public void insertRecord(Excel record) {
