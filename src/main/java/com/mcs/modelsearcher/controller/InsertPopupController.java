@@ -162,11 +162,19 @@ public class InsertPopupController {
         FileController fCon = new FileController();
         String path = fCon.selectPath();
 
-        final int firstCellIndex = 1;
-        final int dateCellIndex = 5;
-        final int percentCellIndex = 15;
-        final int priceCellStart = 14;
-        final int priceCellEnd = 17;
+        final int firstIndex = 1;
+        final int dateIndex = 5;
+        final int percentIndex = 15;
+        final int priceStart = 14;
+        final int priceEnd = 17;
+
+        // for left align
+        final int partCodeIndex = 1;
+        final int categoryIndex = 9;
+        final int specIndex = 10;
+        final int makerIndex = 11;
+        final int noteIndex = 18;
+
 
         try (FileInputStream fis = new FileInputStream(path); Workbook workbook = WorkbookFactory.create(fis)) {
             Sheet sheet = workbook.getSheetAt(0);
@@ -182,16 +190,19 @@ public class InsertPopupController {
             CellStyle cellStyle = cellStyle(workbook);
 
             for (int i = 0; i < data.length; i++) {
-                Cell cell = newRow.createCell(i + firstCellIndex);
+                Cell cell = newRow.createCell(i + firstIndex);
 
-                if (i == dateCellIndex) {
+                if (i == dateIndex) {
                     setDateCell(workbook, cell, cellStyle, data[i]);
-                } else if (i == percentCellIndex) {
+                } else if (i == percentIndex) {
                     // TODO: percent cell format to percent
                     //  and add "%" to input
                     System.out.println("percent");
-                } else if (i >= priceCellStart && i <= priceCellEnd) {
+                } else if (i >= priceStart && i <= priceEnd) {
                     setPriceCell(workbook, cell, cellStyle, data[i]);
+                } else if (i == partCodeIndex || i == categoryIndex || i == specIndex || i == makerIndex || i == noteIndex) {
+                    alignLeft(workbook, cell, cellStyle);
+                    cell.setCellValue(data[i]);
                 } else {
                     cell.setCellValue(data[i]);
                     cell.setCellStyle(cellStyle);
@@ -205,6 +216,14 @@ public class InsertPopupController {
         } catch (IOException e) {
             System.out.println("Error saving file" + e.getMessage());
         }
+    }
+
+    private void alignLeft(Workbook workbook, Cell cell, CellStyle baseStyle) {
+        CellStyle alignLeft = workbook.createCellStyle();
+        alignLeft.cloneStyleFrom(baseStyle);
+        alignLeft.setAlignment(HorizontalAlignment.LEFT);
+
+        cell.setCellStyle(alignLeft);
     }
 
     private void setPriceCell(Workbook workbook, Cell cell, CellStyle baseStyle, String input) {
