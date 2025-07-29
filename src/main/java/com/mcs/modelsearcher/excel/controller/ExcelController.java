@@ -63,7 +63,7 @@ public class ExcelController {
                 excel.setMaker(getStringCellValue(row, 13));
                 excel.setVendor(getStringCellValue(row, 14));
                 excel.setUnitPrice(getPriceCellValue(row, 15));
-                excel.setMgmtCost(getPriceCellValue(row, 16));
+                excel.setMgmtCost(getPercentCellValue(row));
                 excel.setEstPrice(getPriceCellValue(row, 17));
                 excel.setRefPrice(getPriceCellValue(row, 18));
                 excel.setNote(getStringCellValue(row, 19));
@@ -146,6 +146,27 @@ public class ExcelController {
             case STRING:
                 try {
                     return (int) Double.parseDouble(cell.getStringCellValue());
+                } catch (NumberFormatException e) {
+                    return 0;
+                }
+            default:
+                return 0;
+        }
+    }
+
+    private int getPercentCellValue(Row row) {
+        final int percentCellIndex = 16;
+        Cell cell = row.getCell(percentCellIndex);
+        if (cell == null) return 0;
+
+        switch (cell.getCellType()) {
+            case NUMERIC:
+                // Excel stores percentages as decimal values (e.g., 5% -> 0.05)
+                return (int) Math.round(cell.getNumericCellValue() * 100);
+            case STRING:
+                try {
+                    String value = cell.getStringCellValue().replace("%", "").trim();
+                    return (int) Double.parseDouble(value);
                 } catch (NumberFormatException e) {
                     return 0;
                 }
