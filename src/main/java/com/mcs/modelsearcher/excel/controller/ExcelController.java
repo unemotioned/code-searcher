@@ -40,6 +40,8 @@ public class ExcelController {
 
             ArrayList<Excel> excelList = new ArrayList<>();
 
+            FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
+
             while (rowIterator.hasNext()) {
                 Excel excel = new Excel();
                 Row row = rowIterator.next();
@@ -62,10 +64,10 @@ public class ExcelController {
                 excel.setSpec(getStringCellValue(row, 12));
                 excel.setMaker(getStringCellValue(row, 13));
                 excel.setVendor(getStringCellValue(row, 14));
-                excel.setUnitPrice(getPriceCellValue(row, 15));
-                excel.setMgmtCost(getPercentCellValue(row));
-                excel.setEstPrice(getPriceCellValue(row, 17));
-                excel.setRefPrice(getPriceCellValue(row, 18));
+                excel.setUnitPrice(getPriceCellValue(row, 15, evaluator));
+                excel.setMgmtCost(getPercentCellValue(row, evaluator));
+                excel.setEstPrice(getPriceCellValue(row, 17, evaluator));
+                excel.setRefPrice(getPriceCellValue(row, 18, evaluator));
                 excel.setNote(getStringCellValue(row, 19));
 
                 excelList.add(excel);
@@ -137,36 +139,61 @@ public class ExcelController {
         }
     }
 
-    private int getPriceCellValue(Row row, int index) {
+    private int getPriceCellValue(Row row, int index, FormulaEvaluator evaluator) {
         Cell cell = row.getCell(index);
         if (cell == null) return 0;
+
         switch (cell.getCellType()) {
             case NUMERIC:
                 return (int) cell.getNumericCellValue();
+
             case STRING:
                 try {
                     return (int) Double.parseDouble(cell.getStringCellValue());
                 } catch (NumberFormatException e) {
                     return 0;
                 }
+
+            case FORMULA:
+                CellValue evaluatedValue = evaluator.evaluate(cell);
+                if (evaluatedValue == null) return 0;
+
+                switch (evaluatedValue.getCellType()) {
+                    case NUMERIC:
+                        return (int) evaluatedValue.getNumberValue();
+                    case STRING:
+                        try {
+                            return (int) Double.parseDouble(evaluatedValue.getStringValue());
+                        } catch (NumberFormatException e) {
+                            return 0;
+                        }
+                    default:
+                        return 0;
+                }
+
             default:
                 return 0;
         }
     }
 
-    private int getPercentCellValue(Row row) {
+    private int getPercentCellValue(Row row, FormulaEvaluator evaluator) {
         final int percentCellIndex = 16;
         Cell cell = row.getCell(percentCellIndex);
         if (cell == null) return 0;
 
         switch (cell.getCellType()) {
             case NUMERIC:
-                // Excel stores percentages as decimal values (e.g., 5% -> 0.05)
                 return (int) Math.round(cell.getNumericCellValue() * 100);
+            case FORMULA:
+                CellValue evaluated = evaluator.evaluate(cell);
+                if (evaluated != null && evaluated.getCellType() == CellType.NUMERIC) {
+                    return (int) Math.round(evaluated.getNumberValue() * 100);
+                }
+                return 0;
             case STRING:
                 try {
-                    String value = cell.getStringCellValue().replace("%", "").trim();
-                    return (int) Double.parseDouble(value);
+                    double val = Double.parseDouble(cell.getStringCellValue().replace("%", "").trim());
+                    return (int) Math.round(val);
                 } catch (NumberFormatException e) {
                     return 0;
                 }
@@ -174,6 +201,7 @@ public class ExcelController {
                 return 0;
         }
     }
+
 
     private String getRevValue(Row row) {
         final int revIndex = 3;
