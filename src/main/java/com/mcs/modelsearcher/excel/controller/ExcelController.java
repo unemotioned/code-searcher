@@ -175,8 +175,4 @@ public class ExcelController {
 
         return null;
     }
-
-    public void insertRecordToDb(Excel record) {
-        System.out.println("foobar");
-    }
 }

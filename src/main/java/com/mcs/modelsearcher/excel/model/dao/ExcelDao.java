@@ -32,4 +32,8 @@ public class ExcelDao {
     public List<Excel> uniSearch(SqlSession session, ArrayList<String> keywordList) {
         return session.selectList("excel.uniSearch", keywordList);
     }
+
+    public int insertRecord(SqlSession session, Excel record) {
+        return session.insert("excel.insertRecord", record);
+    }
 }

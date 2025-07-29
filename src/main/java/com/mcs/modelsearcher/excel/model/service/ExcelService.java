@@ -74,4 +74,11 @@ public class ExcelService {
         session.close();
         return excelList;
     }
+
+    public int insertRecord(Excel record) {
+        SqlSession session = SqlSessionTemplate.getSqlSession();
+        int result = dao.insertRecord(session, record);
+        session.close();
+        return result;
+    }
 }

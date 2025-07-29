@@ -1,13 +1,17 @@
 package com.mcs.modelsearcher.controller;
 
+import com.mcs.modelsearcher.excel.model.service.ExcelService;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.file.controller.FileController;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class InsertPopupController {
@@ -51,6 +55,22 @@ public class InsertPopupController {
     @FXML
     public void initialize() {
         insertNo.setText(getLastInsertNo());
+        rev.setText("000");
+
+        // for testing
+        partCode.setText("D400-59798A");
+        apply1.setText("CLT Handler");
+        blueprintDate.setText("250729");
+        clientBlueprint.setText("○");
+        category.setText("Camera");
+        name.setText("LED-CLT HANDLER BAR LIGHT L");
+        spec.setText("MLC-C24B-350W");
+        maker.setText("BASLER");
+        vendor.setText("바슬러코리아");
+        unitPrice.setText("75000");
+        mgmtCost.setText("10");
+        estPrice.setText("7500000");
+        note.setText("(주의) foobar");
     }
 
     public String getLastInsertNo() {
@@ -117,12 +137,98 @@ public class InsertPopupController {
         record.setRefPrice(priceInputToInt(refPrice));
         record.setNote(note.getText());
 
-        System.out.println("Record: " + record.toString());
-
-        // TODO: Save to Excel and DB
+        addRecord();
+        insertRecord(record);
 
         if (popupStage != null) {
             popupStage.close();
+        }
+    }
+
+    public void addRecord() {
+        String[] data = {insertNo.getText(), partCode.getText(), rev.getText(), apply1.getText(), apply2.getText(), blueprintDate.getText(), clientBlueprint.getText(), scan.getText(), selfBlueprint.getText(), category.getText(), name.getText(), spec.getText(), maker.getText(), vendor.getText(), unitPrice.getText(), mgmtCost.getText(), estPrice.getText(), refPrice.getText(), note.getText()};
+
+        FileController fCon = new FileController();
+        String path = fCon.selectPath();
+
+        final int firstCellIndex = 1;
+
+        try (FileInputStream fis = new FileInputStream(path); Workbook workbook = WorkbookFactory.create(fis)) {
+            Sheet sheet = workbook.getSheetAt(0);
+            int newRowNum = sheet.getLastRowNum() + 1;
+            Row newRow = sheet.createRow(newRowNum);
+
+            int lastRowNum = sheet.getLastRowNum();
+            while (lastRowNum >= 0 && isRowEmpty(sheet.getRow(lastRowNum))) {
+                lastRowNum--;
+            }
+
+            // alignment, border, font
+            CellStyle cellStyle = cellStyle(workbook);
+
+            for (int i = 0; i < data.length; i++) {
+                Cell cell = newRow.createCell(i + firstCellIndex);
+                cell.setCellValue(data[i]);
+                cell.setCellStyle(cellStyle);
+            }
+
+            try (FileOutputStream fos = new FileOutputStream(path)) {
+                workbook.write(fos);
+                System.out.println("Record added successfully");
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving file" + e.getMessage());
+        }
+    }
+
+    private boolean isRowEmpty(Row row) {
+        if (row == null) return true;
+        for (Cell cell : row) {
+            if (cell != null && cell.getCellType() != CellType.BLANK) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public CellStyle cellStyle(Workbook workbook) {
+        CellStyle style = workbook.createCellStyle();
+
+        style.setAlignment(HorizontalAlignment.CENTER); // CENTER, LEFT, RIGHT
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+
+        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+
+        HSSFWorkbook hssfWorkbook = (HSSFWorkbook) workbook;
+        HSSFPalette palette = hssfWorkbook.getCustomPalette();
+        // 42 since it's reserved for .xlx
+        short customColorIndex = 42;
+        // turn it into #969697
+        palette.setColorAtIndex(customColorIndex, (byte) 150, (byte) 150, (byte) 151);
+        style.setTopBorderColor(customColorIndex);
+        style.setBottomBorderColor(customColorIndex);
+        style.setLeftBorderColor(customColorIndex);
+        style.setRightBorderColor(customColorIndex);
+
+        Font font = workbook.createFont();
+        font.setFontName("돋움");
+        font.setFontHeightInPoints((short) 9);
+        font.setBold(false);
+        style.setFont(font);
+
+        return style;
+    }
+
+    public void insertRecord(Excel record) {
+        ExcelService eServ = new ExcelService();
+        int result = eServ.insertRecord(record);
+        if (result == 1) {
+            System.out.println("ExcelController.insertRecordToDb: success");
+        } else {
+            System.out.println("ExcelController.insertRecordToDb: fail");
         }
     }
 

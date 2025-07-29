@@ -158,4 +158,45 @@
         </foreach>
     </select>
 
+    <select id="insertRecord" parameterType="excel">
+        insert into data (insert_no,
+                          part_code,
+                          rev,
+                          apply_1,
+                          apply_2,
+                          blueprint_date,
+                          client_blueprint,
+                          scan,
+                          self_blueprint,
+                          category,
+                          name,
+                          spec,
+                          maker,
+                          vendor,
+                          unit_price,
+                          mgmt_cost,
+                          est_price,
+                          ref_price,
+                          note)
+        values (#{insertNo},
+                #{partCode},
+                #{rev},
+                #{apply1},
+                #{apply2},
+                #{blueprintDate},
+                #{clientBlueprint},
+                #{scan},
+                #{selfBlueprint},
+                #{category},
+                #{name},
+                #{spec},
+                #{maker},
+                #{vendor},
+                #{unitPrice},
+                #{mgmtCost},
+                #{estPrice},
+                #{refPrice},
+                #{note})
+    </select>
+
 </mapper>
