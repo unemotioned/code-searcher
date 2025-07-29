@@ -13,6 +13,9 @@ import org.apache.poi.ss.usermodel.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class InsertPopupController {
     // @formatter:off
@@ -46,10 +49,6 @@ public class InsertPopupController {
     public InsertPopupController() {
         fCon = new FileController();
         filePath = fCon.selectPath();
-    }
-
-    public void setStage(Stage stage) {
-        this.popupStage = stage;
     }
 
     @FXML
@@ -145,6 +144,18 @@ public class InsertPopupController {
         }
     }
 
+    public int priceInputToInt(TextField tf) {
+        try {
+            if (tf != null) {
+                return Integer.parseInt(tf.getText().trim());
+            } else {
+                return 0;
+            }
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
     public void addRecord() {
         String[] data = {insertNo.getText(), partCode.getText(), rev.getText(), apply1.getText(), apply2.getText(), blueprintDate.getText(), clientBlueprint.getText(), scan.getText(), selfBlueprint.getText(), category.getText(), name.getText(), spec.getText(), maker.getText(), vendor.getText(), unitPrice.getText(), mgmtCost.getText(), estPrice.getText(), refPrice.getText(), note.getText()};
 
@@ -152,6 +163,10 @@ public class InsertPopupController {
         String path = fCon.selectPath();
 
         final int firstCellIndex = 1;
+        final int dateCellIndex = 5;
+        final int percentCellIndex = 15;
+        final int priceCellStart = 14;
+        final int priceCellEnd = 17;
 
         try (FileInputStream fis = new FileInputStream(path); Workbook workbook = WorkbookFactory.create(fis)) {
             Sheet sheet = workbook.getSheetAt(0);
@@ -168,13 +183,22 @@ public class InsertPopupController {
 
             for (int i = 0; i < data.length; i++) {
                 Cell cell = newRow.createCell(i + firstCellIndex);
-                cell.setCellValue(data[i]);
-                cell.setCellStyle(cellStyle);
+
+                if (i == dateCellIndex) {
+                    setDateCell(workbook, cell, cellStyle, data[i]);
+                } else if (i == percentCellIndex) {
+                    System.out.println("percent");
+                } else if (i >= priceCellStart && i <= priceCellEnd) {
+                    System.out.println("price");
+                } else {
+                    cell.setCellValue(data[i]);
+                    cell.setCellStyle(cellStyle);
+                }
             }
 
             try (FileOutputStream fos = new FileOutputStream(path)) {
                 workbook.write(fos);
-                System.out.println("Record added successfully");
+                System.out.println("Record added");
             }
         } catch (IOException e) {
             System.out.println("Error saving file" + e.getMessage());
@@ -222,6 +246,25 @@ public class InsertPopupController {
         return style;
     }
 
+    private void setDateCell(Workbook workbook, Cell cell, CellStyle baseStyle, String input) {
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyMMdd");
+        try {
+            Date date = sdfInput.parse(input);
+
+            cell.setCellValue(date);
+
+            CellStyle dateStyle = workbook.createCellStyle();
+            dateStyle.cloneStyleFrom(baseStyle);
+            dateStyle.setDataFormat((short) 14);
+
+            cell.setCellStyle(dateStyle);
+        } catch (ParseException e) {
+            System.out.println("Invalid date format in blueprintDate: " + input);
+            cell.setCellValue(input);
+            cell.setCellStyle(baseStyle);
+        }
+    }
+
     public void insertRecord(Excel record) {
         ExcelService eServ = new ExcelService();
         int result = eServ.insertRecord(record);
@@ -232,16 +275,8 @@ public class InsertPopupController {
         }
     }
 
-    public int priceInputToInt(TextField tf) {
-        try {
-            if (tf != null) {
-                return Integer.parseInt(tf.getText().trim());
-            } else {
-                return 0;
-            }
-        } catch (NumberFormatException e) {
-            return 0;
-        }
+    public void setStage(Stage stage) {
+        this.popupStage = stage;
     }
 
     public void onCancel() {
