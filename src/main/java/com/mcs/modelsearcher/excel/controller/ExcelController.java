@@ -36,7 +36,7 @@ public class ExcelController {
 
             Iterator<Row> rowIterator = sheet.iterator();
 
-            int headerRowIndex = 4;
+            final int headerRowIndex = 4;
 
             ArrayList<Excel> excelList = new ArrayList<>();
 
@@ -96,7 +96,7 @@ public class ExcelController {
 
             Iterator<Row> rowIterator = sheet.iterator();
 
-            int headerRowIndex = 1;
+            final int headerRowIndex = 1;
 
             ArrayList<Hierarchy> hList = new ArrayList<>();
 
@@ -155,13 +155,13 @@ public class ExcelController {
     }
 
     private String getRevValue(Row row) {
-        int revIndex = 3;
+        final int revIndex = 3;
         Cell cell = row.getCell(revIndex);
         return cell.getStringCellValue();
     }
 
     private String getDateCellValue(Row row) {
-        int dateIndex = 6;
+        final int dateIndex = 6;
         Cell cell = row.getCell(dateIndex);
 
         if (cell == null || cell.getCellType() == CellType.BLANK) {
@@ -174,5 +174,9 @@ public class ExcelController {
         }
 
         return null;
+    }
+
+    public void insertRecordToDb(Excel record) {
+        System.out.println("foobar");
     }
 }
