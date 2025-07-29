@@ -202,7 +202,6 @@ public class ExcelController {
         }
     }
 
-
     private String getRevValue(Row row) {
         final int revIndex = 3;
         Cell cell = row.getCell(revIndex);
