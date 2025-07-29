@@ -168,6 +168,8 @@ public class InsertPopupController {
         final int priceStart = 14;
         final int priceEnd = 17;
 
+        final int insertNoindex = 0;
+
         // for left align
         final int partCodeIndex = 1;
         final int categoryIndex = 9;
@@ -194,10 +196,10 @@ public class InsertPopupController {
 
                 if (i == dateIndex) {
                     setDateCell(workbook, cell, cellStyle, data[i]);
+                } else if (i == insertNoindex) {
+                    setInsertNoCell(workbook, cell, cellStyle, data[i]);
                 } else if (i == percentIndex) {
-                    // TODO: percent cell format to percent
-                    //  and add "%" to input
-                    System.out.println("percent");
+                    setPercentCell(workbook, cell, cellStyle, data[i]);
                 } else if (i >= priceStart && i <= priceEnd) {
                     setPriceCell(workbook, cell, cellStyle, data[i]);
                 } else if (i == partCodeIndex || i == categoryIndex || i == specIndex || i == makerIndex || i == noteIndex) {
@@ -215,6 +217,60 @@ public class InsertPopupController {
             }
         } catch (IOException e) {
             System.out.println("Error saving file" + e.getMessage());
+        }
+    }
+
+    private void setPercentCell(Workbook workbook, Cell cell, CellStyle baseStyle, String input) {
+        if (input == null || input.isEmpty()) {
+            cell.setBlank();
+            cell.setCellStyle(baseStyle);
+            return;
+        }
+
+        CellStyle percentStyle = workbook.createCellStyle();
+        percentStyle.cloneStyleFrom(baseStyle);
+
+        DataFormat format = workbook.createDataFormat();
+        percentStyle.setDataFormat(format.getFormat("0%")); // or "0.0%" for one decimal place
+
+        try {
+            double value = Double.parseDouble(input) / 100.0;
+            cell.setCellValue(value);
+        } catch (NumberFormatException e) {
+            cell.setCellValue(input); // fallback as text
+        }
+
+        cell.setCellStyle(percentStyle);
+    }
+
+    private void setInsertNoCell(Workbook workbook, Cell cell, CellStyle baseStyle, String input) {
+        if (input == null || input.isEmpty()) {
+            cell.setBlank();
+            cell.setCellStyle(baseStyle);
+            return;
+        }
+
+        CellStyle style = workbook.createCellStyle();
+        style.cloneStyleFrom(baseStyle);
+
+        if (input.matches("^\\d+$")) {
+            // Only digits: treat as number
+            try {
+                double numericValue = Double.parseDouble(input);
+                DataFormat format = workbook.createDataFormat();
+                style.setDataFormat(format.getFormat("0")); // no decimal places
+
+                cell.setCellValue(numericValue);
+                cell.setCellStyle(style);
+            } catch (NumberFormatException e) {
+                // Fallback to text if something goes wrong
+                cell.setCellValue(input);
+                cell.setCellStyle(style);
+            }
+        } else {
+            // Contains dash or other non-digit: treat as text
+            cell.setCellValue(input);
+            cell.setCellStyle(style);
         }
     }
 
