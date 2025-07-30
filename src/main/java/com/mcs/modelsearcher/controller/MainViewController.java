@@ -4,6 +4,7 @@ import com.mcs.modelsearcher.excel.controller.SearchController;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.file.controller.FileController;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -68,18 +69,34 @@ public class MainViewController {
         Platform.runLater(() -> uniSearch.requestFocus());
         uniSearch();
 
-        doubleRightClickRow();
+        recordContextMenu();
         copyCellOnDoubleClick();
     }
 
-    private void doubleRightClickRow() {
-        excelData.setOnMouseClicked(event -> {
-            if (event.isSecondaryButtonDown()) {
-                Excel selectedItem = excelData.getSelectionModel().getSelectedItem();
-                if (selectedItem != null) {
-                    System.out.println("Right-clicked: " + selectedItem.getPartCode());
-                }
-            }
+    public void recordContextMenu() {
+        excelData.setRowFactory(tv -> {
+            TableRow<Excel> row = new TableRow<>();
+            ContextMenu contextMenu = new ContextMenu();
+
+            MenuItem editItem = new MenuItem("Edit");
+            editItem.setOnAction(e -> {
+                Excel item = row.getItem();
+                // Implement your edit logic here
+                System.out.println("Editing: " + item);
+            });
+
+            MenuItem deleteItem = new MenuItem("Delete");
+            deleteItem.setOnAction(e -> {
+                Excel item = row.getItem();
+                // Implement your delete logic here
+                System.out.println("Deleting: " + item);
+            });
+
+            contextMenu.getItems().addAll(editItem, deleteItem);
+
+            row.contextMenuProperty().bind(Bindings.when(row.emptyProperty()).then((ContextMenu) null).otherwise(contextMenu));
+
+            return row;
         });
     }
 
