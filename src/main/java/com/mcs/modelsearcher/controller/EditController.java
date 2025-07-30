@@ -94,12 +94,7 @@ public class EditController {
         excel.setRefPrice(util.priceInputToInt(refPrice));
         excel.setNote(note.getText());
 
-        // delete just the cell values
-        // eCon.emptyCells(insertNo.getText());
-
-        // insert new values
-        // eCon.insertToEmptyCells(excel);
-
+        eCon.editFromExcel(excel);
         eCon.updateFromDb(excel);
 
         if (popupStage != null) {

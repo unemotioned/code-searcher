@@ -77,6 +77,7 @@ public class ExcelService {
         return excelList;
     }
 
+    @SuppressWarnings("Duplicates")
     public void writeToExcel(Excel record) {
         String[] data = {record.getInsertNo(), record.getPartCode(), record.getRev(), record.getApply1(), record.getApply2(), record.getBlueprintDate(), record.getClientBlueprint(), record.getScan(), record.getSelfBlueprint(), record.getCategory(), record.getName(), record.getSpec(), record.getMaker(), record.getVendor(), record.getUnitPrice() == 0 ? null : String.valueOf(record.getUnitPrice()), record.getMgmtCost() == 0 ? null : String.valueOf(record.getMgmtCost()), record.getEstPrice() == 0 ? null : String.valueOf(record.getEstPrice()), record.getRefPrice() == 0 ? null : String.valueOf(record.getRefPrice()), record.getNote()};
 
@@ -379,6 +380,86 @@ public class ExcelService {
         int result = dao.deleteFromDb(session, insertNo);
         session.close();
         return result;
+    }
+
+    @SuppressWarnings("Duplicates")
+    public void editFromExcel(Excel record) {
+        String[] data = {record.getInsertNo(), record.getPartCode(), record.getRev(), record.getApply1(), record.getApply2(), record.getBlueprintDate(), record.getClientBlueprint(), record.getScan(), record.getSelfBlueprint(), record.getCategory(), record.getName(), record.getSpec(), record.getMaker(), record.getVendor(), record.getUnitPrice() == 0 ? null : String.valueOf(record.getUnitPrice()), record.getMgmtCost() == 0 ? null : String.valueOf(record.getMgmtCost()), record.getEstPrice() == 0 ? null : String.valueOf(record.getEstPrice()), record.getRefPrice() == 0 ? null : String.valueOf(record.getRefPrice()), record.getNote()};
+
+        FileController fCon = new FileController();
+        String path = fCon.selectPath();
+
+        final int firstIndex = 1;
+        final int dateIndex = 5;
+        final int percentIndex = 15;
+        final int priceStart = 14;
+        final int priceEnd = 17;
+        final int insertNoColIndex = 1;
+
+        final int partCodeIndex = 1;
+        final int categoryIndex = 9;
+        final int specIndex = 10;
+        final int makerIndex = 11;
+        final int noteIndex = 18;
+
+        try (FileInputStream fis = new FileInputStream(path); Workbook workbook = WorkbookFactory.create(fis)) {
+            final byte bomSheet = 0;
+            final byte startOfData = 5;
+            Sheet sheet = workbook.getSheetAt(bomSheet);
+            boolean updated = false;
+
+            for (int i = startOfData; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) continue;
+
+                Cell cell = row.getCell(insertNoColIndex);
+                if (cell == null) continue;
+
+                String value = getString(cell);
+                if (!record.getInsertNo().equals(value)) continue;
+
+                CellStyle baseStyle = cellStyle(workbook);
+
+                for (int j = 0; j < data.length; j++) {
+                    int cellIndex = j + firstIndex;
+                    Cell targetCell = row.getCell(cellIndex);
+                    if (targetCell == null) {
+                        targetCell = row.createCell(cellIndex);
+                    }
+
+                    if (j == dateIndex) {
+                        setDateCell(workbook, targetCell, baseStyle, data[j]);
+                    } else if (j == 0) {
+                        setInsertNoCell(workbook, targetCell, baseStyle, data[j]);
+                    } else if (j == percentIndex) {
+                        setPercentCell(workbook, targetCell, baseStyle, data[j]);
+                    } else if (j >= priceStart && j <= priceEnd) {
+                        setPriceCell(workbook, targetCell, baseStyle, data[j]);
+                    } else if (j == partCodeIndex || j == categoryIndex || j == specIndex || j == makerIndex || j == noteIndex) {
+                        alignLeft(workbook, targetCell, baseStyle);
+                        targetCell.setCellValue(data[j]);
+                    } else {
+                        targetCell.setCellValue(data[j]);
+                        targetCell.setCellStyle(baseStyle);
+                    }
+                }
+
+                updated = true;
+                break;
+            }
+
+            if (updated) {
+                try (FileOutputStream fos = new FileOutputStream(path)) {
+                    workbook.write(fos);
+                    System.out.println("eServ.editFromExcel - updated " + record.getInsertNo());
+                }
+            } else {
+                System.out.println("eServ.editFromExcel - insertNo not found: " + record.getInsertNo());
+            }
+
+        } catch (IOException e) {
+            System.out.println("eServ.editFromExcel - I/O error: " + e.getMessage());
+        }
     }
 
     public int updateFromDb(Excel excel) {

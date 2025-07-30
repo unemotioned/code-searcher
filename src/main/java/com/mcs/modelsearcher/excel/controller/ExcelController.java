@@ -269,6 +269,10 @@ public class ExcelController {
         }
     }
 
+    public void editFromExcel(Excel excel) {
+        eServ.editFromExcel(excel);
+    }
+
     public void updateFromDb(Excel excel) {
         int result = eServ.updateFromDb(excel);
         if (result == 1) {
