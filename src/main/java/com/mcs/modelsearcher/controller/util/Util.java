@@ -8,18 +8,20 @@ import java.util.Date;
 
 public class Util {
     public static String formatDateToLong(String inputDate) {
+        if (inputDate == null) return null;
         try {
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyMMdd");
             SimpleDateFormat outputFormat = new SimpleDateFormat("yy-MM-dd");
             Date date = inputFormat.parse(inputDate);
             return outputFormat.format(date);
         } catch (ParseException e) {
-            System.out.println(".formatDateToLong: " + e.getMessage());
+            System.out.println("Util.formatDateToLong: " + e.getMessage());
             return inputDate;
         }
     }
 
     public static String formatDateToShort(String dateStr) {
+        if (dateStr == null) return null;
         try {
             SimpleDateFormat inputFormat = new SimpleDateFormat("yy-MM-dd");
             SimpleDateFormat outputFormat = new SimpleDateFormat("yyMMdd");

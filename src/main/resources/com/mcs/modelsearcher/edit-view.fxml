@@ -2,14 +2,14 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.VBox?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+<?import javafx.scene.layout.*?>
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.mcs.modelsearcher.controller.EditViewController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
-    <Label text="Enter new part info"/>
+    <Label text="정보 수정"/>
 
     <TextField fx:id="insertNo" promptText="등록 No"/>
     <TextField fx:id="partCode" promptText="부품 코드"/>
@@ -30,7 +30,15 @@
     <TextField fx:id="estPrice" promptText="견적단가"/>
     <TextField fx:id="refPrice" promptText="을지단가"/>
     <TextField fx:id="note" promptText="비 고"/>
-
-    <Button text="편집" onAction="#onEditClick"/>
-    <Button text="취소" onAction="#onCancel"/>
+    <GridPane>
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <Button onAction="#onEditClick" text="수정" GridPane.columnIndex="1"/>
+        <Button onAction="#onCancel" text="취소"/>
+    </GridPane>
 </VBox>
