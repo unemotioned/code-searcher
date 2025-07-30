@@ -88,6 +88,7 @@ public class MainController {
             editItem.setOnAction(e -> {
                 Excel item = row.getItem();
                 // open pop-up for editing
+                editPopup(item);
 
                 // get confirm
 
@@ -114,6 +115,25 @@ public class MainController {
 
             return row;
         });
+    }
+
+    private void editPopup(Excel item) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mcs/modelsearcher/edit-popup.fxml"));
+            Parent root = loader.load();
+            EditPopupController editCon = loader.getController();
+
+            Stage editPopupStage = new Stage();
+            editCon.setStage(editPopupStage);
+            editCon.initialize(item);
+
+            editPopupStage.setScene(new Scene(root));
+            editPopupStage.initModality(Modality.APPLICATION_MODAL); // disable main-view
+            editPopupStage.showAndWait();
+        } catch (IOException e) {
+            System.out.println("Error opening edit popup: " + e.getMessage());
+        }
+
     }
 
     private boolean showDeleteConfirmation(Excel item) {
@@ -178,31 +198,31 @@ public class MainController {
     }
 
     @FXML
-    public void onReloadClick() {
+    protected void onFileSelect() {
+        String newPath = fileController.selFileBtnClick(fileChooserStage);
+        filePathLabel.setText(newPath);
+    }
+
+    @FXML
+    public void onReload() {
         // To force to update DATA and HIERARCHY table when .performHash()
         hCon.fakeHash();
         hCon.performHash();
     }
 
     @FXML
-    protected void onSelFileClick() {
-        String newPath = fileController.selFileBtnClick(fileChooserStage);
-        filePathLabel.setText(newPath);
-    }
-
-    @FXML
-    public void onInsertBtnClick() {
+    public void onInsert() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mcs/modelsearcher/insert-popup.fxml"));
             Parent root = loader.load();
             InsertPopupController insertCon = loader.getController();
 
-            Stage stage = new Stage();
-            insertCon.setStage(stage);
+            Stage insertPopupStage = new Stage();
+            insertCon.setStage(insertPopupStage);
 
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL); // disable main-view
-            stage.showAndWait();
+            insertPopupStage.setScene(new Scene(root));
+            insertPopupStage.initModality(Modality.APPLICATION_MODAL); // disable main-view
+            insertPopupStage.showAndWait();
         } catch (IOException e) {
             System.out.println("Error opening insert popup: " + e.getMessage());
         }

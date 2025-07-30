@@ -1,5 +1,6 @@
 package com.mcs.modelsearcher.controller;
 
+import com.mcs.modelsearcher.controller.util.Util;
 import com.mcs.modelsearcher.excel.controller.ExcelController;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.file.controller.FileController;
@@ -38,6 +39,7 @@ public class InsertPopupController {
     ExcelController eCon;
     FileController fCon;
     String filePath;
+    Util util;
 
     private Stage popupStage;
 
@@ -45,6 +47,11 @@ public class InsertPopupController {
         eCon = new ExcelController();
         fCon = new FileController();
         filePath = fCon.selectPath();
+        util = new Util();
+    }
+
+    public void setStage(Stage stage) {
+        this.popupStage = stage;
     }
 
     @FXML
@@ -109,9 +116,9 @@ public class InsertPopupController {
     }
 
     @FXML
+    @SuppressWarnings("Duplicates")
     public void onSaveClick() {
         record = new Excel();
-
         record.setInsertNo(insertNo.getText());
         record.setPartCode(partCode.getText());
         record.setRev(rev.getText());
@@ -126,10 +133,10 @@ public class InsertPopupController {
         record.setSpec(spec.getText());
         record.setMaker(maker.getText());
         record.setVendor(vendor.getText());
-        record.setUnitPrice(priceInputToInt(unitPrice));
-        record.setMgmtCost(priceInputToInt(mgmtCost));
-        record.setEstPrice(priceInputToInt(estPrice));
-        record.setRefPrice(priceInputToInt(refPrice));
+        record.setUnitPrice(util.priceInputToInt(unitPrice));
+        record.setMgmtCost(util.priceInputToInt(mgmtCost));
+        record.setEstPrice(util.priceInputToInt(estPrice));
+        record.setRefPrice(util.priceInputToInt(refPrice));
         record.setNote(note.getText());
 
         eCon.writeToExcel(record);
@@ -140,22 +147,7 @@ public class InsertPopupController {
         }
     }
 
-    public int priceInputToInt(TextField tf) {
-        try {
-            if (tf != null) {
-                return Integer.parseInt(tf.getText().trim());
-            } else {
-                return 0;
-            }
-        } catch (NumberFormatException e) {
-            return 0;
-        }
-    }
-
-    public void setStage(Stage stage) {
-        this.popupStage = stage;
-    }
-
+    @FXML
     public void onCancel() {
         if (popupStage != null) {
             popupStage.close();

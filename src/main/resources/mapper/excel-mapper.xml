@@ -157,4 +157,28 @@
         where insert_no == #{insert_no}
     </delete>
 
+    <update id="updateFromDb" parameterType="excel">
+        UPDATE data
+        SET insert_no        = #{insertNo},
+            part_code        = #{partCode},
+            rev              = #{rev},
+            apply_1          = #{apply1},
+            apply_2          = #{apply2},
+            blueprint_date   = #{blueprintDate},
+            client_blueprint = #{clientBlueprint},
+            scan             = #{scan},
+            self_blueprint   = #{selfBlueprint},
+            category         = #{category},
+            name             = #{name},
+            spec             = #{spec},
+            maker            = #{maker},
+            vendor           = #{vendor},
+            unit_price       = #{unitPrice},
+            mgmt_cost        = #{mgmtCost},
+            est_price        = #{estPrice},
+            ref_price        = #{refPrice},
+            note             = #{note}
+        WHERE insert_no = #{insertNo}
+    </update>
+
 </mapper>

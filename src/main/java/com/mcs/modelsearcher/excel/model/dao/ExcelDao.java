@@ -36,4 +36,8 @@ public class ExcelDao {
     public int deleteFromDb(SqlSession session, String insertNo) {
         return session.delete("excel.deleteFromDb", insertNo);
     }
+
+    public int updateFromDb(SqlSession session, Excel excel) {
+        return session.update("excel.updateFromDb", excel);
+    }
 }

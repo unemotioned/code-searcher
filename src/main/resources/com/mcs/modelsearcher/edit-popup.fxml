@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.mcs.modelsearcher.controller.EditPopupController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <Label text="Enter new part info"/>
+
+    <TextField fx:id="insertNo" promptText="등록 No"/>
+    <TextField fx:id="partCode" promptText="부품 코드"/>
+    <TextField fx:id="rev" promptText="Rev."/>
+    <TextField fx:id="apply1" promptText="적용1"/>
+    <TextField fx:id="apply2" promptText="적용2"/>
+    <TextField fx:id="blueprintDate" promptText="고객도면 작성일"/>
+    <TextField fx:id="clientBlueprint" promptText="고객도면"/>
+    <TextField fx:id="scan" promptText="스캔"/>
+    <TextField fx:id="selfBlueprint" promptText="자체도면"/>
+    <TextField fx:id="category" promptText="대분류"/>
+    <TextField fx:id="name" promptText="Name"/>
+    <TextField fx:id="spec" promptText="규격"/>
+    <TextField fx:id="maker" promptText="Maker"/>
+    <TextField fx:id="vendor" promptText="구입처"/>
+    <TextField fx:id="unitPrice" promptText="구입단가"/>
+    <TextField fx:id="mgmtCost" promptText="관리비"/>
+    <TextField fx:id="estPrice" promptText="견적단가"/>
+    <TextField fx:id="refPrice" promptText="을지단가"/>
+    <TextField fx:id="note" promptText="비 고"/>
+
+    <Button text="편집" onAction="#onEditClick"/>
+    <Button text="취소" onAction="#onCancel"/>
+</VBox>

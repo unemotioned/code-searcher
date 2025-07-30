@@ -265,4 +265,13 @@ public class ExcelController {
             System.out.println("ExcelController.deleteFromDb: fail");
         }
     }
+
+    public void updateFromDb(Excel excel) {
+        int result = eServ.updateFromDb(excel);
+        if (result == 1) {
+            System.out.println("eCon.updateFromDb: success");
+        } else {
+            System.out.println("eCon.updateFromDb: fail");
+        }
+    }
 }

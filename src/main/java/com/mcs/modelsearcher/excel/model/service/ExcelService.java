@@ -257,7 +257,7 @@ public class ExcelService {
         return true;
     }
 
-    public CellStyle cellStyle(Workbook workbook) {
+    private CellStyle cellStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
 
         style.setAlignment(HorizontalAlignment.CENTER); // CENTER, LEFT, RIGHT
@@ -325,14 +325,14 @@ public class ExcelService {
             if (rowDeleted) {
                 try (FileOutputStream fos = new FileOutputStream(path)) {
                     workbook.write(fos);
-                    System.out.println("ExcelController.insertRecordToDb: success");
+                    System.out.println("eCon.insertRecordToDb: success");
                 } catch (IOException e) {
-                    System.out.println("eCon.deleteFromExcel: " + e.getMessage());
+                    System.out.println("eCon.deleteFromExcel - error while saving: " + e.getMessage());
                 }
             }
 
         } catch (IOException e) {
-            System.out.println("eCon.deleteFromExcel: " + e.getMessage());
+            System.out.println("eCon.deleteFromExcel - error while opening: " + e.getMessage());
         }
     }
 
@@ -369,6 +369,13 @@ public class ExcelService {
     public int deleteFromDb(String insertNo) {
         SqlSession session = SqlSessionTemplate.getSqlSession();
         int result = dao.deleteFromDb(session, insertNo);
+        session.close();
+        return result;
+    }
+
+    public int updateFromDb(Excel excel) {
+        SqlSession session = SqlSessionTemplate.getSqlSession();
+        int result = dao.updateFromDb(session, excel);
         session.close();
         return result;
     }
