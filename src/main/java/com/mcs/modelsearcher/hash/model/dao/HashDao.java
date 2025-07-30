@@ -15,4 +15,8 @@ public class HashDao {
     public int updateHash(SqlSession session, SheetHash sheetHash) {
         return session.update("sheetHash.updateHash", sheetHash);
     }
+
+    public int fakeHash(SqlSession session) {
+        return session.update("sheetHash.fakeHash");
+    }
 }

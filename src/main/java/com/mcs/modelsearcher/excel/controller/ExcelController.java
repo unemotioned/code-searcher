@@ -204,10 +204,19 @@ public class ExcelController {
         }
     }
 
-    private String getRevValue(Row row) {
+    public String getRevValue(Row row) {
         final int revIndex = 3;
+        if (row == null) return null;
+
         Cell cell = row.getCell(revIndex);
-        return cell.getStringCellValue();
+        if (cell == null) return null;
+
+        if (cell.getCellType() == CellType.STRING) {
+            return cell.getStringCellValue();
+        } else if (cell.getCellType() == CellType.NUMERIC) {
+            return String.valueOf(cell.getNumericCellValue());
+        }
+        return null;
     }
 
     private String getDateCellValue(Row row) {

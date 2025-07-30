@@ -22,4 +22,10 @@
         where sheet = #{sheet}
     </update>
 
+    <update id="fakeHash">
+        UPDATE hash
+        SET hash = 'foobar'
+        WHERE 1 == 1
+    </update>
+
 </mapper>

@@ -11,8 +11,9 @@
     </padding>
 
     <Label fx:id="filePathLabel"/>
-    <Button text="Select file" onAction="#onSelFileClick"/>
-    <Button text="새부품 정보 삽입" onAction="#onInsertBtnClick"/>
+    <Button text="파일 선택" onAction="#onSelFileClick"/>
+    <Button text="정보 삽입" onAction="#onInsertBtnClick"/>
+    <Button text="다시 읽기" onAction="#onReloadClick"/>
 
     <TextField fx:id="uniSearch" promptText="uni search" prefHeight="26.0" prefWidth="100.0"/>
 

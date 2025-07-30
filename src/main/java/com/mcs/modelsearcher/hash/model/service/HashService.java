@@ -33,4 +33,11 @@ public class HashService {
         session.close();
         return result;
     }
+
+    public int fakeHash() {
+        SqlSession session = SqlSessionTemplate.getSqlSession();
+        int result = dao.fakeHash(session);
+        session.close();
+        return result;
+    }
 }

@@ -4,6 +4,7 @@ import com.mcs.modelsearcher.excel.controller.ExcelController;
 import com.mcs.modelsearcher.excel.controller.SearchController;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.file.controller.FileController;
+import com.mcs.modelsearcher.hash.controller.HashController;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -61,10 +62,12 @@ public class MainViewController {
 
     SearchController searchCon;
     ExcelController eCon;
+    HashController hCon;
 
     public MainViewController() {
         searchCon = new SearchController();
         eCon = new ExcelController();
+        hCon = new HashController();
     }
 
     @FXML
@@ -78,6 +81,7 @@ public class MainViewController {
         copyCellOnDoubleClick();
     }
 
+    // TODO: finish the edit action
     public void recordContextMenu() {
         excelData.setRowFactory(tv -> {
             TableRow<Excel> row = new TableRow<>();
@@ -174,6 +178,13 @@ public class MainViewController {
             ObservableList<Excel> observableResult = FXCollections.observableArrayList(result);
             excelData.setItems(observableResult);
         });
+    }
+
+    @FXML
+    public void onReloadClick() {
+        // To force to update DATA and HIERARCHY table when .performHash()
+        hCon.fakeHash();
+        hCon.performHash();
     }
 
     @FXML

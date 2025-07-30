@@ -136,4 +136,13 @@ public class HashController {
             System.out.println("HashController.updateHash(): fail");
         }
     }
+
+    public void fakeHash() {
+        int result = hServ.fakeHash();
+        if (result == 1) {
+            System.out.println("hCon.fakeHash: success");
+        }  else {
+            System.out.println("hCon.fakeHash: fail");
+        }
+    }
 }
