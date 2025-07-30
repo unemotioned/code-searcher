@@ -1,5 +1,6 @@
 package com.mcs.modelsearcher.controller;
 
+import com.mcs.modelsearcher.excel.controller.ExcelController;
 import com.mcs.modelsearcher.excel.controller.SearchController;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.file.controller.FileController;
@@ -15,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Setter;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.StringTokenizer;
 
 public class MainViewController {
@@ -57,9 +60,11 @@ public class MainViewController {
     // @formatter:on
 
     SearchController searchCon;
+    ExcelController eCon;
 
     public MainViewController() {
         searchCon = new SearchController();
+        eCon = new ExcelController();
     }
 
     @FXML
@@ -81,15 +86,25 @@ public class MainViewController {
             MenuItem editItem = new MenuItem("Edit");
             editItem.setOnAction(e -> {
                 Excel item = row.getItem();
-                // Implement your edit logic here
-                System.out.println("Editing: " + item);
+                // open pop-up for editing
+
+                // get confirm
+
+                // change from Excel
+
+                // change from DB
             });
 
             MenuItem deleteItem = new MenuItem("Delete");
             deleteItem.setOnAction(e -> {
                 Excel item = row.getItem();
-                // Implement your delete logic here
-                System.out.println("Deleting: " + item);
+                String insertNo = item.getInsertNo();
+
+                boolean isDeleteConform = showDeleteConfirmation(item);
+                if (isDeleteConform) {
+                    eCon.deleteFromExcel(insertNo);
+                    eCon.deleteFromDb(insertNo);
+                }
             });
 
             contextMenu.getItems().addAll(editItem, deleteItem);
@@ -98,6 +113,29 @@ public class MainViewController {
 
             return row;
         });
+    }
+
+    private boolean showDeleteConfirmation(Excel item) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("삭제");
+        alert.setHeaderText("삭제 하시겠습니까?");
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+
+        grid.addRow(0, new Label("등록 No: "), new Label(item.getInsertNo()));
+        grid.addRow(1, new Label("부품 코드: "), new Label(item.getPartCode()));
+        grid.addRow(2, new Label("적용1: "), new Label(item.getApply1()));
+        grid.addRow(3, new Label("Name: "), new Label(item.getName()));
+        grid.addRow(4, new Label("규격: "), new Label(item.getSpec()));
+        grid.addRow(5, new Label("Maker: "), new Label(item.getMaker()));
+        grid.addRow(6, new Label("구입처: "), new Label(item.getVendor()));
+
+        alert.getDialogPane().setContent(grid);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 
     private void copyCellOnDoubleClick() {
