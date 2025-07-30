@@ -25,7 +25,7 @@ public class HashController {
 
         fCon = fileController;
         hServ = new HashService();
-        excelCon = new ExcelController(fCon);
+        excelCon = new ExcelController();
 
         excelPath = fCon.getFilePath();
     }

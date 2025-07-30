@@ -18,11 +18,11 @@ public class ExcelController {
 
     String excelPath;
 
-    public ExcelController(FileController fileController) {
-        fCon = fileController;
+    public ExcelController() {
         eServ = new ExcelService();
 
-        excelPath = fCon.getFilePath();
+        fCon = new FileController();
+        excelPath = fCon.selectPath();
     }
 
     public void clearDataTable() {
