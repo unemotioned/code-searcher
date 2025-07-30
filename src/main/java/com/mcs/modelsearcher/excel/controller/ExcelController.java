@@ -4,11 +4,9 @@ import com.mcs.modelsearcher.excel.model.service.ExcelService;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.excel.model.vo.Hierarchy;
 import com.mcs.modelsearcher.file.controller.FileController;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,6 +49,11 @@ public class ExcelController {
 
                 if (row.getRowNum() < headerRowIndex) {
                     continue;
+                }
+
+                String insertNo = getStringCellValue(row, 1);
+                if (insertNo == null || insertNo.trim().isEmpty()) {
+                    continue; // skip rows with null or empty insertNo
                 }
 
                 excel.setInsertNo(getStringCellValue(row, 1));

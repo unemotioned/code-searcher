@@ -101,13 +101,9 @@ public class ExcelService {
 
         try (FileInputStream fis = new FileInputStream(path); Workbook workbook = WorkbookFactory.create(fis)) {
             Sheet sheet = workbook.getSheetAt(0);
-            int newRowNum = sheet.getLastRowNum() + 1;
-            Row newRow = sheet.createRow(newRowNum);
 
-            int lastRowNum = sheet.getLastRowNum();
-            while (lastRowNum >= 0 && isRowEmpty(sheet.getRow(lastRowNum))) {
-                lastRowNum--;
-            }
+            int newRowNum = findFirstEmptyRow(sheet);
+            Row newRow = sheet.createRow(newRowNum);
 
             // alignment, border, font
             CellStyle cellStyle = cellStyle(workbook);
@@ -134,11 +130,23 @@ public class ExcelService {
 
             try (FileOutputStream fos = new FileOutputStream(path)) {
                 workbook.write(fos);
-                System.out.println("Record added");
+                System.out.println("eServ.writeToExcel: Record added");
             }
         } catch (IOException e) {
             System.out.println("Error saving file" + e.getMessage());
         }
+    }
+
+    private int findFirstEmptyRow(Sheet sheet) {
+        final byte startOfDataIndex = 5;
+        int lastRow = sheet.getLastRowNum();
+        for (int i = startOfDataIndex; i <= lastRow; i++) {
+            Row row = sheet.getRow(i);
+            if (isRowEmpty(row)) {
+                return i;
+            }
+        }
+        return lastRow + 1;
     }
 
     private void setPercentCell(Workbook workbook, Cell cell, CellStyle baseStyle, String input) {
@@ -299,7 +307,7 @@ public class ExcelService {
         FileController fCon = new FileController();
         String path = fCon.selectPath();
 
-        try (FileInputStream fis = new FileInputStream(path); Workbook workbook = new HSSFWorkbook(fis);) {
+        try (FileInputStream fis = new FileInputStream(path); Workbook workbook = new HSSFWorkbook(fis)) {
             final byte bomSheetIndex = 0;
             final byte insertNoColIndex = 1;
             boolean rowDeleted = false;

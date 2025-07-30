@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class EditPopupController {
+public class EditController {
     // @formatter:off
     @FXML private TextField insertNo;
     @FXML private TextField partCode;
@@ -37,7 +37,7 @@ public class EditPopupController {
 
     Util util;
 
-    public EditPopupController() {
+    public EditController() {
         eCon = new ExcelController();
         util = new Util();
     }

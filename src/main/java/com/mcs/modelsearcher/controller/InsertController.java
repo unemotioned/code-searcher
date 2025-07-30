@@ -12,7 +12,7 @@ import org.apache.poi.ss.usermodel.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class InsertPopupController {
+public class InsertController {
     // @formatter:off
     @FXML private TextField insertNo;
     @FXML private TextField partCode;
@@ -43,7 +43,7 @@ public class InsertPopupController {
 
     private Stage popupStage;
 
-    public InsertPopupController() {
+    public InsertController() {
         eCon = new ExcelController();
         fCon = new FileController();
         filePath = fCon.selectPath();

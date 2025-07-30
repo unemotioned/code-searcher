@@ -119,9 +119,9 @@ public class MainController {
 
     private void editPopup(Excel item) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mcs/modelsearcher/edit-popup.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mcs/modelsearcher/edit-view.fxml"));
             Parent root = loader.load();
-            EditPopupController editCon = loader.getController();
+            EditController editCon = loader.getController();
 
             Stage editPopupStage = new Stage();
             editCon.setStage(editPopupStage);
@@ -213,9 +213,9 @@ public class MainController {
     @FXML
     public void onInsert() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mcs/modelsearcher/insert-popup.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mcs/modelsearcher/insert-view.fxml"));
             Parent root = loader.load();
-            InsertPopupController insertCon = loader.getController();
+            InsertController insertCon = loader.getController();
 
             Stage insertPopupStage = new Stage();
             insertCon.setStage(insertPopupStage);
