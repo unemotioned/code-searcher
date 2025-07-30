@@ -121,7 +121,7 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mcs/modelsearcher/edit-view.fxml"));
             Parent root = loader.load();
-            EditController editCon = loader.getController();
+            EditViewController editCon = loader.getController();
 
             Stage editPopupStage = new Stage();
             editCon.setStage(editPopupStage);
@@ -215,7 +215,7 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mcs/modelsearcher/insert-view.fxml"));
             Parent root = loader.load();
-            InsertController insertCon = loader.getController();
+            InsertViewController insertCon = loader.getController();
 
             Stage insertPopupStage = new Stage();
             insertCon.setStage(insertPopupStage);

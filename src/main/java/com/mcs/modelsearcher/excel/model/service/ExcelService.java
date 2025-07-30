@@ -297,9 +297,9 @@ public class ExcelService {
         return style;
     }
 
-    public int insertToDb(Excel record) {
+    public int insertToDb(Excel excel) {
         SqlSession session = SqlSessionTemplate.getSqlSession();
-        int result = dao.insertToDb(session, record);
+        int result = dao.insertToDb(session, excel);
         session.close();
         return result;
     }

@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class EditController {
+public class EditViewController {
     // @formatter:off
     @FXML private TextField insertNo;
     @FXML private TextField partCode;
@@ -37,7 +37,7 @@ public class EditController {
 
     Util util;
 
-    public EditController() {
+    public EditViewController() {
         eCon = new ExcelController();
         util = new Util();
     }
@@ -54,7 +54,7 @@ public class EditController {
         rev.setText(item.getRev());
         apply1.setText(item.getApply1());
         apply2.setText(item.getApply2());
-        blueprintDate.setText(item.getBlueprintDate());
+        blueprintDate.setText(Util.formatDateToShort(item.getBlueprintDate()));
         clientBlueprint.setText(item.getClientBlueprint());
         scan.setText(item.getScan());
         selfBlueprint.setText(item.getSelfBlueprint());
@@ -80,7 +80,7 @@ public class EditController {
         excel.setApply1(apply1.getText());
         excel.setApply2(apply2.getText());
         excel.setBlueprintDate(blueprintDate.getText());
-        excel.setClientBlueprint(clientBlueprint.getText());
+        excel.setBlueprintDate(blueprintDate.getText());
         excel.setScan(scan.getText());
         excel.setSelfBlueprint(selfBlueprint.getText());
         excel.setCategory(category.getText());

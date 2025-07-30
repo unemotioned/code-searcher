@@ -1,5 +1,6 @@
 package com.mcs.modelsearcher.excel.controller;
 
+import com.mcs.modelsearcher.controller.util.Util;
 import com.mcs.modelsearcher.excel.model.service.ExcelService;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.excel.model.vo.Hierarchy;
@@ -233,7 +234,7 @@ public class ExcelController {
 
         if (cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell)) {
             Date dateValue = cell.getDateCellValue();
-            return new java.text.SimpleDateFormat("yyyy-MM-dd").format(dateValue);
+            return new java.text.SimpleDateFormat("yy-MM-dd").format(dateValue);
         }
 
         return null;
@@ -247,8 +248,12 @@ public class ExcelController {
         eServ.writeToExcel(record);
     }
 
-    public void insertToDb(Excel record) {
-        int result = eServ.insertToDb(record);
+    public void insertToDb(Excel excel) {
+        String shortDate = excel.getBlueprintDate();
+        String longDate = Util.formatDateToLong(shortDate);
+        excel.setBlueprintDate(longDate);
+
+        int result = eServ.insertToDb(excel);
         if (result == 1) {
             System.out.println("eCon.insertToDb: success");
         } else {
@@ -274,6 +279,9 @@ public class ExcelController {
     }
 
     public void updateFromDb(Excel excel) {
+        String shortDate = excel.getBlueprintDate();
+        String longDate = Util.formatDateToLong(shortDate);
+        excel.setBlueprintDate(longDate);
         int result = eServ.updateFromDb(excel);
         if (result == 1) {
             System.out.println("eCon.updateFromDb: success");

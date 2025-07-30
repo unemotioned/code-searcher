@@ -12,7 +12,7 @@ import org.apache.poi.ss.usermodel.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class InsertController {
+public class InsertViewController {
     // @formatter:off
     @FXML private TextField insertNo;
     @FXML private TextField partCode;
@@ -35,7 +35,7 @@ public class InsertController {
     @FXML private TextField note;
     // @formatter:on
 
-    Excel record;
+    Excel excel;
     ExcelController eCon;
     FileController fCon;
     String filePath;
@@ -43,7 +43,7 @@ public class InsertController {
 
     private Stage popupStage;
 
-    public InsertController() {
+    public InsertViewController() {
         eCon = new ExcelController();
         fCon = new FileController();
         filePath = fCon.selectPath();
@@ -118,29 +118,29 @@ public class InsertController {
     @FXML
     @SuppressWarnings("Duplicates")
     public void onSaveClick() {
-        record = new Excel();
-        record.setInsertNo(insertNo.getText());
-        record.setPartCode(partCode.getText());
-        record.setRev(rev.getText());
-        record.setApply1(apply1.getText());
-        record.setApply2(apply2.getText());
-        record.setBlueprintDate(blueprintDate.getText());
-        record.setClientBlueprint(clientBlueprint.getText());
-        record.setScan(scan.getText());
-        record.setSelfBlueprint(selfBlueprint.getText());
-        record.setCategory(category.getText());
-        record.setName(name.getText());
-        record.setSpec(spec.getText());
-        record.setMaker(maker.getText());
-        record.setVendor(vendor.getText());
-        record.setUnitPrice(util.priceInputToInt(unitPrice));
-        record.setMgmtCost(util.priceInputToInt(mgmtCost));
-        record.setEstPrice(util.priceInputToInt(estPrice));
-        record.setRefPrice(util.priceInputToInt(refPrice));
-        record.setNote(note.getText());
+        excel = new Excel();
+        excel.setInsertNo(insertNo.getText());
+        excel.setPartCode(partCode.getText());
+        excel.setRev(rev.getText());
+        excel.setApply1(apply1.getText());
+        excel.setApply2(apply2.getText());
+        excel.setBlueprintDate(blueprintDate.getText());
+        excel.setClientBlueprint(clientBlueprint.getText());
+        excel.setScan(scan.getText());
+        excel.setSelfBlueprint(selfBlueprint.getText());
+        excel.setCategory(category.getText());
+        excel.setName(name.getText());
+        excel.setSpec(spec.getText());
+        excel.setMaker(maker.getText());
+        excel.setVendor(vendor.getText());
+        excel.setUnitPrice(util.priceInputToInt(unitPrice));
+        excel.setMgmtCost(util.priceInputToInt(mgmtCost));
+        excel.setEstPrice(util.priceInputToInt(estPrice));
+        excel.setRefPrice(util.priceInputToInt(refPrice));
+        excel.setNote(note.getText());
 
-        eCon.writeToExcel(record);
-        eCon.insertToDb(record);
+        eCon.writeToExcel(excel);
+        eCon.insertToDb(excel);
 
         if (popupStage != null) {
             popupStage.close();
