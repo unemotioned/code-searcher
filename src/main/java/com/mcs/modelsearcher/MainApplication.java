@@ -1,6 +1,6 @@
 package com.mcs.modelsearcher;
 
-import com.mcs.modelsearcher.controller.MainViewController;
+import com.mcs.modelsearcher.controller.MainController;
 import com.mcs.modelsearcher.file.controller.FileController;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -22,7 +22,7 @@ public class MainApplication extends Application {
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/mcs/modelsearcher/style/main-view.css")).toExternalForm());
 
         // Get the controller and pass the stage
-        MainViewController con = fxmlLoader.getController();
+        MainController con = fxmlLoader.getController();
         con.setFileChooserStage(stage);
         con.setFileController(fileController);
         con.refreshFilePathLabel();

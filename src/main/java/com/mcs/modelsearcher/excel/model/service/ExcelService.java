@@ -61,13 +61,6 @@ public class ExcelService {
         return result;
     }
 
-    public ArrayList<Excel> doSearch(HashMap<String,String> userInput) {
-        SqlSession session = SqlSessionTemplate.getSqlSession();
-        ArrayList<Excel> excelList = (ArrayList<Excel>) (dao.doSearch(session, userInput));
-        session.close();
-        return excelList;
-    }
-
     public List<Excel> uniSearch(ArrayList<String> keywordList) {
         SqlSession session = SqlSessionTemplate.getSqlSession();
         ArrayList<Excel> excelList = (ArrayList<Excel>)  (dao.uniSearch(session, keywordList));

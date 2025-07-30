@@ -1,7 +1,6 @@
 package com.mcs.modelsearcher.controller;
 
 import com.mcs.modelsearcher.excel.controller.ExcelController;
-import com.mcs.modelsearcher.excel.controller.SearchController;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.file.controller.FileController;
 import com.mcs.modelsearcher.hash.controller.HashController;
@@ -29,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.StringTokenizer;
 
-public class MainViewController {
+public class MainController {
     // @formatter:off
     @FXML private Label filePathLabel;
 
@@ -60,12 +59,10 @@ public class MainViewController {
     @Setter private Stage fileChooserStage;
     // @formatter:on
 
-    SearchController searchCon;
     ExcelController eCon;
     HashController hCon;
 
-    public MainViewController() {
-        searchCon = new SearchController();
+    public MainController() {
         eCon = new ExcelController();
         hCon = new HashController();
     }
@@ -163,7 +160,7 @@ public class MainViewController {
         });
     }
 
-    public void uniSearch() {
+    private void uniSearch() {
         uniSearch.textProperty().addListener((observable, oldValue, newValue) -> {
             String input = uniSearch.getText().trim();
             StringTokenizer tokenizer = new StringTokenizer(input);
@@ -173,7 +170,7 @@ public class MainViewController {
                 keywordList.add(tokenizer.nextToken());
             }
 
-            List<Excel> result = searchCon.uniSearch(keywordList);
+            List<Excel> result = eCon.uniSearch(keywordList);
 
             ObservableList<Excel> observableResult = FXCollections.observableArrayList(result);
             excelData.setItems(observableResult);
@@ -211,7 +208,15 @@ public class MainViewController {
         }
     }
 
-    public void setTableColumn() {
+    public void refreshFilePathLabel() {
+        if (fileController != null && fileController.getFilePath() != null) {
+            filePathLabel.setText(fileController.getFilePath());
+        } else {
+            filePathLabel.setText("No file selected");
+        }
+    }
+
+    private void setTableColumn() {
         insertNo.setCellValueFactory(new PropertyValueFactory<>("insertNo"));
         partCode.setCellValueFactory(new PropertyValueFactory<>("partCode"));
         rev.setCellValueFactory(new PropertyValueFactory<>("rev"));
@@ -231,13 +236,5 @@ public class MainViewController {
         estPrice.setCellValueFactory(new PropertyValueFactory<>("estPrice"));
         refPrice.setCellValueFactory(new PropertyValueFactory<>("refPrice"));
         note.setCellValueFactory(new PropertyValueFactory<>("note"));
-    }
-
-    public void refreshFilePathLabel() {
-        if (fileController != null && fileController.getFilePath() != null) {
-            filePathLabel.setText(fileController.getFilePath());
-        } else {
-            filePathLabel.setText("No file selected");
-        }
     }
 }

@@ -10,11 +10,11 @@ import java.io.File;
 
 public class FileController {
     FilePath filePath;
-    FileService service;
+    FileService fServ;
 
     public FileController() {
         filePath = new FilePath();
-        service = new FileService();
+        fServ = new FileService();
     }
 
     public void openFile(Stage stage) {
@@ -38,15 +38,15 @@ public class FileController {
     }
 
     public String selectPath() {
-        return service.selectPath();
+        return fServ.selectPath();
     }
 
     private void delInvalidPath() {
-        int delPathResult = service.delInvalidPath();
+        int delPathResult = fServ.delInvalidPath();
         System.out.println("Number of deleted path: " + delPathResult);
     }
 
-    public String chooseFile(Stage stage) {
+    private String chooseFile(Stage stage) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "*.xls", "*.xlsx"));
 
@@ -59,8 +59,8 @@ public class FileController {
         }
     }
 
-    public void insertPath(String path) {
-        int insertPath = service.insertPath(path);
+    private void insertPath(String path) {
+        int insertPath = fServ.insertPath(path);
 
         if (insertPath == 1) {
             System.out.println("FileController.insertPath(): success");
@@ -69,21 +69,21 @@ public class FileController {
         }
     }
 
-    public String getFilePath() {
-        return filePath.getFilePath();
-    }
-
     public String selFileBtnClick(Stage stage) {
         String path = chooseFile(stage);
 
         if (path != null) {
             delInvalidPath();
             insertPath(path);
-            filePath.setFilePath(path);
+            this.filePath.setFilePath(path);
             new HashController().performHash();
             return path;
         } else {
             return "No file selected";
         }
+    }
+
+    public String getFilePath() {
+        return filePath.getFilePath();
     }
 }

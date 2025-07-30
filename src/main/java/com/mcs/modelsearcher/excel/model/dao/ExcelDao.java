@@ -25,10 +25,6 @@ public class ExcelDao {
         return session.insert("excel.newHierarchyTable", h);
     }
 
-    public List<Excel> doSearch(SqlSession session, HashMap<String, String> userInput) {
-        return session.selectList("excel.doSearch", userInput);
-    }
-
     public List<Excel> uniSearch(SqlSession session, ArrayList<String> keywordList) {
         return session.selectList("excel.uniSearch", keywordList);
     }

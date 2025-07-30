@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 public class ExcelController {
     ExcelService eServ;
@@ -233,6 +234,10 @@ public class ExcelController {
         }
 
         return null;
+    }
+
+    public List<Excel> uniSearch(ArrayList<String> keywordList) {
+        return eServ.uniSearch(keywordList);
     }
 
     public void insertRecord(Excel record) {

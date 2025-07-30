@@ -63,55 +63,6 @@
         values (#{parent_no}, #{child_no})
     </insert>
 
-    <select id="doSearch" parameterType="hashmap" resultType="excel">
-        select insert_no        as insertNo,
-               part_code        as partCode,
-               rev              as rev,
-               apply_1          as apply1,
-               apply_2          as apply2,
-               blueprint_date   as blueprintDate,
-               client_blueprint as clientBlueprint,
-               scan             as scan,
-               self_blueprint   as selfBlueprint,
-               category         as category,
-               name             as name,
-               spec             as spec,
-               maker            as maker,
-               vendor           as vendor,
-               unit_price       as unitPrice,
-               mgmt_cost        as mgmtCost,
-               est_price        as estPrice,
-               ref_price        as refPrice,
-               note             as note
-        from data
-        <where>
-            <if test="partCode != null and partCode != ''">
-                part_code like '%' || #{partCode} || '%'
-            </if>
-            <if test="apply1 != null and apply1 != ''">
-                and apply1 like '%' || #{apply1} || '%'
-            </if>
-            <if test="apply2 != null and apply2 != ''">
-                and apply2 like '%' || #{apply2} || '%'
-            </if>
-            <if test="category != null and category != ''">
-                and category like '%' || #{category} || '%'
-            </if>
-            <if test="name != null and name != ''">
-                and name like '%' || #{name} || '%'
-            </if>
-            <if test="spec != null and spec != ''">
-                and spec like '%' || #{spec} || '%'
-            </if>
-            <if test="vendor != null and vendor != ''">
-                and vendor like '%' || #{vendor} || '%'
-            </if>
-            <if test="note != null and note != ''">
-                and note like '%' || #{note} || '%'
-            </if>
-        </where>
-    </select>
-
     <select id="uniSearch" parameterType="arraylist" resultType="excel">
         select insert_no        as insertNo,
                part_code        as partCode,
