@@ -29,8 +29,8 @@ public class ExcelDao {
         return session.selectList("excel.uniSearch", keywordList);
     }
 
-    public int insertRecord(SqlSession session, Excel record) {
-        return session.insert("excel.insertRecord", record);
+    public int insertToDb(SqlSession session, Excel record) {
+        return session.insert("excel.insertToDb", record);
     }
 
     public int deleteFromDb(SqlSession session, String insertNo) {

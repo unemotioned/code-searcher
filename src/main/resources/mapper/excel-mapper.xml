@@ -110,7 +110,7 @@
         </foreach>
     </select>
 
-    <select id="insertRecord" parameterType="excel">
+    <select id="insertToDb" parameterType="excel">
         insert into data (insert_no,
                           part_code,
                           rev,

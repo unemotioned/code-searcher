@@ -240,81 +240,21 @@ public class ExcelController {
         return eServ.uniSearch(keywordList);
     }
 
-    public void insertRecord(Excel record) {
-        int result = eServ.insertRecord(record);
+    public void writeToExcel(Excel record) {
+        eServ.writeToExcel(record);
+    }
+
+    public void insertToDb(Excel record) {
+        int result = eServ.insertToDb(record);
         if (result == 1) {
-            System.out.println("ExcelController.insertRecordToDb: success");
+            System.out.println("eCon.insertToDb: success");
         } else {
-            System.out.println("ExcelController.insertRecordToDb: fail");
+            System.out.println("eCon.insertToDb: fail");
         }
     }
 
     public void deleteFromExcel(String insertNo) {
-        try (FileInputStream fis = new FileInputStream(excelPath); Workbook workbook = new HSSFWorkbook(fis);) {
-            final byte bomSheetIndex = 0;
-            final byte insertNoColIndex = 1;
-            boolean rowDeleted = false;
-
-            Sheet sheet = workbook.getSheetAt(bomSheetIndex);
-
-            for (int i = 0; i <= sheet.getLastRowNum(); i++) {
-                Row row = sheet.getRow(i);
-                if (row == null) continue;
-
-                Cell cell = row.getCell(insertNoColIndex);
-                if (cell != null) {
-                    String value = getString(cell);
-
-                    if (insertNo.equals(value)) {
-                        removeRow(sheet, i);
-                        rowDeleted = true;
-                        break;
-                    }
-                }
-            }
-
-            if (rowDeleted) {
-                try (FileOutputStream fos = new FileOutputStream(excelPath)) {
-                    workbook.write(fos);
-                    System.out.println("ExcelController.insertRecordToDb: success");
-                } catch (IOException e) {
-                    System.out.println("eCon.deleteFromExcel: " + e.getMessage());
-                }
-            }
-
-        } catch (IOException e) {
-            System.out.println("eCon.deleteFromExcel: " + e.getMessage());
-        }
-    }
-
-    private static String getString(Cell cell) {
-        String value = null;
-
-        if (cell.getCellType() == CellType.STRING) {
-            value = cell.getStringCellValue();
-        } else if (cell.getCellType() == CellType.NUMERIC) {
-            double num = cell.getNumericCellValue();
-            long longVal = (long) num;
-            // Check if it's a whole number
-            if (num == longVal) {
-                value = String.valueOf(longVal);
-            } else {
-                value = String.valueOf(num); // unlikely, but safe fallback
-            }
-        }
-        return value;
-    }
-
-    private static void removeRow(Sheet sheet, int rowIndex) {
-        int lastRowNum = sheet.getLastRowNum();
-        if (rowIndex >= 0 && rowIndex < lastRowNum) {
-            sheet.shiftRows(rowIndex + 1, lastRowNum, -1);
-        } else if (rowIndex == lastRowNum) {
-            Row row = sheet.getRow(rowIndex);
-            if (row != null) {
-                sheet.removeRow(row);
-            }
-        }
+        eServ.deleteFromExcel(insertNo);
     }
 
     public void deleteFromDb(String insertNo) {

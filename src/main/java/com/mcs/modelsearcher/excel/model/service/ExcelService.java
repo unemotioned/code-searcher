@@ -4,10 +4,19 @@ import com.mcs.modelsearcher.common.SqlSessionTemplate;
 import com.mcs.modelsearcher.excel.model.dao.ExcelDao;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.excel.model.vo.Hierarchy;
+import com.mcs.modelsearcher.file.controller.FileController;
 import org.apache.ibatis.session.SqlSession;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 
 public class ExcelService {
@@ -63,16 +72,298 @@ public class ExcelService {
 
     public List<Excel> uniSearch(ArrayList<String> keywordList) {
         SqlSession session = SqlSessionTemplate.getSqlSession();
-        ArrayList<Excel> excelList = (ArrayList<Excel>)  (dao.uniSearch(session, keywordList));
+        ArrayList<Excel> excelList = (ArrayList<Excel>) (dao.uniSearch(session, keywordList));
         session.close();
         return excelList;
     }
 
-    public int insertRecord(Excel record) {
+    public void writeToExcel(Excel record) {
+        String[] data = {record.getInsertNo(), record.getPartCode(), record.getRev(), record.getApply1(), record.getApply2(), record.getBlueprintDate(), record.getClientBlueprint(), record.getScan(), record.getSelfBlueprint(), record.getCategory(), record.getName(), record.getSpec(), record.getMaker(), record.getVendor(), record.getUnitPrice() == 0 ? null : String.valueOf(record.getUnitPrice()), record.getMgmtCost() == 0 ? null : String.valueOf(record.getMgmtCost()), record.getEstPrice() == 0 ? null : String.valueOf(record.getEstPrice()), record.getRefPrice() == 0 ? null : String.valueOf(record.getRefPrice()), record.getNote()};
+
+        FileController fCon = new FileController();
+        String path = fCon.selectPath();
+
+        final int firstIndex = 1;
+        final int dateIndex = 5;
+        final int percentIndex = 15;
+        final int priceStart = 14;
+        final int priceEnd = 17;
+
+        final int insertNoindex = 0;
+
+        // for left align
+        final int partCodeIndex = 1;
+        final int categoryIndex = 9;
+        final int specIndex = 10;
+        final int makerIndex = 11;
+        final int noteIndex = 18;
+
+
+        try (FileInputStream fis = new FileInputStream(path); Workbook workbook = WorkbookFactory.create(fis)) {
+            Sheet sheet = workbook.getSheetAt(0);
+            int newRowNum = sheet.getLastRowNum() + 1;
+            Row newRow = sheet.createRow(newRowNum);
+
+            int lastRowNum = sheet.getLastRowNum();
+            while (lastRowNum >= 0 && isRowEmpty(sheet.getRow(lastRowNum))) {
+                lastRowNum--;
+            }
+
+            // alignment, border, font
+            CellStyle cellStyle = cellStyle(workbook);
+
+            for (int i = 0; i < data.length; i++) {
+                Cell cell = newRow.createCell(i + firstIndex);
+
+                if (i == dateIndex) {
+                    setDateCell(workbook, cell, cellStyle, data[i]);
+                } else if (i == insertNoindex) {
+                    setInsertNoCell(workbook, cell, cellStyle, data[i]);
+                } else if (i == percentIndex) {
+                    setPercentCell(workbook, cell, cellStyle, data[i]);
+                } else if (i >= priceStart && i <= priceEnd) {
+                    setPriceCell(workbook, cell, cellStyle, data[i]);
+                } else if (i == partCodeIndex || i == categoryIndex || i == specIndex || i == makerIndex || i == noteIndex) {
+                    alignLeft(workbook, cell, cellStyle);
+                    cell.setCellValue(data[i]);
+                } else {
+                    cell.setCellValue(data[i]);
+                    cell.setCellStyle(cellStyle);
+                }
+            }
+
+            try (FileOutputStream fos = new FileOutputStream(path)) {
+                workbook.write(fos);
+                System.out.println("Record added");
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving file" + e.getMessage());
+        }
+    }
+
+    private void setPercentCell(Workbook workbook, Cell cell, CellStyle baseStyle, String input) {
+        if (input == null || input.isEmpty()) {
+            cell.setBlank();
+            cell.setCellStyle(baseStyle);
+            return;
+        }
+
+        CellStyle percentStyle = workbook.createCellStyle();
+        percentStyle.cloneStyleFrom(baseStyle);
+
+        DataFormat format = workbook.createDataFormat();
+        percentStyle.setDataFormat(format.getFormat("0%")); // or "0.0%" for one decimal place
+
+        try {
+            double value = Double.parseDouble(input) / 100.0;
+            cell.setCellValue(value);
+        } catch (NumberFormatException e) {
+            cell.setCellValue(input); // fallback as text
+        }
+
+        cell.setCellStyle(percentStyle);
+    }
+
+    private void setInsertNoCell(Workbook workbook, Cell cell, CellStyle baseStyle, String input) {
+        if (input == null || input.isEmpty()) {
+            cell.setBlank();
+            cell.setCellStyle(baseStyle);
+            return;
+        }
+
+        CellStyle style = workbook.createCellStyle();
+        style.cloneStyleFrom(baseStyle);
+
+        if (input.matches("^\\d+$")) {
+            // Only digits: treat as number
+            try {
+                double numericValue = Double.parseDouble(input);
+                DataFormat format = workbook.createDataFormat();
+                style.setDataFormat(format.getFormat("0")); // no decimal places
+
+                cell.setCellValue(numericValue);
+                cell.setCellStyle(style);
+            } catch (NumberFormatException e) {
+                // Fallback to text if something goes wrong
+                cell.setCellValue(input);
+                cell.setCellStyle(style);
+            }
+        } else {
+            // Contains dash or other non-digit: treat as text
+            cell.setCellValue(input);
+            cell.setCellStyle(style);
+        }
+    }
+
+    private void alignLeft(Workbook workbook, Cell cell, CellStyle baseStyle) {
+        CellStyle alignLeft = workbook.createCellStyle();
+        alignLeft.cloneStyleFrom(baseStyle);
+        alignLeft.setAlignment(HorizontalAlignment.LEFT);
+
+        cell.setCellStyle(alignLeft);
+    }
+
+    private void setPriceCell(Workbook workbook, Cell cell, CellStyle baseStyle, String input) {
+        if (input == null || input.trim().isEmpty()) {
+            cell.setBlank();
+            cell.setCellStyle(baseStyle);
+            return;
+        }
+
+        CellStyle numberStyle = workbook.createCellStyle();
+        DataFormat format = workbook.createDataFormat();
+
+        numberStyle.cloneStyleFrom(baseStyle);
+        numberStyle.setDataFormat(format.getFormat("#,##0_);(#,##0)"));
+        numberStyle.setAlignment(HorizontalAlignment.RIGHT);
+
+        try {
+            double numericValue = Double.parseDouble(input.replace(",", ""));
+            cell.setCellValue(numericValue);
+        } catch (NumberFormatException e) {
+            System.out.println("Error parsing insert number: " + e.getMessage());
+            cell.setBlank();
+        }
+
+        cell.setCellStyle(numberStyle);
+    }
+
+    private void setDateCell(Workbook workbook, Cell cell, CellStyle baseStyle, String input) {
+        SimpleDateFormat sdfInput = new SimpleDateFormat("yyMMdd");
+        try {
+            Date date = sdfInput.parse(input);
+
+            cell.setCellValue(date);
+
+            CellStyle dateStyle = workbook.createCellStyle();
+            dateStyle.cloneStyleFrom(baseStyle);
+            dateStyle.setDataFormat((short) 14);
+
+            cell.setCellStyle(dateStyle);
+        } catch (ParseException e) {
+            System.out.println("Invalid date format in blueprintDate: " + input);
+            cell.setCellValue(input);
+            cell.setCellStyle(baseStyle);
+        }
+    }
+
+    private boolean isRowEmpty(Row row) {
+        if (row == null) return true;
+        for (Cell cell : row) {
+            if (cell != null && cell.getCellType() != CellType.BLANK) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public CellStyle cellStyle(Workbook workbook) {
+        CellStyle style = workbook.createCellStyle();
+
+        style.setAlignment(HorizontalAlignment.CENTER); // CENTER, LEFT, RIGHT
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+
+        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+
+        HSSFWorkbook hssfWorkbook = (HSSFWorkbook) workbook;
+        HSSFPalette palette = hssfWorkbook.getCustomPalette();
+        // 42 since it's reserved for .xlx
+        short customColorIndex = 42;
+        // turn it into #969697
+        palette.setColorAtIndex(customColorIndex, (byte) 150, (byte) 150, (byte) 151);
+        style.setTopBorderColor(customColorIndex);
+        style.setBottomBorderColor(customColorIndex);
+        style.setLeftBorderColor(customColorIndex);
+        style.setRightBorderColor(customColorIndex);
+
+        Font font = workbook.createFont();
+        font.setFontName("돋움");
+        font.setFontHeightInPoints((short) 9);
+        font.setBold(false);
+        style.setFont(font);
+
+        return style;
+    }
+
+    public int insertToDb(Excel record) {
         SqlSession session = SqlSessionTemplate.getSqlSession();
-        int result = dao.insertRecord(session, record);
+        int result = dao.insertToDb(session, record);
         session.close();
         return result;
+    }
+
+    public void deleteFromExcel(String insertNo) {
+        FileController fCon = new FileController();
+        String path = fCon.selectPath();
+
+        try (FileInputStream fis = new FileInputStream(path); Workbook workbook = new HSSFWorkbook(fis);) {
+            final byte bomSheetIndex = 0;
+            final byte insertNoColIndex = 1;
+            boolean rowDeleted = false;
+
+            Sheet sheet = workbook.getSheetAt(bomSheetIndex);
+
+            for (int i = 0; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) continue;
+
+                Cell cell = row.getCell(insertNoColIndex);
+                if (cell != null) {
+                    String value = getString(cell);
+
+                    if (insertNo.equals(value)) {
+                        removeRow(sheet, i);
+                        rowDeleted = true;
+                        break;
+                    }
+                }
+            }
+
+            if (rowDeleted) {
+                try (FileOutputStream fos = new FileOutputStream(path)) {
+                    workbook.write(fos);
+                    System.out.println("ExcelController.insertRecordToDb: success");
+                } catch (IOException e) {
+                    System.out.println("eCon.deleteFromExcel: " + e.getMessage());
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println("eCon.deleteFromExcel: " + e.getMessage());
+        }
+    }
+
+    private static String getString(Cell cell) {
+        String value = null;
+
+        if (cell.getCellType() == CellType.STRING) {
+            value = cell.getStringCellValue();
+        } else if (cell.getCellType() == CellType.NUMERIC) {
+            double num = cell.getNumericCellValue();
+            long longVal = (long) num;
+            // Check if it's a whole number
+            if (num == longVal) {
+                value = String.valueOf(longVal);
+            } else {
+                value = String.valueOf(num); // unlikely, but safe fallback
+            }
+        }
+        return value;
+    }
+
+    private static void removeRow(Sheet sheet, int rowIndex) {
+        int lastRowNum = sheet.getLastRowNum();
+        if (rowIndex >= 0 && rowIndex < lastRowNum) {
+            sheet.shiftRows(rowIndex + 1, lastRowNum, -1);
+        } else if (rowIndex == lastRowNum) {
+            Row row = sheet.getRow(rowIndex);
+            if (row != null) {
+                sheet.removeRow(row);
+            }
+        }
     }
 
     public int deleteFromDb(String insertNo) {

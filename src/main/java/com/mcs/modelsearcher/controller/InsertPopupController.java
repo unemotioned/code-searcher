@@ -6,16 +6,10 @@ import com.mcs.modelsearcher.file.controller.FileController;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.apache.poi.hssf.usermodel.HSSFPalette;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class InsertPopupController {
     // @formatter:off
@@ -138,8 +132,8 @@ public class InsertPopupController {
         record.setRefPrice(priceInputToInt(refPrice));
         record.setNote(note.getText());
 
-        addRecord();
-        eCon.insertRecord(record);
+        eCon.writeToExcel(record);
+        eCon.insertToDb(record);
 
         if (popupStage != null) {
             popupStage.close();
@@ -156,217 +150,6 @@ public class InsertPopupController {
         } catch (NumberFormatException e) {
             return 0;
         }
-    }
-
-    public void addRecord() {
-        String[] data = {insertNo.getText(), partCode.getText(), rev.getText(), apply1.getText(), apply2.getText(), blueprintDate.getText(), clientBlueprint.getText(), scan.getText(), selfBlueprint.getText(), category.getText(), name.getText(), spec.getText(), maker.getText(), vendor.getText(), unitPrice.getText(), mgmtCost.getText(), estPrice.getText(), refPrice.getText(), note.getText()};
-
-        FileController fCon = new FileController();
-        String path = fCon.selectPath();
-
-        final int firstIndex = 1;
-        final int dateIndex = 5;
-        final int percentIndex = 15;
-        final int priceStart = 14;
-        final int priceEnd = 17;
-
-        final int insertNoindex = 0;
-
-        // for left align
-        final int partCodeIndex = 1;
-        final int categoryIndex = 9;
-        final int specIndex = 10;
-        final int makerIndex = 11;
-        final int noteIndex = 18;
-
-
-        try (FileInputStream fis = new FileInputStream(path); Workbook workbook = WorkbookFactory.create(fis)) {
-            Sheet sheet = workbook.getSheetAt(0);
-            int newRowNum = sheet.getLastRowNum() + 1;
-            Row newRow = sheet.createRow(newRowNum);
-
-            int lastRowNum = sheet.getLastRowNum();
-            while (lastRowNum >= 0 && isRowEmpty(sheet.getRow(lastRowNum))) {
-                lastRowNum--;
-            }
-
-            // alignment, border, font
-            CellStyle cellStyle = cellStyle(workbook);
-
-            for (int i = 0; i < data.length; i++) {
-                Cell cell = newRow.createCell(i + firstIndex);
-
-                if (i == dateIndex) {
-                    setDateCell(workbook, cell, cellStyle, data[i]);
-                } else if (i == insertNoindex) {
-                    setInsertNoCell(workbook, cell, cellStyle, data[i]);
-                } else if (i == percentIndex) {
-                    setPercentCell(workbook, cell, cellStyle, data[i]);
-                } else if (i >= priceStart && i <= priceEnd) {
-                    setPriceCell(workbook, cell, cellStyle, data[i]);
-                } else if (i == partCodeIndex || i == categoryIndex || i == specIndex || i == makerIndex || i == noteIndex) {
-                    alignLeft(workbook, cell, cellStyle);
-                    cell.setCellValue(data[i]);
-                } else {
-                    cell.setCellValue(data[i]);
-                    cell.setCellStyle(cellStyle);
-                }
-            }
-
-            try (FileOutputStream fos = new FileOutputStream(path)) {
-                workbook.write(fos);
-                System.out.println("Record added");
-            }
-        } catch (IOException e) {
-            System.out.println("Error saving file" + e.getMessage());
-        }
-    }
-
-    private void setPercentCell(Workbook workbook, Cell cell, CellStyle baseStyle, String input) {
-        if (input == null || input.isEmpty()) {
-            cell.setBlank();
-            cell.setCellStyle(baseStyle);
-            return;
-        }
-
-        CellStyle percentStyle = workbook.createCellStyle();
-        percentStyle.cloneStyleFrom(baseStyle);
-
-        DataFormat format = workbook.createDataFormat();
-        percentStyle.setDataFormat(format.getFormat("0%")); // or "0.0%" for one decimal place
-
-        try {
-            double value = Double.parseDouble(input) / 100.0;
-            cell.setCellValue(value);
-        } catch (NumberFormatException e) {
-            cell.setCellValue(input); // fallback as text
-        }
-
-        cell.setCellStyle(percentStyle);
-    }
-
-    private void setInsertNoCell(Workbook workbook, Cell cell, CellStyle baseStyle, String input) {
-        if (input == null || input.isEmpty()) {
-            cell.setBlank();
-            cell.setCellStyle(baseStyle);
-            return;
-        }
-
-        CellStyle style = workbook.createCellStyle();
-        style.cloneStyleFrom(baseStyle);
-
-        if (input.matches("^\\d+$")) {
-            // Only digits: treat as number
-            try {
-                double numericValue = Double.parseDouble(input);
-                DataFormat format = workbook.createDataFormat();
-                style.setDataFormat(format.getFormat("0")); // no decimal places
-
-                cell.setCellValue(numericValue);
-                cell.setCellStyle(style);
-            } catch (NumberFormatException e) {
-                // Fallback to text if something goes wrong
-                cell.setCellValue(input);
-                cell.setCellStyle(style);
-            }
-        } else {
-            // Contains dash or other non-digit: treat as text
-            cell.setCellValue(input);
-            cell.setCellStyle(style);
-        }
-    }
-
-    private void alignLeft(Workbook workbook, Cell cell, CellStyle baseStyle) {
-        CellStyle alignLeft = workbook.createCellStyle();
-        alignLeft.cloneStyleFrom(baseStyle);
-        alignLeft.setAlignment(HorizontalAlignment.LEFT);
-
-        cell.setCellStyle(alignLeft);
-    }
-
-    private void setPriceCell(Workbook workbook, Cell cell, CellStyle baseStyle, String input) {
-        if (input == null || input.trim().isEmpty()) {
-            cell.setBlank();
-            cell.setCellStyle(baseStyle);
-            return;
-        }
-
-        CellStyle numberStyle = workbook.createCellStyle();
-        DataFormat format = workbook.createDataFormat();
-
-        numberStyle.cloneStyleFrom(baseStyle);
-        numberStyle.setDataFormat(format.getFormat("#,##0_);(#,##0)"));
-        numberStyle.setAlignment(HorizontalAlignment.RIGHT);
-
-        try {
-            double numericValue = Double.parseDouble(input.replace(",", ""));
-            cell.setCellValue(numericValue);
-        } catch (NumberFormatException e) {
-            System.out.println("Error parsing insert number: " + e.getMessage());
-            cell.setBlank();
-        }
-
-        cell.setCellStyle(numberStyle);
-    }
-
-    private void setDateCell(Workbook workbook, Cell cell, CellStyle baseStyle, String input) {
-        SimpleDateFormat sdfInput = new SimpleDateFormat("yyMMdd");
-        try {
-            Date date = sdfInput.parse(input);
-
-            cell.setCellValue(date);
-
-            CellStyle dateStyle = workbook.createCellStyle();
-            dateStyle.cloneStyleFrom(baseStyle);
-            dateStyle.setDataFormat((short) 14);
-
-            cell.setCellStyle(dateStyle);
-        } catch (ParseException e) {
-            System.out.println("Invalid date format in blueprintDate: " + input);
-            cell.setCellValue(input);
-            cell.setCellStyle(baseStyle);
-        }
-    }
-
-    private boolean isRowEmpty(Row row) {
-        if (row == null) return true;
-        for (Cell cell : row) {
-            if (cell != null && cell.getCellType() != CellType.BLANK) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public CellStyle cellStyle(Workbook workbook) {
-        CellStyle style = workbook.createCellStyle();
-
-        style.setAlignment(HorizontalAlignment.CENTER); // CENTER, LEFT, RIGHT
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
-
-        style.setBorderTop(BorderStyle.THIN);
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-
-        HSSFWorkbook hssfWorkbook = (HSSFWorkbook) workbook;
-        HSSFPalette palette = hssfWorkbook.getCustomPalette();
-        // 42 since it's reserved for .xlx
-        short customColorIndex = 42;
-        // turn it into #969697
-        palette.setColorAtIndex(customColorIndex, (byte) 150, (byte) 150, (byte) 151);
-        style.setTopBorderColor(customColorIndex);
-        style.setBottomBorderColor(customColorIndex);
-        style.setLeftBorderColor(customColorIndex);
-        style.setRightBorderColor(customColorIndex);
-
-        Font font = workbook.createFont();
-        font.setFontName("돋움");
-        font.setFontHeightInPoints((short) 9);
-        font.setBold(false);
-        style.setFont(font);
-
-        return style;
     }
 
     public void setStage(Stage stage) {
