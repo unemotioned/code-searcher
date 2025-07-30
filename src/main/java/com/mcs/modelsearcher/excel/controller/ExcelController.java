@@ -4,9 +4,11 @@ import com.mcs.modelsearcher.excel.model.service.ExcelService;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.excel.model.vo.Hierarchy;
 import com.mcs.modelsearcher.file.controller.FileController;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -234,7 +236,71 @@ public class ExcelController {
     }
 
     public void deleteFromExcel(String insertNo) {
-        System.out.println("eCon.deleteFromExcel: " + insertNo);
+        try (FileInputStream fis = new FileInputStream(excelPath); Workbook workbook = new HSSFWorkbook(fis);) {
+            final byte bomSheetIndex = 0;
+            final byte insertNoColIndex = 1;
+            boolean rowDeleted = false;
+
+            Sheet sheet = workbook.getSheetAt(bomSheetIndex);
+
+            for (int i = 0; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) continue;
+
+                Cell cell = row.getCell(insertNoColIndex);
+                if (cell != null) {
+                    String value = getString(cell);
+
+                    if (insertNo.equals(value)) {
+                        removeRow(sheet, i);
+                        rowDeleted = true;
+                        break;
+                    }
+                }
+            }
+
+            if (rowDeleted) {
+                try (FileOutputStream fos = new FileOutputStream(excelPath)) {
+                    workbook.write(fos);
+                    System.out.println("ExcelController.insertRecordToDb: success");
+                } catch (IOException e) {
+                    System.out.println("eCon.deleteFromExcel: " + e.getMessage());
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println("eCon.deleteFromExcel: " + e.getMessage());
+        }
+    }
+
+    private static String getString(Cell cell) {
+        String value = null;
+
+        if (cell.getCellType() == CellType.STRING) {
+            value = cell.getStringCellValue();
+        } else if (cell.getCellType() == CellType.NUMERIC) {
+            double num = cell.getNumericCellValue();
+            long longVal = (long) num;
+            // Check if it's a whole number
+            if (num == longVal) {
+                value = String.valueOf(longVal);
+            } else {
+                value = String.valueOf(num); // unlikely, but safe fallback
+            }
+        }
+        return value;
+    }
+
+    private static void removeRow(Sheet sheet, int rowIndex) {
+        int lastRowNum = sheet.getLastRowNum();
+        if (rowIndex >= 0 && rowIndex < lastRowNum) {
+            sheet.shiftRows(rowIndex + 1, lastRowNum, -1);
+        } else if (rowIndex == lastRowNum) {
+            Row row = sheet.getRow(rowIndex);
+            if (row != null) {
+                sheet.removeRow(row);
+            }
+        }
     }
 
     public void deleteFromDb(String insertNo) {

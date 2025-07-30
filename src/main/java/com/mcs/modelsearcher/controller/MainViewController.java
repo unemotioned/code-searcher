@@ -103,7 +103,7 @@ public class MainViewController {
                 boolean isDeleteConform = showDeleteConfirmation(item);
                 if (isDeleteConform) {
                     eCon.deleteFromExcel(insertNo);
-                    // eCon.deleteFromDb(insertNo);
+                    eCon.deleteFromDb(insertNo);
                 }
             });
 
