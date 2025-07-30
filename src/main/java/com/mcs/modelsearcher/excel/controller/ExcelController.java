@@ -223,4 +223,21 @@ public class ExcelController {
 
         return null;
     }
+
+    public void insertRecord(Excel record) {
+        int result = eServ.insertRecord(record);
+        if (result == 1) {
+            System.out.println("ExcelController.insertRecordToDb: success");
+        } else {
+            System.out.println("ExcelController.insertRecordToDb: fail");
+        }
+    }
+
+    public void deleteFromExcel(String insertNo) {
+        System.out.println("eCon.deleteFromExcel: " + insertNo);
+    }
+
+    public void deleteFromDb(String insertNo) {
+        System.out.println("eCon.deleteFromDb: " + insertNo);
+    }
 }

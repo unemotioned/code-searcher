@@ -1,6 +1,6 @@
 package com.mcs.modelsearcher.controller;
 
-import com.mcs.modelsearcher.excel.model.service.ExcelService;
+import com.mcs.modelsearcher.excel.controller.ExcelController;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.file.controller.FileController;
 import javafx.fxml.FXML;
@@ -40,13 +40,15 @@ public class InsertPopupController {
     @FXML private TextField note;
     // @formatter:on
 
+    Excel record;
+    ExcelController eCon;
     FileController fCon;
     String filePath;
-    Excel record;
 
     private Stage popupStage;
 
     public InsertPopupController() {
+        eCon = new ExcelController();
         fCon = new FileController();
         filePath = fCon.selectPath();
     }
@@ -137,7 +139,7 @@ public class InsertPopupController {
         record.setNote(note.getText());
 
         addRecord();
-        insertRecord(record);
+        eCon.insertRecord(record);
 
         if (popupStage != null) {
             popupStage.close();
@@ -365,16 +367,6 @@ public class InsertPopupController {
         style.setFont(font);
 
         return style;
-    }
-
-    public void insertRecord(Excel record) {
-        ExcelService eServ = new ExcelService();
-        int result = eServ.insertRecord(record);
-        if (result == 1) {
-            System.out.println("ExcelController.insertRecordToDb: success");
-        } else {
-            System.out.println("ExcelController.insertRecordToDb: fail");
-        }
     }
 
     public void setStage(Stage stage) {
