@@ -81,4 +81,11 @@ public class ExcelService {
         session.close();
         return result;
     }
+
+    public int deleteFromDb(String insertNo) {
+        SqlSession session = SqlSessionTemplate.getSqlSession();
+        int result = dao.deleteFromDb(session, insertNo);
+        session.close();
+        return result;
+    }
 }

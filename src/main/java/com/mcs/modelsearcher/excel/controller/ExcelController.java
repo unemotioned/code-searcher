@@ -238,6 +238,11 @@ public class ExcelController {
     }
 
     public void deleteFromDb(String insertNo) {
-        System.out.println("eCon.deleteFromDb: " + insertNo);
+        int result = eServ.deleteFromDb(insertNo);
+        if (result >= 1) {
+            System.out.println("ExcelController.deleteFromDb: success");
+        } else {
+            System.out.println("ExcelController.deleteFromDb: fail");
+        }
     }
 }

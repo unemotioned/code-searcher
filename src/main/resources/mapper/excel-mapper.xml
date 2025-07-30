@@ -200,4 +200,10 @@
                 #{note})
     </select>
 
+    <delete id="deleteFromDb" parameterType="string">
+        delete
+        from data
+        where insert_no == #{insert_no}
+    </delete>
+
 </mapper>
