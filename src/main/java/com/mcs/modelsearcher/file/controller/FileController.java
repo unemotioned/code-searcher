@@ -33,7 +33,7 @@ public class FileController {
 
         if (path != null) {
             filePath.setFilePath(path);
-            new HashController(this).performHash();
+            new HashController().performHash();
         }
     }
 
@@ -80,7 +80,7 @@ public class FileController {
             delInvalidPath();
             insertPath(path);
             filePath.setFilePath(path);
-            new HashController(this).performHash();
+            new HashController().performHash();
             return path;
         } else {
             return "No file selected";

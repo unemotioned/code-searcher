@@ -20,14 +20,14 @@ public class HashController {
 
     String excelPath;
 
-    public HashController(FileController fileController) {
-        sheetHash = new SheetHash();
+    public HashController() {
+        fCon = new FileController();
 
-        fCon = fileController;
-        hServ = new HashService();
         excelCon = new ExcelController();
+        excelPath  = fCon.selectPath();
 
-        excelPath = fCon.getFilePath();
+        hServ = new HashService();
+        sheetHash = new SheetHash();
     }
 
     public void performHash() {
