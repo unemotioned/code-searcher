@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -175,19 +176,37 @@ public class MainController {
 
     private void uniSearch() {
         uniSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-            String input = uniSearch.getText().trim();
-            StringTokenizer tokenizer = new StringTokenizer(input);
+            Task<List<Excel>> searchTask = getListTask();
 
-            ArrayList<String> keywordList = new ArrayList<>();
-            while (tokenizer.hasMoreTokens()) {
-                keywordList.add(tokenizer.nextToken());
-            }
+            searchTask.setOnSucceeded(event -> {
+                List<Excel> results = searchTask.getValue();
+                ObservableList<Excel> observableResult = FXCollections.observableArrayList(results);
+                excelData.setItems(observableResult);
+            });
 
-            List<Excel> result = eCon.uniSearch(keywordList);
+            searchTask.setOnFailed(event -> {
+                System.out.println("uniSearch in Thread failed");
+            });
 
-            ObservableList<Excel> observableResult = FXCollections.observableArrayList(result);
-            excelData.setItems(observableResult);
+            new Thread(searchTask).start();
         });
+    }
+
+    private Task<List<Excel>> getListTask() {
+        String input = uniSearch.getText().trim();
+        StringTokenizer tokenizer = new StringTokenizer(input);
+
+        ArrayList<String> keywordList = new ArrayList<>();
+        while (tokenizer.hasMoreTokens()) {
+            keywordList.add(tokenizer.nextToken());
+        }
+
+        return new Task<>() {
+            @Override
+            protected List<Excel> call() {
+                return eCon.uniSearch(keywordList);
+            }
+        };
     }
 
     @FXML
