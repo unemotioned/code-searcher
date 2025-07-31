@@ -36,6 +36,7 @@ public class EditViewController {
     ExcelController eCon;
 
     Util util;
+    String originalInsertNo;
 
     public EditViewController() {
         eCon = new ExcelController();
@@ -49,7 +50,9 @@ public class EditViewController {
 
     @FXML
     public void initialize(Excel item) {
-        insertNo.setText(item.getInsertNo());
+        originalInsertNo = item.getInsertNo();
+
+        insertNo.setText(originalInsertNo);
         partCode.setText(item.getPartCode());
         rev.setText(item.getRev());
         apply1.setText(item.getApply1());
@@ -93,6 +96,7 @@ public class EditViewController {
         excel.setEstPrice(util.priceInputToInt(estPrice));
         excel.setRefPrice(util.priceInputToInt(refPrice));
         excel.setNote(note.getText());
+        excel.setOriginalInsertNo(originalInsertNo);
 
         eCon.editFromExcel(excel);
         eCon.updateFromDb(excel);

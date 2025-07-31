@@ -178,7 +178,7 @@
             est_price        = #{estPrice},
             ref_price        = #{refPrice},
             note             = #{note}
-        WHERE insert_no = #{insertNo}
+        WHERE insert_no = #{originalInsertNo}
     </update>
 
 </mapper>

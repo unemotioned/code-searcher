@@ -336,7 +336,7 @@ public class ExcelHandler {
                 if (cell == null) continue;
 
                 String value = getString(cell);
-                if (!record.getInsertNo().equals(value)) continue;
+                if (!record.getOriginalInsertNo().equals(value)) continue;
 
                 CellStyle baseStyle = cellStyle(workbook);
 

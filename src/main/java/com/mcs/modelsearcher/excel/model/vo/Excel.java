@@ -27,4 +27,7 @@ public class Excel {
     private int estPrice;
     private int refPrice; // 을지단가
     private String note;
+
+    // Case for editing the insertNo
+    private String originalInsertNo;
 }
