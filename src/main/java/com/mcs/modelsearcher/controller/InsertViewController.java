@@ -62,7 +62,7 @@ public class InsertViewController {
         // for testing
         partCode.setText("D400-59798A");
         apply1.setText("CLT Handler");
-        blueprintDate.setText("250729");
+        blueprintDate.setText("250731");
         clientBlueprint.setText("○");
         category.setText("Camera");
         name.setText("LED-CLT HANDLER BAR LIGHT L");

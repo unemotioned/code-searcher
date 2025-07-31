@@ -23,6 +23,7 @@ import lombok.Setter;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -248,5 +249,68 @@ public class MainController {
         estPrice.setCellValueFactory(new PropertyValueFactory<>("estPrice"));
         refPrice.setCellValueFactory(new PropertyValueFactory<>("refPrice"));
         note.setCellValueFactory(new PropertyValueFactory<>("note"));
+
+        setPriceColumnFormatted(unitPrice);
+        setPercentColumnEmptyIfZero(mgmtCost);
+        setPriceColumnFormatted(estPrice);
+        setPriceColumnFormatted(refPrice);
+
+        insertNo.setPrefWidth(50);
+        partCode.setPrefWidth(120);
+        rev.setPrefWidth(35);
+        apply1.setPrefWidth(91);
+        apply2.setPrefWidth(91);
+        blueprintDate.setPrefWidth(93);
+        clientBlueprint.setPrefWidth(62);
+        scan.setPrefWidth(33);
+        selfBlueprint.setPrefWidth(61);
+        category.setPrefWidth(140);
+        name.setPrefWidth(300);
+        spec.setPrefWidth(220);
+        maker.setPrefWidth(81);
+        vendor.setPrefWidth(81);
+        unitPrice.setPrefWidth(80);
+        mgmtCost.setPrefWidth(45);
+        estPrice.setPrefWidth(80);
+        refPrice.setPrefWidth(80);
+        note.setPrefWidth(300);
+    }
+
+    private <T extends Number> void setPriceColumnFormatted(TableColumn<Excel, T> column) {
+        NumberFormat nf = NumberFormat.getInstance();
+        column.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null || item.longValue() == 0L) {
+                    setText("");
+                } else {
+                    setText(nf.format(item));
+                }
+            }
+        });
+    }
+
+    private <T extends Number> void setPercentColumnEmptyIfZero(TableColumn<Excel, T> column) {
+        column.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null || item.intValue() == 0) {
+                    setText("");
+                } else {
+                    setText(item + "%");
+                }
+            }
+        });
+    }
+
+    @FXML
+    private void foobar() {
+        System.out.println("Column widths:");
+        for (TableColumn<Excel, ?> col : excelData.getColumns()) {
+            System.out.println(col.getText() + ": " + col.getWidth());
+        }
+        System.out.println("---");
     }
 }
