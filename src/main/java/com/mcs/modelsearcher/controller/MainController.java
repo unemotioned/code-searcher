@@ -118,7 +118,7 @@ public class MainController {
             editCon.initialize(item);
 
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/mcs/modelsearcher/style/popup.css")).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/mcs/modelsearcher/style/main-view.css")).toExternalForm());
 
             editPopupStage.setScene(scene);
             editPopupStage.initModality(Modality.APPLICATION_MODAL); // disable main-view
@@ -214,7 +214,7 @@ public class MainController {
             insertCon.setStage(insertPopupStage);
 
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/mcs/modelsearcher/style/popup.css")).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/mcs/modelsearcher/style/main-view.css")).toExternalForm());
 
             insertPopupStage.setScene(scene);
             insertPopupStage.initModality(Modality.APPLICATION_MODAL); // disable main-view
