@@ -24,10 +24,7 @@ import lombok.Setter;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class MainController {
     // @formatter:off
@@ -84,13 +81,13 @@ public class MainController {
             TableRow<Excel> row = new TableRow<>();
             ContextMenu contextMenu = new ContextMenu();
 
-            MenuItem editItem = new MenuItem("Edit");
+            MenuItem editItem = new MenuItem("수정");
             editItem.setOnAction(e -> {
                 Excel item = row.getItem();
                 editPopup(item);
             });
 
-            MenuItem deleteItem = new MenuItem("Delete");
+            MenuItem deleteItem = new MenuItem("삭제");
             deleteItem.setOnAction(e -> {
                 Excel item = row.getItem();
                 String insertNo = item.getInsertNo();
@@ -120,7 +117,10 @@ public class MainController {
             editCon.setStage(editPopupStage);
             editCon.initialize(item);
 
-            editPopupStage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/mcs/modelsearcher/style/popup.css")).toExternalForm());
+
+            editPopupStage.setScene(scene);
             editPopupStage.initModality(Modality.APPLICATION_MODAL); // disable main-view
             editPopupStage.showAndWait();
         } catch (IOException e) {
@@ -213,7 +213,10 @@ public class MainController {
             Stage insertPopupStage = new Stage();
             insertCon.setStage(insertPopupStage);
 
-            insertPopupStage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/mcs/modelsearcher/style/popup.css")).toExternalForm());
+
+            insertPopupStage.setScene(scene);
             insertPopupStage.initModality(Modality.APPLICATION_MODAL); // disable main-view
             insertPopupStage.showAndWait();
         } catch (IOException e) {
