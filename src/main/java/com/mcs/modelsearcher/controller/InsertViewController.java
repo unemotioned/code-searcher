@@ -77,10 +77,11 @@ public class InsertViewController {
 
     public String getLastInsertNo() {
         String lastInsertNo = "";
-        int insertNoCellIndex = 1;
+        final byte bomSheet = 0;
+        final byte insertNoCellIndex = 1;
 
         try (FileInputStream fis = new FileInputStream(filePath); Workbook workbook = WorkbookFactory.create(fis)) {
-            Sheet sheet = workbook.getSheetAt(0);
+            Sheet sheet = workbook.getSheetAt(bomSheet);
 
             for (Row row : sheet) {
                 Cell cell = row.getCell(insertNoCellIndex);
@@ -91,9 +92,8 @@ public class InsertViewController {
             }
 
         } catch (IOException e) {
-            System.out.println("InsertPopCon.getLastInsertNo: " + e.getMessage());
+            System.out.println("insertCon.getLastInsertNo - while opening: " + e.getMessage());
         }
-
         return String.valueOf(fabricateInsertNo(lastInsertNo));
     }
 
@@ -110,7 +110,7 @@ public class InsertViewController {
             return (int) parsedDouble + 1;
 
         } catch (NumberFormatException e) {
-            System.out.println("Error parsing insert number: " + e.getMessage());
+            System.out.println("insertCon.fabricateInsertNo: " + e.getMessage());
             return -1;
         }
     }

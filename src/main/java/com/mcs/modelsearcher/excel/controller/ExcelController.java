@@ -31,7 +31,7 @@ public class ExcelController {
 
     public void clearDataTable() {
         int deleteRowResult = eServ.clearDataTable();
-        System.out.println("ExcelController.deleteDataTable(): deleted row(s): " + deleteRowResult);
+        System.out.println("eCon.deleteDataTable: deleted row(s): " + deleteRowResult);
     }
 
     public void newDataTable() {
@@ -40,7 +40,7 @@ public class ExcelController {
 
             Iterator<Row> rowIterator = sheet.iterator();
 
-            final int headerRowIndex = 4;
+            final byte headerRowIndex = 4;
 
             ArrayList<Excel> excelList = new ArrayList<>();
 
@@ -55,9 +55,7 @@ public class ExcelController {
                 }
 
                 String insertNo = getStringCellValue(row, 1);
-                if (insertNo == null || insertNo.trim().isEmpty()) {
-                    continue; // skip rows with null or empty insertNo
-                }
+                if (insertNo == null || insertNo.trim().isEmpty()) continue;
 
                 excel.setInsertNo(getStringCellValue(row, 1));
                 excel.setPartCode(getStringCellValue(row, 2));
@@ -84,29 +82,26 @@ public class ExcelController {
 
             int newDataTableResult = eServ.newDataTable(excelList);
             if (newDataTableResult == 1) {
-                System.out.println("ExcelController: newDataTable() success");
+                System.out.println("eCon.newDataTable: success");
             } else {
-                System.out.println("ExcelController: newDataTable() fail");
+                System.out.println("eCon.newDataTable: fail");
             }
-
         } catch (IOException e) {
-            System.out.println("Error while opening Excel file: " + e.getMessage());
+            System.out.println("eCon.newDataTable - error while opening file: " + e.getMessage());
         }
     }
 
     public void clearHierarchyTable() {
         int deleteRowResult = eServ.clearHierarchyTable();
-        System.out.println("ExcelController.deleteHierarchyTable(): deleted row(s): " + deleteRowResult);
+        System.out.println("eCon.deleteHierarchyTable - deleted row(s): " + deleteRowResult);
     }
 
     public void newHierarchyTable() {
         try (FileInputStream fis = new FileInputStream(excelPath); BufferedInputStream bis = new BufferedInputStream(fis); Workbook workbook = WorkbookFactory.create(bis)) {
-            Sheet sheet = workbook.getSheetAt(0);
-
+            final byte hierarchySheet = 1;
+            final byte headerRowIndex = 1;
+            Sheet sheet = workbook.getSheetAt(hierarchySheet);
             Iterator<Row> rowIterator = sheet.iterator();
-
-            final int headerRowIndex = 1;
-
             ArrayList<Hierarchy> hList = new ArrayList<>();
 
             while (rowIterator.hasNext()) {
@@ -125,13 +120,12 @@ public class ExcelController {
 
             int newHierarchyTableResult = eServ.newHierarchyTable(hList);
             if (newHierarchyTableResult == 1) {
-                System.out.println("ExcelController: newDataTable() success");
+                System.out.println("eCon.newDataTable: success");
             } else {
-                System.out.println("ExcelController: newDataTable() fail");
+                System.out.println("eCon.newDataTable: fail");
             }
-
         } catch (IOException e) {
-            System.out.println("Error while opening Excel file: " + e.getMessage());
+            System.out.println("eCon.newHierarchyTable - while opening: " + e.getMessage());
         }
     }
 
@@ -268,9 +262,9 @@ public class ExcelController {
     public void deleteFromDb(String insertNo) {
         int result = eServ.deleteFromDb(insertNo);
         if (result >= 1) {
-            System.out.println("ExcelController.deleteFromDb: success");
+            System.out.println("eCon.deleteFromDb: success");
         } else {
-            System.out.println("ExcelController.deleteFromDb: fail");
+            System.out.println("eCon.deleteFromDb: fail");
         }
     }
 

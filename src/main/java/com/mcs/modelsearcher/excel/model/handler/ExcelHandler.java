@@ -19,20 +19,20 @@ public class ExcelHandler {
         FileController fCon = new FileController();
         String path = fCon.selectPath();
 
-        final int firstIndex = 1;
-        final int dateIndex = 5;
-        final int percentIndex = 15;
-        final int priceStart = 14;
-        final int priceEnd = 17;
+        final byte firstIndex = 1;
+        final byte dateIndex = 5;
+        final byte percentIndex = 15;
+        final byte priceStart = 14;
+        final byte priceEnd = 17;
 
-        final int insertNoindex = 0;
+        final byte insertNoindex = 0;
 
         // for left align
-        final int partCodeIndex = 1;
-        final int categoryIndex = 9;
-        final int specIndex = 10;
-        final int makerIndex = 11;
-        final int noteIndex = 18;
+        final byte partCodeIndex = 1;
+        final byte categoryIndex = 9;
+        final byte specIndex = 10;
+        final byte makerIndex = 11;
+        final byte noteIndex = 18;
 
         try (FileInputStream fis = new FileInputStream(path); BufferedInputStream bis = new BufferedInputStream(fis); Workbook workbook = WorkbookFactory.create(bis)) {
             Sheet sheet = workbook.getSheetAt(0);
@@ -65,10 +65,12 @@ public class ExcelHandler {
 
             try (FileOutputStream fos = new FileOutputStream(path); BufferedOutputStream bos = new BufferedOutputStream(fos)) {
                 workbook.write(bos);
-                System.out.println("eServ.writeToExcel: Record added");
+                System.out.println("eHand.writeToExcel: success");
+            } catch (IOException e) {
+                System.out.println("eHand.writeToExcel - while saving: " + e.getMessage());
             }
         } catch (IOException e) {
-            System.out.println("Error saving file" + e.getMessage());
+            System.out.println("eHand.writeToExcel - while opening: " + e.getMessage());
         }
     }
 
@@ -261,14 +263,13 @@ public class ExcelHandler {
             if (rowDeleted) {
                 try (FileOutputStream fos = new FileOutputStream(path); BufferedOutputStream bos = new BufferedOutputStream(fos)) {
                     workbook.write(bos);
-                    System.out.println("eCon.insertRecordToDb: success");
+                    System.out.println("eHand.deleteFromExcel: success");
                 } catch (IOException e) {
-                    System.out.println("eCon.deleteFromExcel - error while saving: " + e.getMessage());
+                    System.out.println("eHand.deleteFromExcel - while saving " + e.getMessage());
                 }
             }
-
         } catch (IOException e) {
-            System.out.println("eCon.deleteFromExcel - error while opening: " + e.getMessage());
+            System.out.println("eCon.deleteFromExcel - while opening: " + e.getMessage());
         }
     }
 
@@ -371,14 +372,13 @@ public class ExcelHandler {
             if (updated) {
                 try (FileOutputStream fos = new FileOutputStream(path); BufferedOutputStream bos = new BufferedOutputStream(fos)) {
                     workbook.write(bos);
-                    System.out.println("eServ.editFromExcel - updated " + record.getInsertNo());
+                    System.out.println("eHand.editFromExcel - success " + record.getInsertNo());
                 }
             } else {
-                System.out.println("eServ.editFromExcel - insertNo not found: " + record.getInsertNo());
+                System.out.println("eHand.editFromExcel - while saving: " + record.getInsertNo());
             }
-
         } catch (IOException e) {
-            System.out.println("eServ.editFromExcel - I/O error: " + e.getMessage());
+            System.out.println("eHand.editFromExcel- while opening: " + e.getMessage());
         }
     }
 }

@@ -43,7 +43,11 @@ public class FileController {
 
     private void delInvalidPath() {
         int delPathResult = fServ.delInvalidPath();
-        System.out.println("Number of deleted path: " + delPathResult);
+        if (delPathResult != 0) {
+            System.out.println("fCon.delInvalidPath: success");
+        } else {
+            System.out.println("fCon.delInvalidPath: fail");
+        }
     }
 
     private String chooseFile(Stage stage) {
@@ -54,7 +58,7 @@ public class FileController {
         if (file != null) {
             return file.getAbsolutePath();
         } else {
-            System.out.println("FileController.chooseFile(): File not selected");
+            System.out.println("fCon.chooseFile: File not selected");
             return null;
         }
     }
@@ -63,9 +67,9 @@ public class FileController {
         int insertPath = fServ.insertPath(path);
 
         if (insertPath == 1) {
-            System.out.println("FileController.insertPath(): success");
+            System.out.println("fCon.insertPath: success");
         } else {
-            System.out.println("FileController.insertPath(): fail");
+            System.out.println("fCon.insertPath: fail");
         }
     }
 

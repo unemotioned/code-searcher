@@ -13,22 +13,20 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class HashController {
-    SheetHash sheetHash;
-
     FileController fCon;
+    String path;
+
+    SheetHash sheetHash;
     HashService hServ;
     ExcelController excelCon;
 
-    String path;
-
     public HashController() {
         fCon = new FileController();
-
-        excelCon = new ExcelController();
         path = fCon.selectPath();
 
-        hServ = new HashService();
         sheetHash = new SheetHash();
+        hServ = new HashService();
+        excelCon = new ExcelController();
     }
 
     public void performHash() {
@@ -45,7 +43,7 @@ public class HashController {
                 checkHash(sheetHash, i);
             }
         } catch (IOException e) {
-            System.out.println("HashController.performHash(): Error while hashing Excel file." + e.getMessage());
+            System.out.println("hCon.performHash: " + e.getMessage());
         }
     }
 
@@ -122,9 +120,9 @@ public class HashController {
         int result = hServ.insertHash(sheetHash);
 
         if (result == 1) {
-            System.out.println("HashController.insertHash(): success");
+            System.out.println("hCon.insertHash: success");
         } else {
-            System.out.println("HashController.insertHash(): fail");
+            System.out.println("hCon.insertHash: fail");
         }
     }
 
