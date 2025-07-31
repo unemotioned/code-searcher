@@ -16,7 +16,7 @@
             <Button onAction="#onFileSelect" text="파일 선택"/>
             <Button onAction="#onInsert" text="부품 삽입"/>
             <Button onAction="#onReload" text="다시 읽기"/>
-            <Button onAction="#foobar" text="foobar"/>
+            <!-- <Button onAction="#foobar" text="foobar"/> -->
 
             <TextField fx:id="uniSearch" prefHeight="26.0" prefWidth="100.0" promptText="통합 검색 (띄어쓰기로 키워드 구분)"/>
 

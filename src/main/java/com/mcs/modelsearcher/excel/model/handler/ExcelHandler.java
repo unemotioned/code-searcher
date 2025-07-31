@@ -6,9 +6,7 @@ import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,7 +34,7 @@ public class ExcelHandler {
         final int makerIndex = 11;
         final int noteIndex = 18;
 
-        try (FileInputStream fis = new FileInputStream(path); Workbook workbook = WorkbookFactory.create(fis)) {
+        try (FileInputStream fis = new FileInputStream(path); BufferedInputStream bis = new BufferedInputStream(fis); Workbook workbook = WorkbookFactory.create(bis)) {
             Sheet sheet = workbook.getSheetAt(0);
 
             int newRowNum = findFirstEmptyRow(sheet);
@@ -65,8 +63,8 @@ public class ExcelHandler {
                 }
             }
 
-            try (FileOutputStream fos = new FileOutputStream(path)) {
-                workbook.write(fos);
+            try (FileOutputStream fos = new FileOutputStream(path); BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+                workbook.write(bos);
                 System.out.println("eServ.writeToExcel: Record added");
             }
         } catch (IOException e) {
@@ -237,7 +235,7 @@ public class ExcelHandler {
         FileController fCon = new FileController();
         String path = fCon.selectPath();
 
-        try (FileInputStream fis = new FileInputStream(path); Workbook workbook = new HSSFWorkbook(fis)) {
+        try (FileInputStream fis = new FileInputStream(path); BufferedInputStream bis = new BufferedInputStream(fis); Workbook workbook = new HSSFWorkbook(bis)) {
             final byte bomSheetIndex = 0;
             final byte insertNoColIndex = 1;
             boolean rowDeleted = false;
@@ -261,8 +259,8 @@ public class ExcelHandler {
             }
 
             if (rowDeleted) {
-                try (FileOutputStream fos = new FileOutputStream(path)) {
-                    workbook.write(fos);
+                try (FileOutputStream fos = new FileOutputStream(path); BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+                    workbook.write(bos);
                     System.out.println("eCon.insertRecordToDb: success");
                 } catch (IOException e) {
                     System.out.println("eCon.deleteFromExcel - error while saving: " + e.getMessage());
@@ -324,7 +322,7 @@ public class ExcelHandler {
         final int makerIndex = 11;
         final int noteIndex = 18;
 
-        try (FileInputStream fis = new FileInputStream(path); Workbook workbook = WorkbookFactory.create(fis)) {
+        try (FileInputStream fis = new FileInputStream(path); BufferedInputStream bis = new BufferedInputStream(fis); Workbook workbook = WorkbookFactory.create(bis)) {
             final byte bomSheet = 0;
             final byte startOfData = 5;
             Sheet sheet = workbook.getSheetAt(bomSheet);
@@ -371,8 +369,8 @@ public class ExcelHandler {
             }
 
             if (updated) {
-                try (FileOutputStream fos = new FileOutputStream(path)) {
-                    workbook.write(fos);
+                try (FileOutputStream fos = new FileOutputStream(path); BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+                    workbook.write(bos);
                     System.out.println("eServ.editFromExcel - updated " + record.getInsertNo());
                 }
             } else {

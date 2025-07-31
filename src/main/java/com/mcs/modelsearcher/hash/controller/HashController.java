@@ -6,6 +6,7 @@ import com.mcs.modelsearcher.hash.model.service.HashService;
 import com.mcs.modelsearcher.hash.model.vo.SheetHash;
 import org.apache.poi.ss.usermodel.*;
 
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -18,20 +19,20 @@ public class HashController {
     HashService hServ;
     ExcelController excelCon;
 
-    String excelPath;
+    String path;
 
     public HashController() {
         fCon = new FileController();
 
         excelCon = new ExcelController();
-        excelPath  = fCon.selectPath();
+        path = fCon.selectPath();
 
         hServ = new HashService();
         sheetHash = new SheetHash();
     }
 
     public void performHash() {
-        try (FileInputStream fis = new FileInputStream(excelPath); Workbook workbook = WorkbookFactory.create(fis)) {
+        try (FileInputStream fis = new FileInputStream(path); BufferedInputStream bis = new BufferedInputStream(fis); Workbook workbook = WorkbookFactory.create(bis)) {
             for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
                 Sheet sheet = workbook.getSheetAt(i);
                 StringBuilder combinedData = combineCells(sheet);
@@ -141,7 +142,7 @@ public class HashController {
         int result = hServ.fakeHash();
         if (result == 1) {
             System.out.println("hCon.fakeHash: success");
-        }  else {
+        } else {
             System.out.println("hCon.fakeHash: fail");
         }
     }

@@ -8,6 +8,7 @@ import com.mcs.modelsearcher.excel.model.vo.Hierarchy;
 import com.mcs.modelsearcher.file.controller.FileController;
 import org.apache.poi.ss.usermodel.*;
 
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class ExcelController {
     }
 
     public void newDataTable() {
-        try (FileInputStream fis = new FileInputStream(excelPath); Workbook workbook = WorkbookFactory.create(fis)) {
+        try (FileInputStream fis = new FileInputStream(excelPath); BufferedInputStream bis = new BufferedInputStream(fis); Workbook workbook = WorkbookFactory.create(bis)) {
             Sheet sheet = workbook.getSheetAt(0);
 
             Iterator<Row> rowIterator = sheet.iterator();
@@ -99,10 +100,8 @@ public class ExcelController {
     }
 
     public void newHierarchyTable() {
-        try (FileInputStream fis = new FileInputStream(excelPath); Workbook workbook = WorkbookFactory.create(fis)) {
+        try (FileInputStream fis = new FileInputStream(excelPath); BufferedInputStream bis = new BufferedInputStream(fis); Workbook workbook = WorkbookFactory.create(bis)) {
             Sheet sheet = workbook.getSheetAt(0);
-            // DEBUG
-            System.out.println("sheetName: " + sheet.getSheetName());
 
             Iterator<Row> rowIterator = sheet.iterator();
 
