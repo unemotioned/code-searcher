@@ -78,7 +78,6 @@ public class MainController {
         copyCellOnDoubleClick();
     }
 
-    // TODO: finish the edit action
     public void recordContextMenu() {
         excelData.setRowFactory(tv -> {
             TableRow<Excel> row = new TableRow<>();
@@ -87,14 +86,7 @@ public class MainController {
             MenuItem editItem = new MenuItem("Edit");
             editItem.setOnAction(e -> {
                 Excel item = row.getItem();
-                // open pop-up for editing
                 editPopup(item);
-
-                // get confirm
-
-                // change from Excel
-
-                // change from DB
             });
 
             MenuItem deleteItem = new MenuItem("Delete");

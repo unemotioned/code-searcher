@@ -9,7 +9,6 @@ public class HashService {
     HashDao dao;
 
     public HashService() {
-        super();
         dao = new HashDao();
     }
 

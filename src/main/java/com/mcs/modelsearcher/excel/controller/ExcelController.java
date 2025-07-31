@@ -1,6 +1,7 @@
 package com.mcs.modelsearcher.excel.controller;
 
 import com.mcs.modelsearcher.controller.util.Util;
+import com.mcs.modelsearcher.excel.model.handler.ExcelHandler;
 import com.mcs.modelsearcher.excel.model.service.ExcelService;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.excel.model.vo.Hierarchy;
@@ -16,13 +17,13 @@ import java.util.List;
 
 public class ExcelController {
     ExcelService eServ;
+    ExcelHandler eHan;
     FileController fCon;
-
     String excelPath;
 
     public ExcelController() {
         eServ = new ExcelService();
-
+        eHan = new ExcelHandler();
         fCon = new FileController();
         excelPath = fCon.selectPath();
     }
@@ -245,7 +246,7 @@ public class ExcelController {
     }
 
     public void writeToExcel(Excel record) {
-        eServ.writeToExcel(record);
+        eHan.writeToExcel(record);
     }
 
     public void insertToDb(Excel excel) {
@@ -262,7 +263,7 @@ public class ExcelController {
     }
 
     public void deleteFromExcel(String insertNo) {
-        eServ.deleteFromExcel(insertNo);
+        eHan.deleteFromExcel(insertNo);
     }
 
     public void deleteFromDb(String insertNo) {
@@ -275,7 +276,7 @@ public class ExcelController {
     }
 
     public void editFromExcel(Excel excel) {
-        eServ.editFromExcel(excel);
+        eHan.editFromExcel(excel);
     }
 
     public void updateFromDb(Excel excel) {

@@ -8,7 +8,6 @@ public class FileService {
     private final FileDao dao;
 
     public FileService() {
-        super();
         dao = new FileDao();
     }
 
