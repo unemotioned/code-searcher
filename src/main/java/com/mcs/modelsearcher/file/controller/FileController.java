@@ -43,7 +43,7 @@ public class FileController {
 
     private void delInvalidPath() {
         int delPathResult = fServ.delInvalidPath();
-        if (delPathResult != 0) {
+        if (delPathResult == 1) {
             System.out.println("fCon.delInvalidPath: success");
         } else {
             System.out.println("fCon.delInvalidPath: fail");

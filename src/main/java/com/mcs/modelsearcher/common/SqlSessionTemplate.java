@@ -15,7 +15,7 @@ public class SqlSessionTemplate {
             InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         } catch (Exception e) {
-            System.out.println("Error in SqlSessionFactory: " + e.getMessage());
+            System.out.println("SqlSessionTemplate.SqlSessionFactory: " + e.getMessage());
         }
     }
 
@@ -24,7 +24,7 @@ public class SqlSessionTemplate {
         try {
             session.getConnection().createStatement().execute("PRAGMA foreign_keys = ON;");
         } catch (Exception e) {
-            System.out.println("Failed to enable foreign keys: " + e.getMessage());
+            System.out.println("SqlSessionFactory.getSqlSession - while enabling foreign keys: " + e.getMessage());
         }
         return session;
     }

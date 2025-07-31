@@ -17,16 +17,16 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ExcelController {
-    ExcelService eServ;
-    ExcelHandler eHan;
     FileController fCon;
     String excelPath;
+    ExcelService eServ;
+    ExcelHandler eHan;
 
     public ExcelController() {
-        eServ = new ExcelService();
-        eHan = new ExcelHandler();
         fCon = new FileController();
         excelPath = fCon.selectPath();
+        eServ = new ExcelService();
+        eHan = new ExcelHandler();
     }
 
     public void clearDataTable() {
@@ -36,23 +36,18 @@ public class ExcelController {
 
     public void newDataTable() {
         try (FileInputStream fis = new FileInputStream(excelPath); BufferedInputStream bis = new BufferedInputStream(fis); Workbook workbook = WorkbookFactory.create(bis)) {
-            Sheet sheet = workbook.getSheetAt(0);
-
-            Iterator<Row> rowIterator = sheet.iterator();
-
+            final byte bomSheet = 0;
             final byte headerRowIndex = 4;
-
+            Sheet sheet = workbook.getSheetAt(bomSheet);
+            Iterator<Row> rowIterator = sheet.iterator();
             ArrayList<Excel> excelList = new ArrayList<>();
-
             FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
 
             while (rowIterator.hasNext()) {
                 Excel excel = new Excel();
                 Row row = rowIterator.next();
 
-                if (row.getRowNum() < headerRowIndex) {
-                    continue;
-                }
+                if (row.getRowNum() < headerRowIndex) continue;
 
                 String insertNo = getStringCellValue(row, 1);
                 if (insertNo == null || insertNo.trim().isEmpty()) continue;
@@ -108,9 +103,7 @@ public class ExcelController {
                 Hierarchy hierarchy = new Hierarchy();
                 Row row = rowIterator.next();
 
-                if (row.getRowNum() < headerRowIndex) {
-                    continue;
-                }
+                if (row.getRowNum() < headerRowIndex) continue;
 
                 hierarchy.setParent_no(getStringCellValue(row, 0));
                 hierarchy.setChild_no(getStringCellValue(row, 1));
@@ -120,9 +113,9 @@ public class ExcelController {
 
             int newHierarchyTableResult = eServ.newHierarchyTable(hList);
             if (newHierarchyTableResult == 1) {
-                System.out.println("eCon.newDataTable: success");
+                System.out.println("eCon.newHierarchyTable: success");
             } else {
-                System.out.println("eCon.newDataTable: fail");
+                System.out.println("eCon.newHierarchyTable: fail");
             }
         } catch (IOException e) {
             System.out.println("eCon.newHierarchyTable - while opening: " + e.getMessage());
@@ -219,18 +212,15 @@ public class ExcelController {
     }
 
     private String getDateCellValue(Row row) {
-        final int dateIndex = 6;
+        final byte dateIndex = 6;
         Cell cell = row.getCell(dateIndex);
 
-        if (cell == null || cell.getCellType() == CellType.BLANK) {
-            return null;
-        }
+        if (cell == null || cell.getCellType() == CellType.BLANK) return null;
 
         if (cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell)) {
             Date dateValue = cell.getDateCellValue();
             return new java.text.SimpleDateFormat("yy-MM-dd").format(dateValue);
         }
-
         return null;
     }
 
@@ -261,7 +251,7 @@ public class ExcelController {
 
     public void deleteFromDb(String insertNo) {
         int result = eServ.deleteFromDb(insertNo);
-        if (result >= 1) {
+        if (result == 1) {
             System.out.println("eCon.deleteFromDb: success");
         } else {
             System.out.println("eCon.deleteFromDb: fail");
@@ -276,6 +266,7 @@ public class ExcelController {
         String shortDate = excel.getBlueprintDate();
         String longDate = Util.formatDateToLong(shortDate);
         excel.setBlueprintDate(longDate);
+
         int result = eServ.updateFromDb(excel);
         if (result == 1) {
             System.out.println("eCon.updateFromDb: success");

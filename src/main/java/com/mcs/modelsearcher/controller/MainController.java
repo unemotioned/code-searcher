@@ -326,7 +326,7 @@ public class MainController {
     }
 
     @FXML
-    private void foobar() {
+    private void onPrintCellWidth() {
         System.out.println("Column widths:");
         for (TableColumn<Excel, ?> col : excelData.getColumns()) {
             System.out.println(col.getText() + ": " + col.getWidth());

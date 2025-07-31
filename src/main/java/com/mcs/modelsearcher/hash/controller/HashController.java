@@ -94,8 +94,8 @@ public class HashController {
     }
 
     public void sheetSpecificDBAction(String todo, int sheetIndex) {
-        int bomSheet = 0;
-        int hierarchySheet = 1;
+        final byte bomSheet = 0;
+        final byte hierarchySheet = 1;
 
         if (sheetIndex == bomSheet) {
             // To update, delete every records inside the table and insert fresh.
@@ -130,9 +130,9 @@ public class HashController {
         int hashUpdateResult = hServ.updateHash(sheetHash);
 
         if (hashUpdateResult == 1) {
-            System.out.println("HashController.updateHash(): success");
+            System.out.println("hCon.updateHash: success");
         } else {
-            System.out.println("HashController.updateHash(): fail");
+            System.out.println("hCon.updateHash: fail");
         }
     }
 
