@@ -184,9 +184,7 @@ public class MainController {
                 excelData.setItems(observableResult);
             });
 
-            searchTask.setOnFailed(event -> {
-                System.out.println("uniSearch in Thread failed");
-            });
+            searchTask.setOnFailed(event -> System.out.println("uniSearch in Thread failed"));
 
             new Thread(searchTask).start();
         });

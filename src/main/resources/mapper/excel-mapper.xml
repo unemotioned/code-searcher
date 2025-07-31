@@ -83,7 +83,7 @@
                est_price        as estPrice,
                ref_price        as refPrice,
                note             as note
-        from data
+        from data_fts
         where 1 == 1
         <foreach collection="list" item="kw">
         and (
