@@ -22,16 +22,16 @@
 
   <Tab text="검색">
     <AnchorPane prefHeight="200.0" prefWidth="200.0">
-      <Label layoutX="1719.0" layoutY="20.0" text="model-searcher Version 1.0.0"/>
+      <Label fx:id="filePathLabel" layoutX="20.0" layoutY="20.0" text="선택된 파일 없음"/>
+      <Button layoutX="20.0" layoutY="63.0" onAction="#onFileSelect" text="파일 선택"/>
+      <Button layoutX="105.0" layoutY="63.0" onAction="#onReload" text="다시 읽기"/>
       <!-- <Button onAction="#onPrintCellWidth" layoutX="685.0" layoutY="63.0"/> -->
 
       <TextField fx:id="uniSearch" layoutX="680.0" layoutY="63.0" prefHeight="26.0"
         prefWidth="559.0" promptText="통합 검색 (띄어쓰기로 키워드 구분)"/>
-      <Button layoutX="105.0" layoutY="63.0" onAction="#onReload" text="다시 읽기"/>
-      <Button layoutX="600.0" layoutY="63.0" onAction="#onInsert" text="부품 삽입"/>
+      <Button layoutX="590.0" layoutY="63.0" onAction="#onInsert" text="부품 삽입"/>
 
-      <Label fx:id="filePathLabel" layoutX="20.0" layoutY="20.0" text="선택된 파일 없음"/>
-      <Button layoutX="20.0" layoutY="63.0" onAction="#onFileSelect" text="파일 선택"/>
+      <Label layoutX="1685.0" layoutY="20.0" text="model-searcher Version 1.0.0"/>
 
       <TableView fx:id="excelData" layoutX="20.0" layoutY="138.0" prefHeight="790.0"
         prefWidth="1860.0">
