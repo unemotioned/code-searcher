@@ -30,15 +30,27 @@ public class ExcelHandler {
 
   @SuppressWarnings("Duplicates")
   public void writeToExcel(Excel record) {
-    String[] data = {record.getInsertNo(), record.getPartCode(), record.getRev(),
-        record.getApply1(), record.getApply2(), record.getBlueprintDate(),
-        record.getClientBlueprint(), record.getScan(), record.getSelfBlueprint(),
-        record.getCategory(), record.getName(), record.getSpec(), record.getMaker(),
-        record.getVendor(),
-        record.getUnitPrice() == 0 ? null : String.valueOf(record.getUnitPrice()),
-        record.getMgmtCost() == 0 ? null : String.valueOf(record.getMgmtCost()),
-        record.getEstPrice() == 0 ? null : String.valueOf(record.getEstPrice()),
-        record.getRefPrice() == 0 ? null : String.valueOf(record.getRefPrice()), record.getNote()};
+    String[] data = {
+      record.getInsertNo(),
+      record.getPartCode(),
+      record.getRev(),
+      record.getApply1(),
+      record.getApply2(),
+      record.getBlueprintDate(),
+      record.getClientBlueprint(),
+      record.getScan(),
+      record.getSelfBlueprint(),
+      record.getCategory(),
+      record.getName(),
+      record.getSpec(),
+      record.getMaker(),
+      record.getVendor(),
+      record.getUnitPrice() == 0 ? null : String.valueOf(record.getUnitPrice()),
+      record.getMgmtCost() == 0 ? null : String.valueOf(record.getMgmtCost()),
+      record.getEstPrice() == 0 ? null : String.valueOf(record.getEstPrice()),
+      record.getRefPrice() == 0 ? null : String.valueOf(record.getRefPrice()),
+      record.getNote()
+    };
 
     FileController fCon = new FileController();
     String path = fCon.selectPath();
@@ -58,9 +70,9 @@ public class ExcelHandler {
     final byte makerIndex = 11;
     final byte noteIndex = 18;
 
-    try (FileInputStream fis = new FileInputStream(
-        path); BufferedInputStream bis = new BufferedInputStream(
-        fis); Workbook workbook = WorkbookFactory.create(bis)) {
+    try (FileInputStream fis = new FileInputStream(path);
+        BufferedInputStream bis = new BufferedInputStream(fis);
+        Workbook workbook = WorkbookFactory.create(bis)) {
       Sheet sheet = workbook.getSheetAt(0);
 
       int newRowNum = findFirstEmptyRow(sheet);
@@ -80,7 +92,10 @@ public class ExcelHandler {
           setPercentCell(workbook, cell, cellStyle, data[i]);
         } else if (i >= priceStart && i <= priceEnd) {
           setPriceCell(workbook, cell, cellStyle, data[i]);
-        } else if (i == partCodeIndex || i == categoryIndex || i == specIndex || i == makerIndex
+        } else if (i == partCodeIndex
+            || i == categoryIndex
+            || i == specIndex
+            || i == makerIndex
             || i == noteIndex) {
           alignLeft(workbook, cell, cellStyle);
           cell.setCellValue(data[i]);
@@ -90,8 +105,8 @@ public class ExcelHandler {
         }
       }
 
-      try (FileOutputStream fos = new FileOutputStream(
-          path); BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+      try (FileOutputStream fos = new FileOutputStream(path);
+          BufferedOutputStream bos = new BufferedOutputStream(fos)) {
         workbook.write(bos);
         System.out.println("eHand.writeToExcel: success");
       } catch (IOException e) {
@@ -272,9 +287,9 @@ public class ExcelHandler {
     FileController fCon = new FileController();
     String path = fCon.selectPath();
 
-    try (FileInputStream fis = new FileInputStream(
-        path); BufferedInputStream bis = new BufferedInputStream(
-        fis); Workbook workbook = new HSSFWorkbook(bis)) {
+    try (FileInputStream fis = new FileInputStream(path);
+        BufferedInputStream bis = new BufferedInputStream(fis);
+        Workbook workbook = new HSSFWorkbook(bis)) {
       final byte bomSheetIndex = 0;
       final byte insertNoColIndex = 1;
       boolean rowDeleted = false;
@@ -300,8 +315,8 @@ public class ExcelHandler {
       }
 
       if (rowDeleted) {
-        try (FileOutputStream fos = new FileOutputStream(
-            path); BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+        try (FileOutputStream fos = new FileOutputStream(path);
+            BufferedOutputStream bos = new BufferedOutputStream(fos)) {
           workbook.write(bos);
           System.out.println("eHand.deleteFromExcel: success");
         } catch (IOException e) {
@@ -345,15 +360,27 @@ public class ExcelHandler {
 
   @SuppressWarnings("Duplicates")
   public void editFromExcel(Excel record) {
-    String[] data = {record.getInsertNo(), record.getPartCode(), record.getRev(),
-        record.getApply1(), record.getApply2(), record.getBlueprintDate(),
-        record.getClientBlueprint(), record.getScan(), record.getSelfBlueprint(),
-        record.getCategory(), record.getName(), record.getSpec(), record.getMaker(),
-        record.getVendor(),
-        record.getUnitPrice() == 0 ? null : String.valueOf(record.getUnitPrice()),
-        record.getMgmtCost() == 0 ? null : String.valueOf(record.getMgmtCost()),
-        record.getEstPrice() == 0 ? null : String.valueOf(record.getEstPrice()),
-        record.getRefPrice() == 0 ? null : String.valueOf(record.getRefPrice()), record.getNote()};
+    String[] data = {
+      record.getInsertNo(),
+      record.getPartCode(),
+      record.getRev(),
+      record.getApply1(),
+      record.getApply2(),
+      record.getBlueprintDate(),
+      record.getClientBlueprint(),
+      record.getScan(),
+      record.getSelfBlueprint(),
+      record.getCategory(),
+      record.getName(),
+      record.getSpec(),
+      record.getMaker(),
+      record.getVendor(),
+      record.getUnitPrice() == 0 ? null : String.valueOf(record.getUnitPrice()),
+      record.getMgmtCost() == 0 ? null : String.valueOf(record.getMgmtCost()),
+      record.getEstPrice() == 0 ? null : String.valueOf(record.getEstPrice()),
+      record.getRefPrice() == 0 ? null : String.valueOf(record.getRefPrice()),
+      record.getNote()
+    };
 
     FileController fCon = new FileController();
     String path = fCon.selectPath();
@@ -371,9 +398,9 @@ public class ExcelHandler {
     final int makerIndex = 11;
     final int noteIndex = 18;
 
-    try (FileInputStream fis = new FileInputStream(
-        path); BufferedInputStream bis = new BufferedInputStream(
-        fis); Workbook workbook = WorkbookFactory.create(bis)) {
+    try (FileInputStream fis = new FileInputStream(path);
+        BufferedInputStream bis = new BufferedInputStream(fis);
+        Workbook workbook = WorkbookFactory.create(bis)) {
       final byte bomSheet = 0;
       final byte startOfData = 5;
       Sheet sheet = workbook.getSheetAt(bomSheet);
@@ -412,7 +439,10 @@ public class ExcelHandler {
             setPercentCell(workbook, targetCell, baseStyle, data[j]);
           } else if (j >= priceStart && j <= priceEnd) {
             setPriceCell(workbook, targetCell, baseStyle, data[j]);
-          } else if (j == partCodeIndex || j == categoryIndex || j == specIndex || j == makerIndex
+          } else if (j == partCodeIndex
+              || j == categoryIndex
+              || j == specIndex
+              || j == makerIndex
               || j == noteIndex) {
             alignLeft(workbook, targetCell, baseStyle);
             targetCell.setCellValue(data[j]);
@@ -427,8 +457,8 @@ public class ExcelHandler {
       }
 
       if (updated) {
-        try (FileOutputStream fos = new FileOutputStream(
-            path); BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+        try (FileOutputStream fos = new FileOutputStream(path);
+            BufferedOutputStream bos = new BufferedOutputStream(fos)) {
           workbook.write(bos);
           System.out.println("eHand.editFromExcel - success " + record.getInsertNo());
         } catch (IOException e) {

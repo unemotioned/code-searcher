@@ -34,9 +34,9 @@ public class HashController {
   }
 
   public void performHash() {
-    try (FileInputStream fis = new FileInputStream(
-        path); BufferedInputStream bis = new BufferedInputStream(
-        fis); Workbook workbook = WorkbookFactory.create(bis)) {
+    try (FileInputStream fis = new FileInputStream(path);
+        BufferedInputStream bis = new BufferedInputStream(fis);
+        Workbook workbook = WorkbookFactory.create(bis)) {
       for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
         Sheet sheet = workbook.getSheetAt(i);
         StringBuilder combinedData = combineCells(sheet);

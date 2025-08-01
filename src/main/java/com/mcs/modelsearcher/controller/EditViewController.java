@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 
 public class EditViewController {
 
-  // @formatter:off
   @FXML private TextField insertNo;
   @FXML private TextField partCode;
   @FXML private TextField rev;
@@ -29,7 +28,6 @@ public class EditViewController {
   @FXML private TextField estPrice;
   @FXML private TextField refPrice;
   @FXML private TextField note;
-  // @formatter:on
 
   private Stage popupStage;
 

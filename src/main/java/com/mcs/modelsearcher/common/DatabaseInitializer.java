@@ -15,35 +15,36 @@ public class DatabaseInitializer {
   private static final String DB_PATH = DB_DIR + File.separator + "sqlite.db";
   private static final String JDBC_URL = "jdbc:sqlite:" + DB_PATH;
 
-  private static final String SCHEMA_SQL = """
+  private static final String SCHEMA_SQL =
+      """
       drop table if exists file;
       drop table if exists hash;
       drop table if exists data;
       drop table if exists hierarchy;
-      
+
       drop table if exists data_fts;
       drop trigger if exists data_ai;
       drop trigger if exists data_ad;
       drop trigger if exists data_au;
-      
-      
+
+
       create table file
       (
           file_path text
       );
-      
+
       create table hash
       (
           sheet text,
           hash  text
       );
-      
+
       create table hierarchy
       (
           parent_no text references data (insert_no),
           child_no  text references data (insert_no)
       );
-      
+
       create table data
       (
           insert_no        text primary key,
@@ -66,8 +67,8 @@ public class DatabaseInitializer {
           ref_price        integer,
           note             text
       );
-      
-      
+
+
       create virtual table data_fts using fts5
       (
           insert_no,
@@ -90,7 +91,7 @@ public class DatabaseInitializer {
           ref_price unindexed,
           note
       );
-      
+
       -- after insert
       create trigger data_ai
           after insert
@@ -105,7 +106,7 @@ public class DatabaseInitializer {
                   new.spec, new.maker, new.vendor,
                   new.unit_price, new.mgmt_cost, new.est_price, new.ref_price, new.note);
       end;
-      
+
       -- after delete
       create trigger data_ad
           after delete
@@ -113,7 +114,7 @@ public class DatabaseInitializer {
       begin
           delete from data_fts where insert_no = old.insert_no;
       end;
-      
+
       -- after update
       create trigger data_au
           after update

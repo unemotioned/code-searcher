@@ -44,7 +44,6 @@ import lombok.Setter;
 
 public class MainController {
 
-  // @formatter:off
   @FXML private Label filePathLabel;
 
   @FXML public TextField uniSearch;
@@ -72,7 +71,6 @@ public class MainController {
 
   @Setter FileController fileController;
   @Setter private Stage fileChooserStage;
-  // @formatter:on
 
   ExcelController eCon;
   HashController hCon;
@@ -94,43 +92,49 @@ public class MainController {
   }
 
   public void recordContextMenu() {
-    excelData.setRowFactory(tv -> {
-      TableRow<Excel> row = new TableRow<>();
-      ContextMenu contextMenu = new ContextMenu();
+    excelData.setRowFactory(
+        tv -> {
+          TableRow<Excel> row = new TableRow<>();
+          ContextMenu contextMenu = new ContextMenu();
 
-      MenuItem editItem = new MenuItem("수정");
-      editItem.setOnAction(e -> {
-        Excel item = row.getItem();
-        editPopup(item);
-        afterMakingChange();
-      });
+          MenuItem editItem = new MenuItem("수정");
+          editItem.setOnAction(
+              e -> {
+                Excel item = row.getItem();
+                editPopup(item);
+                afterMakingChange();
+              });
 
-      MenuItem deleteItem = new MenuItem("삭제");
-      deleteItem.setOnAction(e -> {
-        Excel item = row.getItem();
-        String insertNo = item.getInsertNo();
+          MenuItem deleteItem = new MenuItem("삭제");
+          deleteItem.setOnAction(
+              e -> {
+                Excel item = row.getItem();
+                String insertNo = item.getInsertNo();
 
-        boolean isDeleteConform = showDeleteConfirmation(item);
-        if (isDeleteConform) {
-          eCon.deleteFromExcel(insertNo);
-          eCon.deleteFromDb(insertNo);
-          afterMakingChange();
-        }
-      });
+                boolean isDeleteConform = showDeleteConfirmation(item);
+                if (isDeleteConform) {
+                  eCon.deleteFromExcel(insertNo);
+                  eCon.deleteFromDb(insertNo);
+                  afterMakingChange();
+                }
+              });
 
-      contextMenu.getItems().addAll(editItem, deleteItem);
+          contextMenu.getItems().addAll(editItem, deleteItem);
 
-      row.contextMenuProperty()
-          .bind(Bindings.when(row.emptyProperty()).then((ContextMenu) null).otherwise(contextMenu));
+          row.contextMenuProperty()
+              .bind(
+                  Bindings.when(row.emptyProperty())
+                      .then((ContextMenu) null)
+                      .otherwise(contextMenu));
 
-      return row;
-    });
+          return row;
+        });
   }
 
   private void editPopup(Excel item) {
     try {
-      FXMLLoader loader = new FXMLLoader(
-          getClass().getResource("/com/mcs/modelsearcher/edit-view.fxml"));
+      FXMLLoader loader =
+          new FXMLLoader(getClass().getResource("/com/mcs/modelsearcher/edit-view.fxml"));
       Parent root = loader.load();
       EditViewController editCon = loader.getController();
 
@@ -139,8 +143,12 @@ public class MainController {
       editCon.initialize(item);
 
       Scene scene = new Scene(root);
-      scene.getStylesheets().add(Objects.requireNonNull(
-          getClass().getResource("/com/mcs/modelsearcher/style/main-view.css")).toExternalForm());
+      scene
+          .getStylesheets()
+          .add(
+              Objects.requireNonNull(
+                      getClass().getResource("/com/mcs/modelsearcher/style/main-view.css"))
+                  .toExternalForm());
 
       editPopupStage.setScene(scene);
       editPopupStage.initModality(Modality.APPLICATION_MODAL); // disable main-view
@@ -148,7 +156,6 @@ public class MainController {
     } catch (IOException e) {
       System.out.println("Error opening edit popup: " + e.getMessage());
     }
-
   }
 
   public void errorModal(String message) {
@@ -194,40 +201,46 @@ public class MainController {
   }
 
   private void copyCellOnDoubleClick() {
-    excelData.setOnMouseClicked(event -> {
-      if (event.getClickCount() == 2) {
-        TablePosition<?, ?> position = excelData.getSelectionModel().getSelectedCells().getFirst();
-        int row = position.getRow();
-        int column = position.getColumn();
+    excelData.setOnMouseClicked(
+        event -> {
+          if (event.getClickCount() == 2) {
+            TablePosition<?, ?> position =
+                excelData.getSelectionModel().getSelectedCells().getFirst();
+            int row = position.getRow();
+            int column = position.getColumn();
 
-        Object cellData = excelData.getColumns().get(column).getCellData(row);
+            Object cellData = excelData.getColumns().get(column).getCellData(row);
 
-        System.out.println("Clicked Cell Value: " + cellData);
+            System.out.println("Clicked Cell Value: " + cellData);
 
-        if (cellData != null) {
-          final Clipboard clipboard = Clipboard.getSystemClipboard();
-          final ClipboardContent content = new ClipboardContent();
-          content.putString(cellData.toString());
-          clipboard.setContent(content);
-        }
-      }
-    });
+            if (cellData != null) {
+              final Clipboard clipboard = Clipboard.getSystemClipboard();
+              final ClipboardContent content = new ClipboardContent();
+              content.putString(cellData.toString());
+              clipboard.setContent(content);
+            }
+          }
+        });
   }
 
   private void uniSearch() {
-    uniSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-      triggerSearch(newValue);
-    });
+    uniSearch
+        .textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              triggerSearch(newValue);
+            });
   }
 
   private void triggerSearch(String keyword) {
     Task<List<Excel>> searchTask = getListTask(keyword);
 
-    searchTask.setOnSucceeded(event -> {
-      List<Excel> results = searchTask.getValue();
-      ObservableList<Excel> observableResult = FXCollections.observableArrayList(results);
-      excelData.setItems(observableResult);
-    });
+    searchTask.setOnSucceeded(
+        event -> {
+          List<Excel> results = searchTask.getValue();
+          ObservableList<Excel> observableResult = FXCollections.observableArrayList(results);
+          excelData.setItems(observableResult);
+        });
 
     searchTask.setOnFailed(event -> System.out.println("uniSearch in Thread failed"));
 
@@ -276,8 +289,8 @@ public class MainController {
   @FXML
   public void onInsert() {
     try {
-      FXMLLoader loader = new FXMLLoader(
-          getClass().getResource("/com/mcs/modelsearcher/insert-view.fxml"));
+      FXMLLoader loader =
+          new FXMLLoader(getClass().getResource("/com/mcs/modelsearcher/insert-view.fxml"));
       Parent root = loader.load();
       InsertViewController insertCon = loader.getController();
 
@@ -285,8 +298,12 @@ public class MainController {
       insertCon.setStage(insertPopupStage);
 
       Scene scene = new Scene(root);
-      scene.getStylesheets().add(Objects.requireNonNull(
-          getClass().getResource("/com/mcs/modelsearcher/style/main-view.css")).toExternalForm());
+      scene
+          .getStylesheets()
+          .add(
+              Objects.requireNonNull(
+                      getClass().getResource("/com/mcs/modelsearcher/style/main-view.css"))
+                  .toExternalForm());
 
       insertPopupStage.setScene(scene);
       insertPopupStage.initModality(Modality.APPLICATION_MODAL); // disable main-view
@@ -354,31 +371,35 @@ public class MainController {
 
   private <T extends Number> void setPriceColumnFormatted(TableColumn<Excel, T> column) {
     NumberFormat nf = NumberFormat.getInstance();
-    column.setCellFactory(col -> new TableCell<>() {
-      @Override
-      protected void updateItem(T item, boolean empty) {
-        super.updateItem(item, empty);
-        if (empty || item == null || item.longValue() == 0L) {
-          setText("");
-        } else {
-          setText(nf.format(item));
-        }
-      }
-    });
+    column.setCellFactory(
+        col ->
+            new TableCell<>() {
+              @Override
+              protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null || item.longValue() == 0L) {
+                  setText("");
+                } else {
+                  setText(nf.format(item));
+                }
+              }
+            });
   }
 
   private <T extends Number> void setPercentColumnEmptyIfZero(TableColumn<Excel, T> column) {
-    column.setCellFactory(col -> new TableCell<>() {
-      @Override
-      protected void updateItem(T item, boolean empty) {
-        super.updateItem(item, empty);
-        if (empty || item == null || item.intValue() == 0) {
-          setText("");
-        } else {
-          setText(item + "%");
-        }
-      }
-    });
+    column.setCellFactory(
+        col ->
+            new TableCell<>() {
+              @Override
+              protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null || item.intValue() == 0) {
+                  setText("");
+                } else {
+                  setText(item + "%");
+                }
+              }
+            });
   }
 
   @FXML

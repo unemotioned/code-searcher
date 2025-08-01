@@ -52,7 +52,8 @@ public class FileController {
 
   private String chooseFile(Stage stage) {
     FileChooser fileChooser = new FileChooser();
-    fileChooser.getExtensionFilters()
+    fileChooser
+        .getExtensionFilters()
         .add(new FileChooser.ExtensionFilter("Excel Files", "*.xls", "*.xlsx"));
 
     File file = fileChooser.showOpenDialog(stage);

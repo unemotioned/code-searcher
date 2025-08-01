@@ -43,9 +43,9 @@ public class ExcelController {
   }
 
   public void newDataTable() {
-    try (FileInputStream fis = new FileInputStream(
-        excelPath); BufferedInputStream bis = new BufferedInputStream(
-        fis); Workbook workbook = WorkbookFactory.create(bis)) {
+    try (FileInputStream fis = new FileInputStream(excelPath);
+        BufferedInputStream bis = new BufferedInputStream(fis);
+        Workbook workbook = WorkbookFactory.create(bis)) {
       final byte bomSheet = 0;
       final byte headerRowIndex = 4;
       Sheet sheet = workbook.getSheetAt(bomSheet);
@@ -106,9 +106,9 @@ public class ExcelController {
   }
 
   public void newHierarchyTable() {
-    try (FileInputStream fis = new FileInputStream(
-        excelPath); BufferedInputStream bis = new BufferedInputStream(
-        fis); Workbook workbook = WorkbookFactory.create(bis)) {
+    try (FileInputStream fis = new FileInputStream(excelPath);
+        BufferedInputStream bis = new BufferedInputStream(fis);
+        Workbook workbook = WorkbookFactory.create(bis)) {
       final byte hierarchySheet = 1;
       final byte headerRowIndex = 1;
       Sheet sheet = workbook.getSheetAt(hierarchySheet);

@@ -16,8 +16,8 @@ public class SqlSessionTemplate {
   static {
     try {
       // Resolve full DB path
-      String dbPath = Paths.get(System.getProperty("user.home"), ".model-searcher", "sqlite.db")
-          .toString();
+      String dbPath =
+          Paths.get(System.getProperty("user.home"), ".model-searcher", "sqlite.db").toString();
 
       // Inject it into mybatis-config.xml as a property
       Properties props = new Properties();

@@ -22,9 +22,12 @@ public class ModelSearcher extends Application {
 
     FXMLLoader fxmlLoader = new FXMLLoader(ModelSearcher.class.getResource("main-view.fxml"));
     Scene scene = new Scene(fxmlLoader.load());
-    scene.getStylesheets().add(
-        Objects.requireNonNull(getClass().getResource("/com/mcs/modelsearcher/style/main-view.css"))
-            .toExternalForm());
+    scene
+        .getStylesheets()
+        .add(
+            Objects.requireNonNull(
+                    getClass().getResource("/com/mcs/modelsearcher/style/main-view.css"))
+                .toExternalForm());
 
     // Get the controller and pass the stage
     MainController con = fxmlLoader.getController();
@@ -48,3 +51,4 @@ public class ModelSearcher extends Application {
     Platform.exit();
   }
 }
+
