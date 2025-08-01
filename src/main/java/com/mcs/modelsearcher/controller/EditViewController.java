@@ -84,7 +84,7 @@ public class EditViewController {
     excel.setApply1(apply1.getText());
     excel.setApply2(apply2.getText());
     excel.setBlueprintDate(blueprintDate.getText());
-    excel.setBlueprintDate(blueprintDate.getText());
+    excel.setClientBlueprint(clientBlueprint.getText());
     excel.setScan(scan.getText());
     excel.setSelfBlueprint(selfBlueprint.getText());
     excel.setCategory(category.getText());
