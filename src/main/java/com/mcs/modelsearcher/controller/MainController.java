@@ -100,6 +100,7 @@ public class MainController {
       editItem.setOnAction(e -> {
         Excel item = row.getItem();
         editPopup(item);
+        afterMakingChange();
       });
 
       MenuItem deleteItem = new MenuItem("삭제");
@@ -111,6 +112,7 @@ public class MainController {
         if (isDeleteConform) {
           eCon.deleteFromExcel(insertNo);
           eCon.deleteFromDb(insertNo);
+          afterMakingChange();
         }
       });
 
@@ -191,6 +193,7 @@ public class MainController {
     });
   }
 
+  /*
   private void uniSearch() {
     uniSearch.textProperty().addListener((observable, oldValue, newValue) -> {
       Task<List<Excel>> searchTask = getListTask();
@@ -206,8 +209,38 @@ public class MainController {
       new Thread(searchTask).start();
     });
   }
+  */
 
-  private Task<List<Excel>> getListTask() {
+  private void uniSearch() {
+    uniSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+      triggerSearch(newValue);
+    });
+  }
+
+  private void triggerSearch(String keyword) {
+    Task<List<Excel>> searchTask = getListTask(keyword);
+
+    searchTask.setOnSucceeded(event -> {
+      List<Excel> results = searchTask.getValue();
+      ObservableList<Excel> observableResult = FXCollections.observableArrayList(results);
+      excelData.setItems(observableResult);
+    });
+
+    searchTask.setOnFailed(event -> System.out.println("uniSearch in Thread failed"));
+
+    new Thread(searchTask).start();
+  }
+
+  public void afterMakingChange() {
+    String keyword = uniSearch.getText().trim();
+    if (!keyword.isEmpty()) {
+      triggerSearch(keyword);
+    } else {
+      excelData.setItems(FXCollections.observableArrayList());
+    }
+  }
+
+  private Task<List<Excel>> getListTask(String keyword) {
     String input = uniSearch.getText().trim();
     StringTokenizer tokenizer = new StringTokenizer(input);
 
@@ -258,6 +291,7 @@ public class MainController {
     } catch (IOException e) {
       System.out.println("Error opening insert popup: " + e.getMessage());
     }
+    afterMakingChange();
   }
 
   public void refreshFilePathLabel() {
