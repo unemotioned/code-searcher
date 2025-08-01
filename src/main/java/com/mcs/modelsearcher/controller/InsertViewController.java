@@ -64,6 +64,7 @@ public class InsertViewController {
     insertNo.setText(getLastInsertNo());
     rev.setText("000");
 
+    /*
     // for testing
     partCode.setText("D400-59798A");
     apply1.setText("CLT Handler");
@@ -78,6 +79,7 @@ public class InsertViewController {
     mgmtCost.setText("10");
     estPrice.setText("7500000");
     note.setText("(주의) foobar");
+     */
   }
 
   public String getLastInsertNo() {
@@ -132,9 +134,9 @@ public class InsertViewController {
     excel.setApply1(apply1.getText());
     excel.setApply2(apply2.getText());
     excel.setBlueprintDate(blueprintDate.getText());
-    excel.setClientBlueprint(clientBlueprint.getText());
-    excel.setScan(scan.getText());
-    excel.setSelfBlueprint(selfBlueprint.getText());
+    excel.setClientBlueprint(util.bluePrintAndScan(clientBlueprint));
+    excel.setScan(util.bluePrintAndScan(scan));
+    excel.setSelfBlueprint(util.bluePrintAndScan(selfBlueprint));
     excel.setCategory(category.getText());
     excel.setName(name.getText());
     excel.setSpec(spec.getText());

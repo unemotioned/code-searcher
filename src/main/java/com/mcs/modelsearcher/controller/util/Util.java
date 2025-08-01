@@ -53,4 +53,14 @@ public class Util {
     }
     return 0;
   }
+
+  public String bluePrintAndScan(TextField tf) {
+    if (tf == null) {
+      return null;
+    }
+    if (tf != null && tf.getText().equals("0")) {
+      return "○";
+    }
+    return null;
+  }
 }
