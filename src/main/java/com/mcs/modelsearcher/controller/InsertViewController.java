@@ -63,23 +63,6 @@ public class InsertViewController {
   public void initialize() {
     insertNo.setText(getLastInsertNo());
     rev.setText("000");
-
-    /*
-    // for testing
-    partCode.setText("D400-59798A");
-    apply1.setText("CLT Handler");
-    blueprintDate.setText("250731");
-    clientBlueprint.setText("○");
-    category.setText("Camera");
-    name.setText("LED-CLT HANDLER BAR LIGHT L");
-    spec.setText("MLC-C24B-350W");
-    maker.setText("BASLER");
-    vendor.setText("바슬러코리아");
-    unitPrice.setText("75000");
-    mgmtCost.setText("10");
-    estPrice.setText("7500000");
-    note.setText("(주의) foobar");
-     */
   }
 
   public String getLastInsertNo() {
