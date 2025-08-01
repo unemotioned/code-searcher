@@ -231,5 +231,16 @@
         </executions>
       </plugin>
     </plugins>
+
+    <!-- to include the mybatis-config -->
+      <resources>
+        <resource>
+          <directory>src/main/resources</directory>
+          <includes>
+            <include>**/*.xml</include>
+            <include>**/*.sql</include>
+          </includes>
+        </resource>
+      </resources>
   </build>
 </project>
