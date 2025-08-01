@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class Hierarchy {
-    private String parent_no;
-    private String child_no;
+
+  private String parent_no;
+  private String child_no;
 }

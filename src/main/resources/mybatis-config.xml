@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration
-        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
-    <settings>
-        <setting name="jdbcTypeForNull" value="NULL"/>
-    </settings>
+  <settings>
+    <setting name="jdbcTypeForNull" value="NULL"/>
+  </settings>
 
 
-    <typeAliases>
-        <typeAlias alias="filePath" type="com.mcs.modelsearcher.file.model.vo.FilePath"/>
-        <typeAlias alias="sheetHash" type="com.mcs.modelsearcher.hash.model.vo.SheetHash"/>
-        <typeAlias alias="excel" type="com.mcs.modelsearcher.excel.model.vo.Excel"/>
-        <typeAlias alias="hierarchy" type="com.mcs.modelsearcher.excel.model.vo.Hierarchy"/>
-    </typeAliases>
+  <typeAliases>
+    <typeAlias alias="filePath" type="com.mcs.modelsearcher.file.model.vo.FilePath"/>
+    <typeAlias alias="sheetHash" type="com.mcs.modelsearcher.hash.model.vo.SheetHash"/>
+    <typeAlias alias="excel" type="com.mcs.modelsearcher.excel.model.vo.Excel"/>
+    <typeAlias alias="hierarchy" type="com.mcs.modelsearcher.excel.model.vo.Hierarchy"/>
+  </typeAliases>
 
-    <environments default="dev">
-        <environment id="dev">
-            <transactionManager type="JDBC"/>
-            <dataSource type="UNPOOLED">
-                <property name="driver" value="org.sqlite.JDBC"/>
-                <property name="url" value="jdbc:sqlite:db/sqlite.db"/>
-            </dataSource>
-        </environment>
-    </environments>
+  <environments default="dev">
+    <environment id="dev">
+      <transactionManager type="JDBC"/>
+      <dataSource type="UNPOOLED">
+        <property name="driver" value="org.sqlite.JDBC"/>
+        <property name="url" value="jdbc:sqlite:db/sqlite.db"/>
+      </dataSource>
+    </environment>
+  </environments>
 
-    <mappers>
-        <mapper resource="mapper/file-mapper.xml"/>
-        <mapper resource="mapper/hash-mapper.xml"/>
-        <mapper resource="mapper/excel-mapper.xml"/>
-    </mappers>
+  <mappers>
+    <mapper resource="mapper/file-mapper.xml"/>
+    <mapper resource="mapper/hash-mapper.xml"/>
+    <mapper resource="mapper/excel-mapper.xml"/>
+  </mappers>
 </configuration>

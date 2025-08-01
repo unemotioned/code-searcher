@@ -4,153 +4,160 @@ import com.mcs.modelsearcher.controller.util.Util;
 import com.mcs.modelsearcher.excel.controller.ExcelController;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.file.controller.FileController;
+import java.io.FileInputStream;
+import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.apache.poi.ss.usermodel.*;
-
-import java.io.FileInputStream;
-import java.io.IOException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 public class InsertViewController {
-    // @formatter:off
-    @FXML private TextField insertNo;
-    @FXML private TextField partCode;
-    @FXML private TextField rev;
-    @FXML private TextField apply1;
-    @FXML private TextField apply2;
-    @FXML private TextField blueprintDate;
-    @FXML private TextField clientBlueprint;
-    @FXML private TextField scan;
-    @FXML private TextField selfBlueprint;
-    @FXML private TextField category;
-    @FXML private TextField name;
-    @FXML private TextField spec;
-    @FXML private TextField maker;
-    @FXML private TextField vendor;
-    @FXML private TextField unitPrice;
-    @FXML private TextField mgmtCost;
-    @FXML private TextField estPrice;
-    @FXML private TextField refPrice;
-    @FXML private TextField note;
-    // @formatter:on
 
-    Excel excel;
-    ExcelController eCon;
-    FileController fCon;
-    String filePath;
-    Util util;
+  // @formatter:off
+  @FXML private TextField insertNo;
+  @FXML private TextField partCode;
+  @FXML private TextField rev;
+  @FXML private TextField apply1;
+  @FXML private TextField apply2;
+  @FXML private TextField blueprintDate;
+  @FXML private TextField clientBlueprint;
+  @FXML private TextField scan;
+  @FXML private TextField selfBlueprint;
+  @FXML private TextField category;
+  @FXML private TextField name;
+  @FXML private TextField spec;
+  @FXML private TextField maker;
+  @FXML private TextField vendor;
+  @FXML private TextField unitPrice;
+  @FXML private TextField mgmtCost;
+  @FXML private TextField estPrice;
+  @FXML private TextField refPrice;
+  @FXML private TextField note;
+  // @formatter:on
 
-    private Stage popupStage;
+  Excel excel;
+  ExcelController eCon;
+  FileController fCon;
+  String filePath;
+  Util util;
 
-    public InsertViewController() {
-        eCon = new ExcelController();
-        fCon = new FileController();
-        filePath = fCon.selectPath();
-        util = new Util();
-    }
+  private Stage popupStage;
 
-    public void setStage(Stage stage) {
-        this.popupStage = stage;
-    }
+  public InsertViewController() {
+    eCon = new ExcelController();
+    fCon = new FileController();
+    filePath = fCon.selectPath();
+    util = new Util();
+  }
 
-    @FXML
-    public void initialize() {
-        insertNo.setText(getLastInsertNo());
-        rev.setText("000");
+  public void setStage(Stage stage) {
+    this.popupStage = stage;
+  }
 
-        // for testing
-        partCode.setText("D400-59798A");
-        apply1.setText("CLT Handler");
-        blueprintDate.setText("250731");
-        clientBlueprint.setText("○");
-        category.setText("Camera");
-        name.setText("LED-CLT HANDLER BAR LIGHT L");
-        spec.setText("MLC-C24B-350W");
-        maker.setText("BASLER");
-        vendor.setText("바슬러코리아");
-        unitPrice.setText("75000");
-        mgmtCost.setText("10");
-        estPrice.setText("7500000");
-        note.setText("(주의) foobar");
-    }
+  @FXML
+  public void initialize() {
+    insertNo.setText(getLastInsertNo());
+    rev.setText("000");
 
-    public String getLastInsertNo() {
-        String lastInsertNo = "";
-        final byte bomSheet = 0;
-        final byte insertNoCellIndex = 1;
+    // for testing
+    partCode.setText("D400-59798A");
+    apply1.setText("CLT Handler");
+    blueprintDate.setText("250731");
+    clientBlueprint.setText("○");
+    category.setText("Camera");
+    name.setText("LED-CLT HANDLER BAR LIGHT L");
+    spec.setText("MLC-C24B-350W");
+    maker.setText("BASLER");
+    vendor.setText("바슬러코리아");
+    unitPrice.setText("75000");
+    mgmtCost.setText("10");
+    estPrice.setText("7500000");
+    note.setText("(주의) foobar");
+  }
 
-        try (FileInputStream fis = new FileInputStream(filePath); Workbook workbook = WorkbookFactory.create(fis)) {
-            Sheet sheet = workbook.getSheetAt(bomSheet);
+  public String getLastInsertNo() {
+    String lastInsertNo = "";
+    final byte bomSheet = 0;
+    final byte insertNoCellIndex = 1;
 
-            for (Row row : sheet) {
-                Cell cell = row.getCell(insertNoCellIndex);
+    try (FileInputStream fis = new FileInputStream(
+        filePath); Workbook workbook = WorkbookFactory.create(fis)) {
+      Sheet sheet = workbook.getSheetAt(bomSheet);
 
-                if (cell != null && cell.getCellType() != CellType.BLANK) {
-                    lastInsertNo = cell.toString();
-                }
-            }
+      for (Row row : sheet) {
+        Cell cell = row.getCell(insertNoCellIndex);
 
-        } catch (IOException e) {
-            System.out.println("insertCon.getLastInsertNo - while opening: " + e.getMessage());
+        if (cell != null && cell.getCellType() != CellType.BLANK) {
+          lastInsertNo = cell.toString();
         }
-        return String.valueOf(fabricateInsertNo(lastInsertNo));
+      }
+
+    } catch (IOException e) {
+      System.out.println("insertCon.getLastInsertNo - while opening: " + e.getMessage());
+    }
+    return String.valueOf(fabricateInsertNo(lastInsertNo));
+  }
+
+  private int fabricateInsertNo(String lastInsertNo) {
+    if (lastInsertNo == null || lastInsertNo.isEmpty()) {
+      return -1;
     }
 
-    private int fabricateInsertNo(String lastInsertNo) {
-        if (lastInsertNo == null || lastInsertNo.isEmpty()) {
-            return -1;
-        }
+    try {
+      int dashIndex = lastInsertNo.indexOf('-');
+      String numberPart =
+          (dashIndex != -1) ? lastInsertNo.substring(0, dashIndex).trim() : lastInsertNo.trim();
 
-        try {
-            int dashIndex = lastInsertNo.indexOf('-');
-            String numberPart = (dashIndex != -1) ? lastInsertNo.substring(0, dashIndex).trim() : lastInsertNo.trim();
+      double parsedDouble = Double.parseDouble(numberPart);
+      return (int) parsedDouble + 1;
 
-            double parsedDouble = Double.parseDouble(numberPart);
-            return (int) parsedDouble + 1;
-
-        } catch (NumberFormatException e) {
-            System.out.println("insertCon.fabricateInsertNo: " + e.getMessage());
-            return -1;
-        }
+    } catch (NumberFormatException e) {
+      System.out.println("insertCon.fabricateInsertNo: " + e.getMessage());
+      return -1;
     }
+  }
 
-    @FXML
-    @SuppressWarnings("Duplicates")
-    public void onSaveClick() {
-        excel = new Excel();
-        excel.setInsertNo(insertNo.getText());
-        excel.setPartCode(partCode.getText());
-        excel.setRev(rev.getText());
-        excel.setApply1(apply1.getText());
-        excel.setApply2(apply2.getText());
-        excel.setBlueprintDate(blueprintDate.getText());
-        excel.setClientBlueprint(clientBlueprint.getText());
-        excel.setScan(scan.getText());
-        excel.setSelfBlueprint(selfBlueprint.getText());
-        excel.setCategory(category.getText());
-        excel.setName(name.getText());
-        excel.setSpec(spec.getText());
-        excel.setMaker(maker.getText());
-        excel.setVendor(vendor.getText());
-        excel.setUnitPrice(util.priceInputToInt(unitPrice));
-        excel.setMgmtCost(util.priceInputToInt(mgmtCost));
-        excel.setEstPrice(util.priceInputToInt(estPrice));
-        excel.setRefPrice(util.priceInputToInt(refPrice));
-        excel.setNote(note.getText());
+  @FXML
+  @SuppressWarnings("Duplicates")
+  public void onSaveClick() {
+    excel = new Excel();
+    excel.setInsertNo(insertNo.getText());
+    excel.setPartCode(partCode.getText());
+    excel.setRev(rev.getText());
+    excel.setApply1(apply1.getText());
+    excel.setApply2(apply2.getText());
+    excel.setBlueprintDate(blueprintDate.getText());
+    excel.setClientBlueprint(clientBlueprint.getText());
+    excel.setScan(scan.getText());
+    excel.setSelfBlueprint(selfBlueprint.getText());
+    excel.setCategory(category.getText());
+    excel.setName(name.getText());
+    excel.setSpec(spec.getText());
+    excel.setMaker(maker.getText());
+    excel.setVendor(vendor.getText());
+    excel.setUnitPrice(util.priceInputToInt(unitPrice));
+    excel.setMgmtCost(util.priceInputToInt(mgmtCost));
+    excel.setEstPrice(util.priceInputToInt(estPrice));
+    excel.setRefPrice(util.priceInputToInt(refPrice));
+    excel.setNote(note.getText());
 
-        eCon.writeToExcel(excel);
-        eCon.insertToDb(excel);
+    eCon.writeToExcel(excel);
+    eCon.insertToDb(excel);
 
-        if (popupStage != null) {
-            popupStage.close();
-        }
+    if (popupStage != null) {
+      popupStage.close();
     }
+  }
 
-    @FXML
-    public void onCancel() {
-        if (popupStage != null) {
-            popupStage.close();
-        }
+  @FXML
+  public void onCancel() {
+    if (popupStage != null) {
+      popupStage.close();
     }
+  }
 }

@@ -1,12 +1,12 @@
 * {
-    -fx-font-family: "돋움";
-    -fx-font-size: 14px;
+  -fx-font-family: "돋움";
+  -fx-font-size: 14px;
 }
 
 .table-cell.center-align {
-    -fx-alignment: CENTER;
+  -fx-alignment: CENTER;
 }
 
 .table-cell.right-align {
-    -fx-alignment: CENTER-RIGHT;
+  -fx-alignment: CENTER-RIGHT;
 }

@@ -1,184 +1,184 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="excel">
 
-    <delete id="clearDataTable">
-        delete
-        from data
-        where 1 == 1;
-    </delete>
+  <delete id="clearDataTable">
+    delete
+    from data
+    where 1 == 1;
+  </delete>
 
-    <insert id="newDataTable" parameterType="excel">
-        insert into data (insert_no,
-                          part_code,
-                          rev,
-                          apply_1,
-                          apply_2,
-                          blueprint_date,
-                          client_blueprint,
-                          scan,
-                          self_blueprint,
-                          category,
-                          name,
-                          spec,
-                          maker,
-                          vendor,
-                          unit_price,
-                          mgmt_cost,
-                          est_price,
-                          ref_price,
-                          note)
-        values (#{insertNo},
-                #{partCode},
-                #{rev},
-                #{apply1},
-                #{apply2},
-                #{blueprintDate},
-                #{clientBlueprint},
-                #{scan},
-                #{selfBlueprint},
-                #{category},
-                #{name},
-                #{spec},
-                #{maker},
-                #{vendor},
-                #{unitPrice},
-                #{mgmtCost},
-                #{estPrice},
-                #{refPrice},
-                #{note})
-    </insert>
+  <insert id="newDataTable" parameterType="excel">
+    insert into data (insert_no,
+                      part_code,
+                      rev,
+                      apply_1,
+                      apply_2,
+                      blueprint_date,
+                      client_blueprint,
+                      scan,
+                      self_blueprint,
+                      category,
+                      name,
+                      spec,
+                      maker,
+                      vendor,
+                      unit_price,
+                      mgmt_cost,
+                      est_price,
+                      ref_price,
+                      note)
+    values (#{insertNo},
+            #{partCode},
+            #{rev},
+            #{apply1},
+            #{apply2},
+            #{blueprintDate},
+            #{clientBlueprint},
+            #{scan},
+            #{selfBlueprint},
+            #{category},
+            #{name},
+            #{spec},
+            #{maker},
+            #{vendor},
+            #{unitPrice},
+            #{mgmtCost},
+            #{estPrice},
+            #{refPrice},
+            #{note})
+  </insert>
 
-    <delete id="clearHierarchyTable">
-        delete
-        from hierarchy
-        where 1 == 1;
-    </delete>
+  <delete id="clearHierarchyTable">
+    delete
+    from hierarchy
+    where 1 == 1;
+  </delete>
 
-    <insert id="newHierarchyTable" parameterType="hierarchy">
-        insert into hierarchy (parent_no, child_no)
-        values (#{parent_no}, #{child_no})
-    </insert>
+  <insert id="newHierarchyTable" parameterType="hierarchy">
+    insert into hierarchy (parent_no, child_no)
+    values (#{parent_no}, #{child_no})
+  </insert>
 
-    <select id="uniSearch" parameterType="arraylist" resultType="excel">
-        select insert_no        as insertNo,
-               part_code        as partCode,
-               rev              as rev,
-               apply_1          as apply1,
-               apply_2          as apply2,
-               blueprint_date   as blueprintDate,
-               client_blueprint as clientBlueprint,
-               scan             as scan,
-               self_blueprint   as selfBlueprint,
-               category         as category,
-               name             as name,
-               spec             as spec,
-               maker            as maker,
-               vendor           as vendor,
-               unit_price       as unitPrice,
-               mgmt_cost        as mgmtCost,
-               est_price        as estPrice,
-               ref_price        as refPrice,
-               note             as note
-        from data_fts
-        where 1 == 1
-        <foreach collection="list" item="kw">
-        and (
-               insert_no        like '%' || #{kw} || '%'
-            or part_code        like '%' || #{kw} || '%'
-            or rev              like '%' || #{kw} || '%'
-            or apply_1          like '%' || #{kw} || '%'
-            or apply_2          like '%' || #{kw} || '%'
-            or blueprint_date   like '%' || #{kw} || '%'
-            or client_blueprint like '%' || #{kw} || '%'
-            or scan             like '%' || #{kw} || '%'
-            or self_blueprint   like '%' || #{kw} || '%'
-            or category         like '%' || #{kw} || '%'
-            or name             like '%' || #{kw} || '%'
-            or spec             like '%' || #{kw} || '%'
-            or maker            like '%' || #{kw} || '%'
-            or vendor           like '%' || #{kw} || '%'
-            or unit_price       like '%' || #{kw} || '%'
-            or mgmt_cost        like '%' || #{kw} || '%'
-            or est_price        like '%' || #{kw} || '%'
-            or ref_price        like '%' || #{kw} || '%'
-            or note             like '%' || #{kw} || '%'
-        )
-        </foreach>
-    </select>
+  <select id="uniSearch" parameterType="arraylist" resultType="excel">
+    select insert_no as insertNo,
+    part_code as partCode,
+    rev as rev,
+    apply_1 as apply1,
+    apply_2 as apply2,
+    blueprint_date as blueprintDate,
+    client_blueprint as clientBlueprint,
+    scan as scan,
+    self_blueprint as selfBlueprint,
+    category as category,
+    name as name,
+    spec as spec,
+    maker as maker,
+    vendor as vendor,
+    unit_price as unitPrice,
+    mgmt_cost as mgmtCost,
+    est_price as estPrice,
+    ref_price as refPrice,
+    note as note
+    from data_fts
+    where 1 == 1
+    <foreach collection="list" item="kw">
+      and (
+      insert_no like '%' || #{kw} || '%'
+      or part_code like '%' || #{kw} || '%'
+      or rev like '%' || #{kw} || '%'
+      or apply_1 like '%' || #{kw} || '%'
+      or apply_2 like '%' || #{kw} || '%'
+      or blueprint_date like '%' || #{kw} || '%'
+      or client_blueprint like '%' || #{kw} || '%'
+      or scan like '%' || #{kw} || '%'
+      or self_blueprint like '%' || #{kw} || '%'
+      or category like '%' || #{kw} || '%'
+      or name like '%' || #{kw} || '%'
+      or spec like '%' || #{kw} || '%'
+      or maker like '%' || #{kw} || '%'
+      or vendor like '%' || #{kw} || '%'
+      or unit_price like '%' || #{kw} || '%'
+      or mgmt_cost like '%' || #{kw} || '%'
+      or est_price like '%' || #{kw} || '%'
+      or ref_price like '%' || #{kw} || '%'
+      or note like '%' || #{kw} || '%'
+      )
+    </foreach>
+  </select>
 
-    <select id="insertToDb" parameterType="excel">
-        insert into data (insert_no,
-                          part_code,
-                          rev,
-                          apply_1,
-                          apply_2,
-                          blueprint_date,
-                          client_blueprint,
-                          scan,
-                          self_blueprint,
-                          category,
-                          name,
-                          spec,
-                          maker,
-                          vendor,
-                          unit_price,
-                          mgmt_cost,
-                          est_price,
-                          ref_price,
-                          note)
-        values (#{insertNo},
-                #{partCode},
-                #{rev},
-                #{apply1},
-                #{apply2},
-                #{blueprintDate},
-                #{clientBlueprint},
-                #{scan},
-                #{selfBlueprint},
-                #{category},
-                #{name},
-                #{spec},
-                #{maker},
-                #{vendor},
-                #{unitPrice},
-                #{mgmtCost},
-                #{estPrice},
-                #{refPrice},
-                #{note})
-    </select>
+  <select id="insertToDb" parameterType="excel">
+    insert into data (insert_no,
+                      part_code,
+                      rev,
+                      apply_1,
+                      apply_2,
+                      blueprint_date,
+                      client_blueprint,
+                      scan,
+                      self_blueprint,
+                      category,
+                      name,
+                      spec,
+                      maker,
+                      vendor,
+                      unit_price,
+                      mgmt_cost,
+                      est_price,
+                      ref_price,
+                      note)
+    values (#{insertNo},
+            #{partCode},
+            #{rev},
+            #{apply1},
+            #{apply2},
+            #{blueprintDate},
+            #{clientBlueprint},
+            #{scan},
+            #{selfBlueprint},
+            #{category},
+            #{name},
+            #{spec},
+            #{maker},
+            #{vendor},
+            #{unitPrice},
+            #{mgmtCost},
+            #{estPrice},
+            #{refPrice},
+            #{note})
+  </select>
 
-    <delete id="deleteFromDb" parameterType="string">
-        delete
-        from data
-        where insert_no == #{insert_no}
-    </delete>
+  <delete id="deleteFromDb" parameterType="string">
+    delete
+    from data
+    where insert_no == #{insert_no}
+  </delete>
 
-    <update id="updateFromDb" parameterType="excel">
-        UPDATE data
-        SET insert_no        = #{insertNo},
-            part_code        = #{partCode},
-            rev              = #{rev},
-            apply_1          = #{apply1},
-            apply_2          = #{apply2},
-            blueprint_date   = #{blueprintDate},
-            client_blueprint = #{clientBlueprint},
-            scan             = #{scan},
-            self_blueprint   = #{selfBlueprint},
-            category         = #{category},
-            name             = #{name},
-            spec             = #{spec},
-            maker            = #{maker},
-            vendor           = #{vendor},
-            unit_price       = #{unitPrice},
-            mgmt_cost        = #{mgmtCost},
-            est_price        = #{estPrice},
-            ref_price        = #{refPrice},
-            note             = #{note}
-        WHERE insert_no = #{originalInsertNo}
-    </update>
+  <update id="updateFromDb" parameterType="excel">
+    UPDATE data
+    SET insert_no        = #{insertNo},
+        part_code        = #{partCode},
+        rev              = #{rev},
+        apply_1          = #{apply1},
+        apply_2          = #{apply2},
+        blueprint_date   = #{blueprintDate},
+        client_blueprint = #{clientBlueprint},
+        scan             = #{scan},
+        self_blueprint   = #{selfBlueprint},
+        category         = #{category},
+        name             = #{name},
+        spec             = #{spec},
+        maker            = #{maker},
+        vendor           = #{vendor},
+        unit_price       = #{unitPrice},
+        mgmt_cost        = #{mgmtCost},
+        est_price        = #{estPrice},
+        ref_price        = #{refPrice},
+        note             = #{note}
+    WHERE insert_no = #{originalInsertNo}
+  </update>
 
 </mapper>

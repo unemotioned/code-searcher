@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class SheetHash {
-    private String sheet;
-    private String hash;
+
+  private String sheet;
+  private String hash;
 }
