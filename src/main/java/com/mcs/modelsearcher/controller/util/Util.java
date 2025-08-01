@@ -58,9 +58,9 @@ public class Util {
     if (tf == null) {
       return null;
     }
-    if (tf != null && tf.getText().equals("0")) {
+    if (tf.getText().equals("0")) {
       return "○";
     }
-    return null;
+    return tf.getText();
   }
 }
