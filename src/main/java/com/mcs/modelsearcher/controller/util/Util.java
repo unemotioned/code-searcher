@@ -60,6 +60,8 @@ public class Util {
     }
     if (tf.getText().equals("0")) {
       return "○";
+    } else if (!tf.getText().equals("0")) {
+      return null;
     }
     return tf.getText();
   }

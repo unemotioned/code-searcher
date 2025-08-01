@@ -19,10 +19,10 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -37,6 +37,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Setter;
@@ -150,10 +151,23 @@ public class MainController {
 
   }
 
-  public void errorModel(String message) {
-    Alert alert = new Alert(AlertType.ERROR);
-    alert.setTitle("에러");
-    alert.setHeaderText(message);
+  public void errorModal(String message) {
+    Alert alert = new Alert(Alert.AlertType.ERROR);
+    alert.setTitle("에러 발생");
+    alert.setHeaderText("파일 저장 중 오류가 발생했습니다.");
+
+    Label userMessage = new Label("현재 파일이 다른 프로그램에서 열려있는지 확인해주십시오.");
+    userMessage.setWrapText(true);
+
+    Label techMessage = new Label("에러 메시지:\n" + message);
+    techMessage.setWrapText(true);
+    techMessage.setStyle("-fx-font-size: 16px; -fx-text-fill: black;");
+
+    VBox content = new VBox(10, userMessage, techMessage);
+    content.setPadding(new Insets(10));
+
+    alert.getDialogPane().setContent(content);
+    alert.showAndWait();
   }
 
   private boolean showDeleteConfirmation(Excel item) {
