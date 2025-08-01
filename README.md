@@ -5,7 +5,7 @@
 ### Create .jar file
 
 ```power shell
-java --module-path C:\javafx-sdk-21.0.8\lib --add-modules javafx.controls,javafx.fxml,javafx.graphic -jar target/model-searcher-1.0-SNAPSHOT-jar-with-dependencies.jar
+java --module-path C:\javafx-sdk-21.0.8\lib --add-modules javafx.controls,javafx.fxml -jar target/model-searcher-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
 ---
@@ -13,15 +13,15 @@ java --module-path C:\javafx-sdk-21.0.8\lib --add-modules javafx.controls,javafx
 ### Runtime Image with Jlink
 
 ```power shell
-jlink --module-path "%JAVA_HOME%\jmods;C:\javafx-jmods-21.0.8" --add-modules javafx.controls,javafx.fxml,javafx.graphic --output runtime
+jlink --module-path "%JAVA_HOME%\jmods;C:\javafx-jmods-21.0.8" --add-modules javafx.controls,javafx.fxml --output runtime
 ```
 
 ---
 
-### Fullthing with Jpackage
+### Full thing with Jpackage
 
 ```power shell
-jpackage --type app-image --name "model-searcher" --input C:\Repository\model-searcher\target --main-jar model-searcher-1.0-SNAPSHOT-jar-with-dependencies.jar --main-class com.mcs.modelsearcher.MainApplication --runtime-image runtime --dest dist
+jpackage --type app-image --name "model-searcher" --input C:\Repository\model-searcher\target --main-jar model-searcher-1.0-SNAPSHOT-jar-with-dependencies.jar --main-class com.mcs.modelsearcher.MainApplication --runtime-image runtime --dest dist --resource-dir src\main\resources --win-console
 ```
 
 ---
