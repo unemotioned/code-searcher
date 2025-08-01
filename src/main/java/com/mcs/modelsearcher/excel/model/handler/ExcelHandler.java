@@ -1,5 +1,6 @@
 package com.mcs.modelsearcher.excel.model.handler;
 
+import com.mcs.modelsearcher.controller.MainController;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.file.controller.FileController;
 import java.io.BufferedInputStream;
@@ -95,6 +96,8 @@ public class ExcelHandler {
         System.out.println("eHand.writeToExcel: success");
       } catch (IOException e) {
         System.out.println("eHand.writeToExcel - while saving: " + e.getMessage());
+        MainController mCon = new MainController();
+        mCon.errorModal(e.getMessage());
       }
     } catch (IOException e) {
       System.out.println("eHand.writeToExcel - while opening: " + e.getMessage());
@@ -303,6 +306,8 @@ public class ExcelHandler {
           System.out.println("eHand.deleteFromExcel: success");
         } catch (IOException e) {
           System.out.println("eHand.deleteFromExcel - while saving " + e.getMessage());
+          MainController mCon = new MainController();
+          mCon.errorModal(e.getMessage());
         }
       }
     } catch (IOException e) {
@@ -428,9 +433,13 @@ public class ExcelHandler {
             path); BufferedOutputStream bos = new BufferedOutputStream(fos)) {
           workbook.write(bos);
           System.out.println("eHand.editFromExcel - success " + record.getInsertNo());
+        } catch (IOException e) {
+          System.out.println("eHand.editFromExcel - while saving: " + record.getInsertNo());
+          MainController mCon = new MainController();
+          mCon.errorModal(e.getMessage());
         }
       } else {
-        System.out.println("eHand.editFromExcel - while saving: " + record.getInsertNo());
+        System.out.println("eHand.editFromExcel - edit canceled: " + record.getInsertNo());
       }
     } catch (IOException e) {
       System.out.println("eHand.editFromExcel- while opening: " + e.getMessage());
