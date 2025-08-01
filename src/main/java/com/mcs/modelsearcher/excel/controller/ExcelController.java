@@ -57,14 +57,14 @@ public class ExcelController {
         Excel excel = new Excel();
         Row row = rowIterator.next();
 
-          if (row.getRowNum() < headerRowIndex) {
-              continue;
-          }
+        if (row.getRowNum() < headerRowIndex) {
+          continue;
+        }
 
         String insertNo = getStringCellValue(row, 1);
-          if (insertNo == null || insertNo.trim().isEmpty()) {
-              continue;
-          }
+        if (insertNo == null || insertNo.trim().isEmpty()) {
+          continue;
+        }
 
         excel.setInsertNo(getStringCellValue(row, 1));
         excel.setPartCode(getStringCellValue(row, 2));
@@ -119,9 +119,9 @@ public class ExcelController {
         Hierarchy hierarchy = new Hierarchy();
         Row row = rowIterator.next();
 
-          if (row.getRowNum() < headerRowIndex) {
-              continue;
-          }
+        if (row.getRowNum() < headerRowIndex) {
+          continue;
+        }
 
         hierarchy.setParent_no(getStringCellValue(row, 0));
         hierarchy.setChild_no(getStringCellValue(row, 1));
@@ -142,9 +142,9 @@ public class ExcelController {
 
   private String getStringCellValue(Row row, int index) {
     Cell cell = row.getCell(index);
-      if (cell == null) {
-          return "";
-      }
+    if (cell == null) {
+      return "";
+    }
 
     if (cell.getCellType() == CellType.NUMERIC) {
       return String.valueOf((int) cell.getNumericCellValue());
@@ -155,9 +155,9 @@ public class ExcelController {
 
   private int getPriceCellValue(Row row, int index, FormulaEvaluator evaluator) {
     Cell cell = row.getCell(index);
-      if (cell == null) {
-          return 0;
-      }
+    if (cell == null) {
+      return 0;
+    }
 
     switch (cell.getCellType()) {
       case NUMERIC:
@@ -172,9 +172,9 @@ public class ExcelController {
 
       case FORMULA:
         CellValue evaluatedValue = evaluator.evaluate(cell);
-          if (evaluatedValue == null) {
-              return 0;
-          }
+        if (evaluatedValue == null) {
+          return 0;
+        }
 
         switch (evaluatedValue.getCellType()) {
           case NUMERIC:
@@ -197,9 +197,9 @@ public class ExcelController {
   private int getPercentCellValue(Row row, FormulaEvaluator evaluator) {
     final int percentCellIndex = 16;
     Cell cell = row.getCell(percentCellIndex);
-      if (cell == null) {
-          return 0;
-      }
+    if (cell == null) {
+      return 0;
+    }
 
     switch (cell.getCellType()) {
       case NUMERIC:
@@ -224,14 +224,14 @@ public class ExcelController {
 
   public String getRevValue(Row row) {
     final int revIndex = 3;
-      if (row == null) {
-          return null;
-      }
+    if (row == null) {
+      return null;
+    }
 
     Cell cell = row.getCell(revIndex);
-      if (cell == null) {
-          return null;
-      }
+    if (cell == null) {
+      return null;
+    }
 
     if (cell.getCellType() == CellType.STRING) {
       return cell.getStringCellValue();
@@ -245,9 +245,9 @@ public class ExcelController {
     final byte dateIndex = 6;
     Cell cell = row.getCell(dateIndex);
 
-      if (cell == null || cell.getCellType() == CellType.BLANK) {
-          return null;
-      }
+    if (cell == null || cell.getCellType() == CellType.BLANK) {
+      return null;
+    }
 
     if (cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell)) {
       Date dateValue = cell.getDateCellValue();
