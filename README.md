@@ -1,3 +1,37 @@
+# Model-Searcher
+
+## Generate .executable File
+
+### Create .jar file
+
+```power shell
+java --module-path C:\javafx-sdk-21.0.8\lib --add-modules javafx.controls,javafx.fxml,javafx.graphic -jar target/model-searcher-1.0-SNAPSHOT-jar-with-dependencies.jar
+```
+
+---
+
+### Runtime Image with Jlink
+
+```power shell
+jlink --module-path "%JAVA_HOME%\jmods;C:\javafx-jmods-21.0.8" --add-modules javafx.controls,javafx.fxml,javafx.graphic --output runtime
+```
+
+---
+
+### Fullthing with Jpackage
+
+```power shell
+jpackage --type app-image --name "model-searcher" --input C:\Repository\model-searcher\target --main-jar model-searcher-1.0-SNAPSHOT-jar-with-dependencies.jar --main-class com.mcs.modelsearcher.MainApplication --runtime-image runtime --dest dist
+```
+
+---
+
+### Happy hacking 🎉
+
+---
+
+## Create DataBase
+
 ```sql
 drop table if exists file;
 drop table if exists hash;
@@ -125,3 +159,7 @@ begin
     where insert_no = old.insert_no;
 end;
 ```
+
+---
+
+#### Happy Hacking 🎉
