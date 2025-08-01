@@ -16,17 +16,17 @@
     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
   </padding>
 
-  <Label text="신규 부품 등록"/>
+  <Label text="신규 등록"/>
 
   <TextField fx:id="insertNo" promptText="등록 No"/>
   <TextField fx:id="partCode" promptText="부품 코드"/>
   <TextField fx:id="rev" promptText="Rev."/>
   <TextField fx:id="apply1" promptText="적용1"/>
   <TextField fx:id="apply2" promptText="적용2"/>
-  <TextField fx:id="blueprintDate" promptText="고객도면 작성일"/>
-  <TextField fx:id="clientBlueprint" promptText="고객도면"/>
-  <TextField fx:id="scan" promptText="스캔"/>
-  <TextField fx:id="selfBlueprint" promptText="자체도면"/>
+  <TextField fx:id="blueprintDate" promptText="고객도면 작성일(ex: 250801)"/>
+  <TextField fx:id="clientBlueprint" promptText="고객도면(숫자 0)"/>
+  <TextField fx:id="scan" promptText="스캔(숫자 0)"/>
+  <TextField fx:id="selfBlueprint" promptText="자체도면(숫자 0)"/>
   <TextField fx:id="category" promptText="대분류"/>
   <TextField fx:id="name" promptText="Name"/>
   <TextField fx:id="spec" promptText="규격"/>
