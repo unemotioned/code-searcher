@@ -31,5 +31,7 @@ javafx-sdk*/
 
 # test DB directory
 db/
+
+# Deployment
 dist/
 runtime/
