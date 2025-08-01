@@ -114,9 +114,9 @@ public class ExcelHandler {
   }
 
   private boolean isRowEmpty(Row row) {
-      if (row == null) {
-          return true;
-      }
+    if (row == null) {
+      return true;
+    }
     for (Cell cell : row) {
       if (cell != null && cell.getCellType() != CellType.BLANK) {
         return false;
@@ -244,6 +244,11 @@ public class ExcelHandler {
   }
 
   private void setDateCell(Workbook workbook, Cell cell, CellStyle baseStyle, String input) {
+    if (input == null || input.trim().isEmpty()) {
+      cell.setBlank();
+      return;
+    }
+
     SimpleDateFormat sdfInput = new SimpleDateFormat("yyMMdd");
     try {
       Date date = sdfInput.parse(input);
@@ -256,7 +261,7 @@ public class ExcelHandler {
 
       cell.setCellStyle(dateStyle);
     } catch (ParseException e) {
-      System.out.println("Invalid date format in blueprintDate: " + input);
+      System.out.println("eHand.setDateCel - invalid date format: " + input);
       cell.setCellValue(input);
       cell.setCellStyle(baseStyle);
     }
@@ -277,9 +282,9 @@ public class ExcelHandler {
 
       for (int i = 0; i <= sheet.getLastRowNum(); i++) {
         Row row = sheet.getRow(i);
-          if (row == null) {
-              continue;
-          }
+        if (row == null) {
+          continue;
+        }
 
         Cell cell = row.getCell(insertNoColIndex);
         if (cell != null) {
@@ -375,19 +380,19 @@ public class ExcelHandler {
 
       for (int i = startOfData; i <= sheet.getLastRowNum(); i++) {
         Row row = sheet.getRow(i);
-          if (row == null) {
-              continue;
-          }
+        if (row == null) {
+          continue;
+        }
 
         Cell cell = row.getCell(insertNoColIndex);
-          if (cell == null) {
-              continue;
-          }
+        if (cell == null) {
+          continue;
+        }
 
         String value = getString(cell);
-          if (!record.getOriginalInsertNo().equals(value)) {
-              continue;
-          }
+        if (!record.getOriginalInsertNo().equals(value)) {
+          continue;
+        }
 
         CellStyle baseStyle = cellStyle(workbook);
 
