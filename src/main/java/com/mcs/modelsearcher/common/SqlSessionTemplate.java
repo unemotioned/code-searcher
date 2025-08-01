@@ -1,15 +1,10 @@
 package com.mcs.modelsearcher.common;
 
-import java.sql.Connection;
-import java.sql.Statement;
-
-import org.apache.ibatis.datasource.unpooled.UnpooledDataSource;
-import org.apache.ibatis.mapping.Environment;
-import org.apache.ibatis.session.Configuration;
+import java.io.InputStream;
+import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 
 public class SqlSessionTemplate {
 
@@ -17,34 +12,20 @@ public class SqlSessionTemplate {
 
   static {
     try {
-      // Get the user's home directory
-      String homeDir = System.getProperty("user.home");
-      String dbPath = homeDir + "/model-searcher/sqlite.db";
-      String jdbcUrl = "jdbc:sqlite:" + dbPath;
-
-      // Set up SQLite datasource
-      UnpooledDataSource dataSource = new UnpooledDataSource();
-      dataSource.setDriver("org.sqlite.JDBC");
-      dataSource.setUrl(jdbcUrl);
-
-      // Set up MyBatis environment programmatically
-      Environment environment = new Environment("dev", new JdbcTransactionFactory(), dataSource);
-      Configuration configuration = new Configuration(environment);
-
-      sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+      InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
+      sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
     } catch (Exception e) {
       System.out.println("SqlSessionTemplate.SqlSessionFactory: " + e.getMessage());
-      e.printStackTrace();
     }
   }
 
   public static SqlSession getSqlSession() {
     SqlSession session = sqlSessionFactory.openSession(true);
-    try (Connection conn = session.getConnection();
-         Statement stmt = conn.createStatement()) {
-      stmt.execute("PRAGMA foreign_keys = ON;");
+    try {
+      session.getConnection().createStatement().execute("PRAGMA foreign_keys = ON;");
     } catch (Exception e) {
-      System.out.println("SqlSessionFactory.getSqlSession - while enabling foreign keys: " + e.getMessage());
+      System.out.println(
+          "SqlSessionFactory.getSqlSession - while enabling foreign keys: " + e.getMessage());
     }
     return session;
   }

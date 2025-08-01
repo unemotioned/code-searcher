@@ -1,10 +1,7 @@
 package com.mcs.modelsearcher;
 
-import com.mcs.modelsearcher.common.DatabaseInitializer;
 import com.mcs.modelsearcher.controller.MainController;
 import com.mcs.modelsearcher.file.controller.FileController;
-
-import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import javafx.application.Application;
@@ -17,11 +14,6 @@ public class MainApplication extends Application {
 
   @Override
   public void start(Stage stage) throws IOException {
-    File dbFile = new File(System.getProperty("user.home") + "/model-searcher/sqlite.db");
-    if (!dbFile.exists()) {
-      DatabaseInitializer.initializeDatabase();
-    }
-
     FileController fileController = new FileController();
     fileController.openFile(stage);
 
