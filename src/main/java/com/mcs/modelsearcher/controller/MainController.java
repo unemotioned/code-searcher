@@ -22,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -149,6 +150,12 @@ public class MainController {
 
   }
 
+  public void errorModel(String message) {
+    Alert alert = new Alert(AlertType.ERROR);
+    alert.setTitle("에러");
+    alert.setHeaderText(message);
+  }
+
   private boolean showDeleteConfirmation(Excel item) {
     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
     alert.setTitle("삭제");
@@ -192,24 +199,6 @@ public class MainController {
       }
     });
   }
-
-  /*
-  private void uniSearch() {
-    uniSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-      Task<List<Excel>> searchTask = getListTask();
-
-      searchTask.setOnSucceeded(event -> {
-        List<Excel> results = searchTask.getValue();
-        ObservableList<Excel> observableResult = FXCollections.observableArrayList(results);
-        excelData.setItems(observableResult);
-      });
-
-      searchTask.setOnFailed(event -> System.out.println("uniSearch in Thread failed"));
-
-      new Thread(searchTask).start();
-    });
-  }
-  */
 
   private void uniSearch() {
     uniSearch.textProperty().addListener((observable, oldValue, newValue) -> {
