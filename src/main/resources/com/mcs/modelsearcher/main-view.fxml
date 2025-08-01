@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <?xminl version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
@@ -15,26 +17,24 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <TabPane prefHeight="980.0" prefWidth="1900.0" tabClosingPolicy="UNAVAILABLE"
-  xmlns="http://javafx.com/javafx/21.0.1"
-  xmlns:fx="http://javafx.com/fxml/1"
+  xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1"
   fx:controller="com.mcs.modelsearcher.controller.MainController">
 
   <Tab text="검색">
-    <VBox alignment="CENTER" prefHeight="980" prefWidth="1900" spacing="20.0">
-      <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-      </padding>
+    <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <Label layoutX="1719.0" layoutY="20.0" text="model-searcher Version 1.0.0"/>
+      <!-- <Button onAction="#onPrintCellWidth" layoutX="685.0" layoutY="63.0"/> -->
 
-      <Label fx:id="filePathLabel" text="선택된 파일 없음"/>
-      <Button onAction="#onFileSelect" text="파일 선택"/>
-      <Button onAction="#onInsert" text="부품 삽입"/>
-      <Button onAction="#onReload" text="다시 읽기"/>
-      <!-- <Button onAction="#onPrintCellWidth" text="print cell width"/> -->
+      <TextField fx:id="uniSearch" layoutX="680.0" layoutY="63.0" prefHeight="26.0"
+        prefWidth="559.0" promptText="통합 검색 (띄어쓰기로 키워드 구분)"/>
+      <Button layoutX="105.0" layoutY="63.0" onAction="#onReload" text="다시 읽기"/>
+      <Button layoutX="600.0" layoutY="63.0" onAction="#onInsert" text="부품 삽입"/>
 
-      <TextField fx:id="uniSearch" prefHeight="26.0" prefWidth="100.0"
-        promptText="통합 검색 (띄어쓰기로 키워드 구분)"/>
+      <Label fx:id="filePathLabel" layoutX="20.0" layoutY="20.0" text="선택된 파일 없음"/>
+      <Button layoutX="20.0" layoutY="63.0" onAction="#onFileSelect" text="파일 선택"/>
 
-      <TableView fx:id="excelData" prefHeight="790.0" prefWidth="1860.0">
+      <TableView fx:id="excelData" layoutX="20.0" layoutY="138.0" prefHeight="790.0"
+        prefWidth="1860.0">
         <columns>
           <TableColumn fx:id="insertNo" styleClass="center-align" text="등록 No"/>
           <TableColumn fx:id="partCode" text="부품 코드"/>
@@ -57,7 +57,7 @@
           <TableColumn fx:id="note" text="비 고"/>
         </columns>
       </TableView>
-    </VBox>
+    </AnchorPane>
   </Tab>
 
   <!-- Second tab -->
