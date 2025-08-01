@@ -244,27 +244,25 @@ public class ExcelHandler {
   }
 
   private void setDateCell(Workbook workbook, Cell cell, CellStyle baseStyle, String input) {
+    CellStyle dateStyle = workbook.createCellStyle();
+    dateStyle.cloneStyleFrom(baseStyle);
+    dateStyle.setDataFormat((short) 14);
+
     if (input == null || input.trim().isEmpty()) {
       cell.setBlank();
+      cell.setCellStyle(dateStyle);
       return;
     }
 
     SimpleDateFormat sdfInput = new SimpleDateFormat("yyMMdd");
     try {
       Date date = sdfInput.parse(input);
-
       cell.setCellValue(date);
-
-      CellStyle dateStyle = workbook.createCellStyle();
-      dateStyle.cloneStyleFrom(baseStyle);
-      dateStyle.setDataFormat((short) 14);
-
-      cell.setCellStyle(dateStyle);
     } catch (ParseException e) {
       System.out.println("eHand.setDateCel - invalid date format: " + input);
       cell.setCellValue(input);
-      cell.setCellStyle(baseStyle);
     }
+    cell.setCellStyle(dateStyle);
   }
 
   public void deleteFromExcel(String insertNo) {
