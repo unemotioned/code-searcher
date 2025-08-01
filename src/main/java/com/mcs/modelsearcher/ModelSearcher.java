@@ -11,7 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class MainApplication extends Application {
+public class ModelSearcher extends Application {
 
   @Override
   public void start(Stage stage) throws IOException {
@@ -20,7 +20,7 @@ public class MainApplication extends Application {
     FileController fileController = new FileController();
     fileController.openFile(stage);
 
-    FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
+    FXMLLoader fxmlLoader = new FXMLLoader(ModelSearcher.class.getResource("main-view.fxml"));
     Scene scene = new Scene(fxmlLoader.load());
     scene.getStylesheets().add(
         Objects.requireNonNull(getClass().getResource("/com/mcs/modelsearcher/style/main-view.css"))
@@ -43,7 +43,7 @@ public class MainApplication extends Application {
 
   @Override
   public void stop() {
-    System.out.println("MainApplication.stop(): application closing ...");
+    System.out.println("ModelSearcher.stop(): application closing ...");
     // exit gracefully
     Platform.exit();
   }
