@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="sheetHash">
 
-    <select id="selectHash" parameterType="string" resultType="string">
-        select hash
-        from hash
-        where sheet = #{sheet}
-    </select>
+  <select id="selectHash" parameterType="string" resultType="string">
+    select hash
+    from hash
+    where sheet = #{sheet}
+  </select>
 
-    <insert id="insertHash" parameterType="sheetHash">
-        insert into hash (sheet, hash)
-        values (#{sheet}, #{hash})
-    </insert>
+  <insert id="insertHash" parameterType="sheetHash">
+    insert into hash (sheet, hash)
+    values (#{sheet}, #{hash})
+  </insert>
 
-    <update id="updateHash" parameterType="sheetHash">
-        update hash
-        set hash = #{hash}
-        where sheet = #{sheet}
-    </update>
+  <update id="updateHash" parameterType="sheetHash">
+    update hash
+    set hash = #{hash}
+    where sheet = #{sheet}
+  </update>
 
-    <update id="fakeHash">
-        UPDATE hash
-        SET hash = 'foobar'
-        WHERE 1 == 1
-    </update>
+  <update id="fakeHash">
+    UPDATE hash
+    SET hash = 'foobar'
+    WHERE 1 == 1
+  </update>
 
 </mapper>

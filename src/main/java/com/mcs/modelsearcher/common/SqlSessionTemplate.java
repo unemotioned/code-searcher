@@ -1,7 +1,10 @@
 package com.mcs.modelsearcher.common;
 
+import com.ibatis.common.resources.Resources;
 import java.io.InputStream;
-import org.apache.ibatis.io.Resources;
+import java.nio.file.Paths;
+import java.sql.Statement;
+import java.util.Properties;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -12,20 +15,31 @@ public class SqlSessionTemplate {
 
   static {
     try {
+      // Resolve full DB path
+      String dbPath = Paths.get(System.getProperty("user.home"), ".model-searcher", "sqlite.db")
+          .toString();
+
+      // Inject it into mybatis-config.xml as a property
+      Properties props = new Properties();
+      props.setProperty("dbPath", dbPath);
+
+      // Load config with injected properties
       InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
-      sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+      sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, props);
+
     } catch (Exception e) {
       System.out.println("SqlSessionTemplate.SqlSessionFactory: " + e.getMessage());
+      e.printStackTrace();
     }
   }
 
   public static SqlSession getSqlSession() {
     SqlSession session = sqlSessionFactory.openSession(true);
-    try {
-      session.getConnection().createStatement().execute("PRAGMA foreign_keys = ON;");
+    try (Statement stmt = session.getConnection().createStatement()) {
+      stmt.execute("PRAGMA foreign_keys = ON;");
     } catch (Exception e) {
       System.out.println(
-          "SqlSessionFactory.getSqlSession - while enabling foreign keys: " + e.getMessage());
+          "SqlSessionTemplate.getSqlSession - enabling foreign keys: " + e.getMessage());
     }
     return session;
   }

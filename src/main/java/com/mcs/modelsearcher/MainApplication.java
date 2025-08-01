@@ -1,5 +1,6 @@
 package com.mcs.modelsearcher;
 
+import com.mcs.modelsearcher.common.DatabaseInitializer;
 import com.mcs.modelsearcher.controller.MainController;
 import com.mcs.modelsearcher.file.controller.FileController;
 import java.io.IOException;
@@ -14,6 +15,8 @@ public class MainApplication extends Application {
 
   @Override
   public void start(Stage stage) throws IOException {
+    new DatabaseInitializer();
+
     FileController fileController = new FileController();
     fileController.openFile(stage);
 
