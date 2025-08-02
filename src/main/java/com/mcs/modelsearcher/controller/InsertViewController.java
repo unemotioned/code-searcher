@@ -129,8 +129,10 @@ public class InsertViewController {
     excel.setRefPrice(util.priceInputToInt(refPrice));
     excel.setNote(note.getText());
 
-    eCon.writeToExcel(excel);
-    eCon.insertToDb(excel);
+    int writeResult = eCon.writeToExcel(excel);
+    if (writeResult == 1) {
+      eCon.insertToDb(excel);
+    }
 
     if (popupStage != null) {
       popupStage.close();

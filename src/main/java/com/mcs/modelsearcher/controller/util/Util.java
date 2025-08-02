@@ -55,14 +55,14 @@ public class Util {
   }
 
   public String bluePrintAndScan(TextField tf) {
-    if (tf == null) {
+    String text = tf.getText();
+    if (text == null) {
       return null;
     }
-    if (tf.getText().equals("0")) {
+    if (text.equals("0")) {
       return "○";
-    } else if (!tf.getText().equals("0")) {
+    } else {
       return null;
     }
-    return tf.getText();
   }
 }

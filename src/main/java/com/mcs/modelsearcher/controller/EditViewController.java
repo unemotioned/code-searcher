@@ -97,8 +97,10 @@ public class EditViewController {
     excel.setNote(note.getText());
     excel.setOriginalInsertNo(originalInsertNo);
 
-    eCon.editFromExcel(excel);
-    eCon.updateFromDb(excel);
+    int editResult = eCon.editFromExcel(excel);
+    if (editResult == 1) {
+      eCon.updateFromDb(excel);
+    }
 
     if (popupStage != null) {
       popupStage.close();

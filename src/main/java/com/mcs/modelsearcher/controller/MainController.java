@@ -113,9 +113,11 @@ public class MainController {
 
                 boolean isDeleteConform = showDeleteConfirmation(item);
                 if (isDeleteConform) {
-                  eCon.deleteFromExcel(insertNo);
-                  eCon.deleteFromDb(insertNo);
-                  afterMakingChange();
+                  int deleteResult = eCon.deleteFromExcel(insertNo);
+                  if (deleteResult == 1) {
+                    eCon.deleteFromDb(insertNo);
+                    afterMakingChange();
+                  }
                 }
               });
 

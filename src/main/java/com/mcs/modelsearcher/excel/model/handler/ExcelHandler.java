@@ -29,7 +29,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 public class ExcelHandler {
 
   @SuppressWarnings("Duplicates")
-  public void writeToExcel(Excel record) {
+  public int writeToExcel(Excel record) {
     String[] data = {
       record.getInsertNo(),
       record.getPartCode(),
@@ -109,13 +109,16 @@ public class ExcelHandler {
           BufferedOutputStream bos = new BufferedOutputStream(fos)) {
         workbook.write(bos);
         System.out.println("eHand.writeToExcel: success");
+        return 1;
       } catch (IOException e) {
         System.out.println("eHand.writeToExcel - while saving: " + e.getMessage());
         MainController mCon = new MainController();
         mCon.errorModal(e.getMessage());
+        return 0;
       }
     } catch (IOException e) {
       System.out.println("eHand.writeToExcel - while opening: " + e.getMessage());
+      return 0;
     }
   }
 
@@ -283,7 +286,7 @@ public class ExcelHandler {
     cell.setCellStyle(dateStyle);
   }
 
-  public void deleteFromExcel(String insertNo) {
+  public int deleteFromExcel(String insertNo) {
     FileController fCon = new FileController();
     String path = fCon.selectPath();
 
@@ -319,12 +322,17 @@ public class ExcelHandler {
             BufferedOutputStream bos = new BufferedOutputStream(fos)) {
           workbook.write(bos);
           System.out.println("eHand.deleteFromExcel: success");
+          return 1;
         } catch (IOException e) {
           System.out.println("eHand.deleteFromExcel - while saving " + e.getMessage());
+          return 0;
         }
       }
+      System.out.println("eCon.deleteFromExcel - delete canceled: ");
+      return 0;
     } catch (IOException e) {
       System.out.println("eCon.deleteFromExcel - while opening: " + e.getMessage());
+      return 0;
     }
   }
 
@@ -359,7 +367,7 @@ public class ExcelHandler {
   }
 
   @SuppressWarnings("Duplicates")
-  public void editFromExcel(Excel record) {
+  public int editFromExcel(Excel record) {
     String[] data = {
       record.getInsertNo(),
       record.getPartCode(),
@@ -461,16 +469,20 @@ public class ExcelHandler {
             BufferedOutputStream bos = new BufferedOutputStream(fos)) {
           workbook.write(bos);
           System.out.println("eHand.editFromExcel - success " + record.getInsertNo());
+          return 1;
         } catch (IOException e) {
           System.out.println("eHand.editFromExcel - while saving: " + record.getInsertNo());
           MainController mCon = new MainController();
           mCon.errorModal(e.getMessage());
+          return 0;
         }
       } else {
         System.out.println("eHand.editFromExcel - edit canceled: " + record.getInsertNo());
+        return 0;
       }
     } catch (IOException e) {
       System.out.println("eHand.editFromExcel- while opening: " + e.getMessage());
+      return 0;
     }
   }
 }

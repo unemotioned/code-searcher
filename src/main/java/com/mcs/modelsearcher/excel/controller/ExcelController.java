@@ -260,8 +260,8 @@ public class ExcelController {
     return eServ.uniSearch(keywordList);
   }
 
-  public void writeToExcel(Excel record) {
-    eHan.writeToExcel(record);
+  public int writeToExcel(Excel record) {
+    return eHan.writeToExcel(record);
   }
 
   public void insertToDb(Excel excel) {
@@ -277,8 +277,8 @@ public class ExcelController {
     }
   }
 
-  public void deleteFromExcel(String insertNo) {
-    eHan.deleteFromExcel(insertNo);
+  public int deleteFromExcel(String insertNo) {
+    return eHan.deleteFromExcel(insertNo);
   }
 
   public void deleteFromDb(String insertNo) {
@@ -290,8 +290,8 @@ public class ExcelController {
     }
   }
 
-  public void editFromExcel(Excel excel) {
-    eHan.editFromExcel(excel);
+  public int editFromExcel(Excel excel) {
+    return eHan.editFromExcel(excel);
   }
 
   public void updateFromDb(Excel excel) {
