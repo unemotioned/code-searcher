@@ -51,4 +51,3 @@ public class ModelSearcher extends Application {
     Platform.exit();
   }
 }
-
