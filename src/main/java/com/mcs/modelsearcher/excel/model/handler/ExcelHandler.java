@@ -31,6 +31,23 @@ public class ExcelHandler {
 
   Util util;
 
+  final byte firstIndex = 1;
+  final byte dateIndex = 5;
+  final byte percentIndex = 15;
+  final byte priceStart = 14;
+  final byte priceEnd = 17;
+
+  final byte insertNoIndex = 0;
+
+  // for left align
+  final byte partCodeIndex = 1;
+  final byte categoryIndex = 9;
+  final byte specIndex = 10;
+  final byte makerIndex = 11;
+  final byte noteIndex = 18;
+
+  final byte bomSheet = 0;
+
   public ExcelHandler() {
     util = new Util();
   }
@@ -41,25 +58,11 @@ public class ExcelHandler {
     FileController fCon = new FileController();
     String path = fCon.selectPath();
 
-    final byte firstIndex = 1;
-    final byte dateIndex = 5;
-    final byte percentIndex = 15;
-    final byte priceStart = 14;
-    final byte priceEnd = 17;
-
-    final byte insertNoIndex = 0; // from writeToExcel
-
-    // for left align
-    final byte partCodeIndex = 1;
-    final byte categoryIndex = 9;
-    final byte specIndex = 10;
-    final byte makerIndex = 11;
-    final byte noteIndex = 18;
-
     try (FileInputStream fis = new FileInputStream(path);
         BufferedInputStream bis = new BufferedInputStream(fis);
         Workbook workbook = WorkbookFactory.create(bis)) {
-      Sheet sheet = workbook.getSheetAt(0);
+
+      Sheet sheet = workbook.getSheetAt(bomSheet);
 
       int newRowNum = findFirstEmptyRow(sheet);
       Row newRow = sheet.createRow(newRowNum);
@@ -358,29 +361,16 @@ public class ExcelHandler {
     FileController fCon = new FileController();
     String path = fCon.selectPath();
 
-    final byte firstIndex = 1;
-    final byte dateIndex = 5;
-    final byte percentIndex = 15;
-    final byte priceStart = 14;
-    final byte priceEnd = 17;
-    final byte insertNoColIndex = 1;
-
-    // for left align
-    final byte partCodeIndex = 1;
-    final byte categoryIndex = 9;
-    final byte specIndex = 10;
-    final byte makerIndex = 11;
-    final byte noteIndex = 18;
-
     try (FileInputStream fis = new FileInputStream(path);
         BufferedInputStream bis = new BufferedInputStream(fis);
         Workbook workbook = WorkbookFactory.create(bis)) {
-      final byte bomSheet = 0;
-      final byte startOfData = 5;
-      Sheet sheet = workbook.getSheetAt(bomSheet);
-      boolean updated = false;
 
-      for (int i = startOfData; i <= sheet.getLastRowNum(); i++) {
+      Sheet sheet = workbook.getSheetAt(bomSheet);
+
+      final byte insertNoColIndex = 1;
+      final byte rowNum = 5;
+
+      for (int i = rowNum; i <= sheet.getLastRowNum(); i++) {
         Row row = sheet.getRow(i);
         if (row == null) {
           continue;
@@ -407,7 +397,7 @@ public class ExcelHandler {
 
           if (j == dateIndex) {
             setDateCell(workbook, targetCell, baseStyle, data[j]);
-          } else if (j == 0) {
+          } else if (j == insertNoIndex) {
             setInsertNoCell(workbook, targetCell, baseStyle, data[j]);
           } else if (j == percentIndex) {
             setPercentCell(workbook, targetCell, baseStyle, data[j]);
@@ -425,25 +415,17 @@ public class ExcelHandler {
             targetCell.setCellStyle(baseStyle);
           }
         }
-
-        updated = true;
-        break;
       }
 
-      if (updated) {
-        try (FileOutputStream fos = new FileOutputStream(path);
-            BufferedOutputStream bos = new BufferedOutputStream(fos)) {
-          workbook.write(bos);
-          System.out.println("eHand.editFromExcel - success " + record.getInsertNo());
-          return 1;
-        } catch (IOException e) {
-          System.out.println("eHand.editFromExcel - while saving: " + record.getInsertNo());
-          MainController mCon = new MainController();
-          mCon.errorModal(e.getMessage());
-          return 0;
-        }
-      } else {
-        System.out.println("eHand.editFromExcel - edit canceled: " + record.getInsertNo());
+      try (FileOutputStream fos = new FileOutputStream(path);
+          BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+        workbook.write(bos);
+        System.out.println("eHand.editFromExcel - success " + record.getInsertNo());
+        return 1;
+      } catch (IOException e) {
+        System.out.println("eHand.editFromExcel - while saving: " + record.getInsertNo());
+        MainController mCon = new MainController();
+        mCon.errorModal(e.getMessage());
         return 0;
       }
     } catch (IOException e) {
