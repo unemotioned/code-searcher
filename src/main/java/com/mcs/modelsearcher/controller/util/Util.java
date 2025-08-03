@@ -1,11 +1,36 @@
 package com.mcs.modelsearcher.controller.util;
 
+import com.mcs.modelsearcher.excel.model.vo.Excel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javafx.scene.control.TextField;
 
 public class Util {
+
+  public String[] insertValueToExcel(Excel record) {
+    return new String[] {
+      record.getInsertNo(),
+      record.getPartCode(),
+      record.getRev(),
+      record.getApply1(),
+      record.getApply2(),
+      record.getBlueprintDate(),
+      record.getClientBlueprint(),
+      record.getScan(),
+      record.getSelfBlueprint(),
+      record.getCategory(),
+      record.getName(),
+      record.getSpec(),
+      record.getMaker(),
+      record.getVendor(),
+      record.getUnitPrice() == 0 ? null : String.valueOf(record.getUnitPrice()),
+      record.getMgmtCost() == 0 ? null : String.valueOf(record.getMgmtCost()),
+      record.getEstPrice() == 0 ? null : String.valueOf(record.getEstPrice()),
+      record.getRefPrice() == 0 ? null : String.valueOf(record.getRefPrice()),
+      record.getNote()
+    };
+  }
 
   public static String formatDateToLong(String inputDate) {
     if (inputDate == null) {

@@ -1,6 +1,7 @@
 package com.mcs.modelsearcher.excel.model.handler;
 
 import com.mcs.modelsearcher.controller.MainController;
+import com.mcs.modelsearcher.controller.util.Util;
 import com.mcs.modelsearcher.excel.model.vo.Excel;
 import com.mcs.modelsearcher.file.controller.FileController;
 import java.io.BufferedInputStream;
@@ -28,29 +29,14 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 public class ExcelHandler {
 
-  @SuppressWarnings("Duplicates")
+  Util util;
+
+  public ExcelHandler() {
+    util = new Util();
+  }
+
   public int writeToExcel(Excel record) {
-    String[] data = {
-      record.getInsertNo(),
-      record.getPartCode(),
-      record.getRev(),
-      record.getApply1(),
-      record.getApply2(),
-      record.getBlueprintDate(),
-      record.getClientBlueprint(),
-      record.getScan(),
-      record.getSelfBlueprint(),
-      record.getCategory(),
-      record.getName(),
-      record.getSpec(),
-      record.getMaker(),
-      record.getVendor(),
-      record.getUnitPrice() == 0 ? null : String.valueOf(record.getUnitPrice()),
-      record.getMgmtCost() == 0 ? null : String.valueOf(record.getMgmtCost()),
-      record.getEstPrice() == 0 ? null : String.valueOf(record.getEstPrice()),
-      record.getRefPrice() == 0 ? null : String.valueOf(record.getRefPrice()),
-      record.getNote()
-    };
+    String[] data = util.insertValueToExcel(record);
 
     FileController fCon = new FileController();
     String path = fCon.selectPath();
@@ -61,7 +47,7 @@ public class ExcelHandler {
     final byte priceStart = 14;
     final byte priceEnd = 17;
 
-    final byte insertNoindex = 0;
+    final byte insertNoIndex = 0; // from writeToExcel
 
     // for left align
     final byte partCodeIndex = 1;
@@ -86,7 +72,7 @@ public class ExcelHandler {
 
         if (i == dateIndex) {
           setDateCell(workbook, cell, cellStyle, data[i]);
-        } else if (i == insertNoindex) {
+        } else if (i == insertNoIndex) {
           setInsertNoCell(workbook, cell, cellStyle, data[i]);
         } else if (i == percentIndex) {
           setPercentCell(workbook, cell, cellStyle, data[i]);
@@ -366,45 +352,25 @@ public class ExcelHandler {
     }
   }
 
-  @SuppressWarnings("Duplicates")
   public int editFromExcel(Excel record) {
-    String[] data = {
-      record.getInsertNo(),
-      record.getPartCode(),
-      record.getRev(),
-      record.getApply1(),
-      record.getApply2(),
-      record.getBlueprintDate(),
-      record.getClientBlueprint(),
-      record.getScan(),
-      record.getSelfBlueprint(),
-      record.getCategory(),
-      record.getName(),
-      record.getSpec(),
-      record.getMaker(),
-      record.getVendor(),
-      record.getUnitPrice() == 0 ? null : String.valueOf(record.getUnitPrice()),
-      record.getMgmtCost() == 0 ? null : String.valueOf(record.getMgmtCost()),
-      record.getEstPrice() == 0 ? null : String.valueOf(record.getEstPrice()),
-      record.getRefPrice() == 0 ? null : String.valueOf(record.getRefPrice()),
-      record.getNote()
-    };
+    String[] data = util.insertValueToExcel(record);
 
     FileController fCon = new FileController();
     String path = fCon.selectPath();
 
-    final int firstIndex = 1;
-    final int dateIndex = 5;
-    final int percentIndex = 15;
-    final int priceStart = 14;
-    final int priceEnd = 17;
-    final int insertNoColIndex = 1;
+    final byte firstIndex = 1;
+    final byte dateIndex = 5;
+    final byte percentIndex = 15;
+    final byte priceStart = 14;
+    final byte priceEnd = 17;
+    final byte insertNoColIndex = 1;
 
-    final int partCodeIndex = 1;
-    final int categoryIndex = 9;
-    final int specIndex = 10;
-    final int makerIndex = 11;
-    final int noteIndex = 18;
+    // for left align
+    final byte partCodeIndex = 1;
+    final byte categoryIndex = 9;
+    final byte specIndex = 10;
+    final byte makerIndex = 11;
+    final byte noteIndex = 18;
 
     try (FileInputStream fis = new FileInputStream(path);
         BufferedInputStream bis = new BufferedInputStream(fis);
