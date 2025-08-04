@@ -44,7 +44,6 @@ import lombok.Setter;
 
 public class MainController {
 
-
   // @formatter:off
   @FXML private Label filePathLabel;
 

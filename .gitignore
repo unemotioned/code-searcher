@@ -7,9 +7,6 @@
 .classpath
 .project
 
-# NeoVim
-.factorypath
-
 # Build output
 /out/
 build/
