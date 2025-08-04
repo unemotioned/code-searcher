@@ -181,4 +181,10 @@
     WHERE insert_no = #{originalInsertNo}
   </update>
 
+  <select id="selectLargestInsertNo" resultType="string">
+    select insert_no from data
+    order by cast(insert_no as integer) desc
+    limit 1;
+  </select>
+
 </mapper>

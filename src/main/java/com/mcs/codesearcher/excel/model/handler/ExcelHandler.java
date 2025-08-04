@@ -58,9 +58,9 @@ public class ExcelHandler {
     FileController fCon = new FileController();
     String path = fCon.selectPath();
 
-    try (FileInputStream fis = new FileInputStream(path);
-        BufferedInputStream bis = new BufferedInputStream(fis);
-        Workbook workbook = WorkbookFactory.create(bis)) {
+    try (FileInputStream fis = new FileInputStream(
+        path); BufferedInputStream bis = new BufferedInputStream(
+        fis); Workbook workbook = WorkbookFactory.create(bis)) {
 
       Sheet sheet = workbook.getSheetAt(bomSheet);
 
@@ -81,10 +81,7 @@ public class ExcelHandler {
           setPercentCell(workbook, cell, cellStyle, data[i]);
         } else if (i >= priceStart && i <= priceEnd) {
           setPriceCell(workbook, cell, cellStyle, data[i]);
-        } else if (i == partCodeIndex
-            || i == categoryIndex
-            || i == specIndex
-            || i == makerIndex
+        } else if (i == partCodeIndex || i == categoryIndex || i == specIndex || i == makerIndex
             || i == noteIndex) {
           alignLeft(workbook, cell, cellStyle);
           cell.setCellValue(data[i]);
@@ -94,8 +91,8 @@ public class ExcelHandler {
         }
       }
 
-      try (FileOutputStream fos = new FileOutputStream(path);
-          BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+      try (FileOutputStream fos = new FileOutputStream(
+          path); BufferedOutputStream bos = new BufferedOutputStream(fos)) {
         workbook.write(bos);
         System.out.println("eHand.writeToExcel: success");
         return 1;
@@ -279,9 +276,9 @@ public class ExcelHandler {
     FileController fCon = new FileController();
     String path = fCon.selectPath();
 
-    try (FileInputStream fis = new FileInputStream(path);
-        BufferedInputStream bis = new BufferedInputStream(fis);
-        Workbook workbook = new HSSFWorkbook(bis)) {
+    try (FileInputStream fis = new FileInputStream(
+        path); BufferedInputStream bis = new BufferedInputStream(
+        fis); Workbook workbook = new HSSFWorkbook(bis)) {
       final byte bomSheetIndex = 0;
       final byte insertNoColIndex = 1;
       boolean rowDeleted = false;
@@ -307,8 +304,8 @@ public class ExcelHandler {
       }
 
       if (rowDeleted) {
-        try (FileOutputStream fos = new FileOutputStream(path);
-            BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+        try (FileOutputStream fos = new FileOutputStream(
+            path); BufferedOutputStream bos = new BufferedOutputStream(fos)) {
           workbook.write(bos);
           System.out.println("eHand.deleteFromExcel: success");
           return 1;
@@ -361,9 +358,9 @@ public class ExcelHandler {
     FileController fCon = new FileController();
     String path = fCon.selectPath();
 
-    try (FileInputStream fis = new FileInputStream(path);
-        BufferedInputStream bis = new BufferedInputStream(fis);
-        Workbook workbook = WorkbookFactory.create(bis)) {
+    try (FileInputStream fis = new FileInputStream(
+        path); BufferedInputStream bis = new BufferedInputStream(
+        fis); Workbook workbook = WorkbookFactory.create(bis)) {
 
       Sheet sheet = workbook.getSheetAt(bomSheet);
 
@@ -403,10 +400,7 @@ public class ExcelHandler {
             setPercentCell(workbook, targetCell, baseStyle, data[j]);
           } else if (j >= priceStart && j <= priceEnd) {
             setPriceCell(workbook, targetCell, baseStyle, data[j]);
-          } else if (j == partCodeIndex
-              || j == categoryIndex
-              || j == specIndex
-              || j == makerIndex
+          } else if (j == partCodeIndex || j == categoryIndex || j == specIndex || j == makerIndex
               || j == noteIndex) {
             alignLeft(workbook, targetCell, baseStyle);
             targetCell.setCellValue(data[j]);
@@ -417,8 +411,8 @@ public class ExcelHandler {
         }
       }
 
-      try (FileOutputStream fos = new FileOutputStream(path);
-          BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+      try (FileOutputStream fos = new FileOutputStream(
+          path); BufferedOutputStream bos = new BufferedOutputStream(fos)) {
         workbook.write(bos);
         System.out.println("eHand.editFromExcel - success " + record.getInsertNo());
         return 1;

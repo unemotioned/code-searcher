@@ -22,12 +22,9 @@ public class CodeSearcher extends Application {
 
     FXMLLoader fxmlLoader = new FXMLLoader(CodeSearcher.class.getResource("main-view.fxml"));
     Scene scene = new Scene(fxmlLoader.load());
-    scene
-        .getStylesheets()
-        .add(
-            Objects.requireNonNull(
-                    getClass().getResource("/com/mcs/codesearcher/style/main-view.css"))
-                .toExternalForm());
+    scene.getStylesheets().add(
+        Objects.requireNonNull(getClass().getResource("/com/mcs/codesearcher/style/main-view.css"))
+            .toExternalForm());
 
     // Get the controller and pass the stage
     MainController con = fxmlLoader.getController();

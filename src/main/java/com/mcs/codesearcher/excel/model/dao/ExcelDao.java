@@ -39,4 +39,8 @@ public class ExcelDao {
   public int updateFromDb(SqlSession session, Excel excel) {
     return session.update("excel.updateFromDb", excel);
   }
+
+  public String selectLargestInsertNo(SqlSession session) {
+    return session.selectOne("excel.selectLargestInsertNo");
+  }
 }

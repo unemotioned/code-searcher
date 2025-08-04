@@ -86,4 +86,11 @@ public class ExcelService {
     session.close();
     return result;
   }
+
+  public String selectLargestInsertNo() {
+    SqlSession session = SqlSessionTemplate.getSqlSession();
+    String largestInsertNo = dao.selectLargestInsertNo(session);
+    session.close();
+    return largestInsertNo;
+  }
 }

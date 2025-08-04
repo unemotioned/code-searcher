@@ -18,6 +18,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 public class InsertViewController {
 
+  // @formatter:off
   @FXML private TextField insertNo;
   @FXML private TextField partCode;
   @FXML private TextField rev;
@@ -37,6 +38,7 @@ public class InsertViewController {
   @FXML private TextField estPrice;
   @FXML private TextField refPrice;
   @FXML private TextField note;
+  // @formatter:on
 
   Excel excel;
   ExcelController eCon;
@@ -59,17 +61,25 @@ public class InsertViewController {
 
   @FXML
   public void initialize() {
-    insertNo.setText(getLastInsertNo());
+    insertNo.setText(selectLargestInsertNo());
     rev.setText("000");
   }
 
+  public String selectLargestInsertNo() {
+    return eCon.selectLargestInsertNo();
+  }
+
+  /**
+   * @Deprecated use .selectLargestInsertNo() instead
+   */
+  @Deprecated
   public String getLastInsertNo() {
     String lastInsertNo = "";
     final byte bomSheet = 0;
     final byte insertNoCellIndex = 1;
 
-    try (FileInputStream fis = new FileInputStream(filePath);
-        Workbook workbook = WorkbookFactory.create(fis)) {
+    try (FileInputStream fis = new FileInputStream(
+        filePath); Workbook workbook = WorkbookFactory.create(fis)) {
       Sheet sheet = workbook.getSheetAt(bomSheet);
 
       for (Row row : sheet) {
