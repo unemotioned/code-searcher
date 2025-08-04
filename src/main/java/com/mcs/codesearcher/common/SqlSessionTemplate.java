@@ -29,7 +29,6 @@ public class SqlSessionTemplate {
 
     } catch (Exception e) {
       System.out.println("SqlSessionTemplate.SqlSessionFactory: " + e.getMessage());
-      e.printStackTrace();
     }
   }
 

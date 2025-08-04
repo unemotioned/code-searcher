@@ -148,7 +148,6 @@ public class DatabaseInitializer {
     try {
       initializeDatabase();
     } catch (Exception e) {
-      e.printStackTrace();
       throw new RuntimeException("Failed to initialize the database", e);
     }
   }
