@@ -66,53 +66,7 @@ public class InsertViewController {
   }
 
   public String selectLargestInsertNo() {
-    return eCon.selectLargestInsertNo();
-  }
-
-  /**
-   * @Deprecated use .selectLargestInsertNo() instead
-   */
-  @Deprecated
-  public String getLastInsertNo() {
-    String lastInsertNo = "";
-    final byte bomSheet = 0;
-    final byte insertNoCellIndex = 1;
-
-    try (FileInputStream fis = new FileInputStream(
-        filePath); Workbook workbook = WorkbookFactory.create(fis)) {
-      Sheet sheet = workbook.getSheetAt(bomSheet);
-
-      for (Row row : sheet) {
-        Cell cell = row.getCell(insertNoCellIndex);
-
-        if (cell != null && cell.getCellType() != CellType.BLANK) {
-          lastInsertNo = cell.toString();
-        }
-      }
-
-    } catch (IOException e) {
-      System.out.println("insertCon.getLastInsertNo - while opening: " + e.getMessage());
-    }
-    return String.valueOf(fabricateInsertNo(lastInsertNo));
-  }
-
-  private int fabricateInsertNo(String lastInsertNo) {
-    if (lastInsertNo == null || lastInsertNo.isEmpty()) {
-      return -1;
-    }
-
-    try {
-      int dashIndex = lastInsertNo.indexOf('-');
-      String numberPart =
-          (dashIndex != -1) ? lastInsertNo.substring(0, dashIndex).trim() : lastInsertNo.trim();
-
-      double parsedDouble = Double.parseDouble(numberPart);
-      return (int) parsedDouble + 1;
-
-    } catch (NumberFormatException e) {
-      System.out.println("insertCon.fabricateInsertNo: " + e.getMessage());
-      return -1;
-    }
+   return eCon.selectLargestInsertNo();
   }
 
   @FXML

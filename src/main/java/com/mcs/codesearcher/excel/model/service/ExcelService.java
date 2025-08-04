@@ -89,8 +89,25 @@ public class ExcelService {
 
   public String selectLargestInsertNo() {
     SqlSession session = SqlSessionTemplate.getSqlSession();
-    String largestInsertNo = dao.selectLargestInsertNo(session);
+    String insertNo = dao.selectLargestInsertNo(session);
     session.close();
-    return largestInsertNo;
+
+    if (insertNo == null || insertNo.isEmpty()) {
+      return "-1";
+    }
+
+    try {
+      int dashIndex = insertNo.indexOf('-');
+      String numberPart = (dashIndex != -1)
+          ? insertNo.substring(0, dashIndex).trim()
+          : insertNo.trim();
+
+      int parsed = Integer.parseInt(numberPart);
+      return String.valueOf(parsed + 1);
+
+    } catch (NumberFormatException e) {
+      System.out.println("eServ.selectLargestInsertNo: " + e.getMessage());
+      return "-1";
+    }
   }
 }
