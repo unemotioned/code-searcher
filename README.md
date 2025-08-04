@@ -1,12 +1,12 @@
 # Code-Searcher
 
-## Generate Executable File
+## Generate Executable
 
 ---
 
 ### Create .jar file
 
-```power shell
+```powershell
 java --module-path C:\javafx-sdk-21.0.8\lib --add-modules javafx.controls,javafx.fxml -jar target/code-searcher-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
@@ -16,7 +16,7 @@ java --module-path C:\javafx-sdk-21.0.8\lib --add-modules javafx.controls,javafx
 
 - `runtime` directory will be created under the project folder
 
-```power shell
+```powershell
 jlink --module-path "%JAVA_HOME%\jmods;C:\javafx-jmods-21.0.8" --add-modules javafx.controls,javafx.fxml,java.sql --output runtime
 ```
 
@@ -26,16 +26,16 @@ jlink --module-path "%JAVA_HOME%\jmods;C:\javafx-jmods-21.0.8" --add-modules jav
 
 - A standalone app image will be created under the `dist` directory
 
-```power shell
+```powershell
 jpackage --type app-image --name "code-searcher" --input C:\Repository\code-searcher\target --main-jar code-searcher-1.0-SNAPSHOT-jar-with-dependencies.jar --main-class com.mcs.codesearcher.CodeSearcher --runtime-image runtime --dest dist
 ```
 
 - Add this to jpackage cmd to open terminal with the App
 
-```ps
+```powershell
 --win-console
 ```
 
 ---
 
-### Happy hacking 🎉
+#### Happy hacking 🎉
