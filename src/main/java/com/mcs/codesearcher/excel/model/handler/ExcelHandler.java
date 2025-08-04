@@ -409,6 +409,7 @@ public class ExcelHandler {
             targetCell.setCellStyle(baseStyle);
           }
         }
+        break; // stop iterating through file after editing the target row
       }
 
       try (FileOutputStream fos = new FileOutputStream(
