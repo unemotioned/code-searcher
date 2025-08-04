@@ -216,9 +216,8 @@ public class MainController {
   }
 
   private void uniSearch() {
-    uniSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-      triggerSearch(newValue);
-    });
+    uniSearch.textProperty()
+        .addListener((observable, oldValue, newValue) -> triggerSearch(newValue));
   }
 
   private void triggerSearch(String keyword) {
@@ -235,17 +234,8 @@ public class MainController {
     new Thread(searchTask).start();
   }
 
-  public void afterMakingChange() {
-    String keyword = uniSearch.getText().trim();
-    if (!keyword.isEmpty()) {
-      triggerSearch(keyword);
-    } else {
-      excelData.setItems(FXCollections.observableArrayList());
-    }
-  }
-
   private Task<List<Excel>> getListTask(String keyword) {
-    String input = uniSearch.getText().trim();
+    String input = keyword.trim();
     StringTokenizer tokenizer = new StringTokenizer(input);
 
     ArrayList<String> keywordList = new ArrayList<>();
@@ -259,6 +249,15 @@ public class MainController {
         return eCon.uniSearch(keywordList);
       }
     };
+  }
+
+  public void afterMakingChange() {
+    String keyword = uniSearch.getText().trim();
+    if (!keyword.isEmpty()) {
+      triggerSearch(keyword);
+    } else {
+      excelData.setItems(FXCollections.observableArrayList());
+    }
   }
 
   @FXML
