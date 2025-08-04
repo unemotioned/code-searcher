@@ -2,11 +2,9 @@
 
 ## Generate Executable
 
----
-
 ### Create .jar file
 
-```powershell
+```bash
 java
 --module-path C: \javafx-sdk-21.0.8\lib ^
 --add-modules javafx.controls, javafx.fxml -jar target/code-searcher-1.0-SNAPSHOT-jar-with-dependencies.jar
@@ -18,7 +16,7 @@ java
 
 - `runtime` directory will be created under the project folder
 
-```powershell
+```bash
 jlink
 --module-path "%JAVA_HOME%\jmods;C:\javafx-jmods-21.0.8" ^
 --add-modules javafx.controls,javafx.fxml,java.sql ^
@@ -31,7 +29,7 @@ jlink
 
 - A standalone app image will be created under the `dist` directory
 
-```powershell
+```bash
 jpackage
 --type app-image ^
 --name "code-searcher" ^
@@ -44,22 +42,24 @@ jpackage
 --type app-image
 ```
 
-```powershell
+- Add this to end of jpackage command to open terminal with the App
+
+```bash
+--win-console
+```
+
+---
+
+```bash
 java --module-path C:\javafx-sdk-21.0.8\lib --add-modules javafx.controls,javafx.fxml -jar target/code-searcher-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
-```powershell
+```bash
 jlink --module-path "%JAVA_HOME%\jmods;C:\javafx-jmods-21.0.8" --add-modules javafx.controls,javafx.fxml,java.sql --output runtime
 ```
 
-```powershell
+```bash
 jpackage --type app-image --name "code-searcher" --input C:\Repository\code-searcher\target --main-jar code-searcher-1.0-SNAPSHOT-jar-with-dependencies.jar --main-class com.mcs.codesearcher.CodeSearcher --runtime-image runtime --dest dist --icon C:\Repository\code-searcher\src\main\resources\icon\code-searcher.ico --type app-image
-```
-
-- Add this to jpackage cmd to open terminal with the App
-
-```powershell
---win-console
 ```
 
 ---
