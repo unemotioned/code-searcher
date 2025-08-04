@@ -13,10 +13,10 @@
   </settings>
 
   <typeAliases>
-    <typeAlias alias="filePath" type="com.mcs.modelsearcher.file.model.vo.FilePath"/>
-    <typeAlias alias="sheetHash" type="com.mcs.modelsearcher.hash.model.vo.SheetHash"/>
-    <typeAlias alias="excel" type="com.mcs.modelsearcher.excel.model.vo.Excel"/>
-    <typeAlias alias="hierarchy" type="com.mcs.modelsearcher.excel.model.vo.Hierarchy"/>
+    <typeAlias alias="filePath" type="com.mcs.codesearcher.file.model.vo.FilePath"/>
+    <typeAlias alias="sheetHash" type="com.mcs.codesearcher.hash.model.vo.SheetHash"/>
+    <typeAlias alias="excel" type="com.mcs.codesearcher.excel.model.vo.Excel"/>
+    <typeAlias alias="hierarchy" type="com.mcs.codesearcher.excel.model.vo.Hierarchy"/>
   </typeAliases>
 
   <environments default="dev">

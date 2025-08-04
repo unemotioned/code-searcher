@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xminl version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<TabPane prefHeight="980.0" prefWidth="1900.0" tabClosingPolicy="UNAVAILABLE"
+  xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="com.mcs.codesearcher.controller.MainController">
+
+  <Tab text="검색">
+    <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <Label fx:id="filePathLabel" layoutX="20.0" layoutY="20.0" text="선택된 파일 없음"/>
+      <Button layoutX="20.0" layoutY="63.0" onAction="#onFileSelect" text="파일 선택"/>
+      <Button layoutX="105.0" layoutY="63.0" onAction="#onReload" text="다시 읽기"/>
+      <!-- <Button onAction="#onPrintCellWidth" layoutX="685.0" layoutY="63.0"/> -->
+
+      <TextField fx:id="uniSearch" layoutX="680.0" layoutY="63.0" prefHeight="26.0"
+        prefWidth="559.0" promptText="통합 검색 (띄어쓰기로 키워드 구분)"/>
+      <Button layoutX="590.0" layoutY="63.0" onAction="#onInsert" text="부품 삽입"/>
+
+      <Label layoutX="1685.0" layoutY="20.0" text="code-searcher Version 1.0.2"/>
+
+      <TableView fx:id="excelData" layoutX="20.0" layoutY="138.0" prefHeight="790.0"
+        prefWidth="1860.0">
+        <columns>
+          <TableColumn fx:id="insertNo" styleClass="center-align" text="등록 No"/>
+          <TableColumn fx:id="partCode" text="부품 코드"/>
+          <TableColumn fx:id="rev" styleClass="center-align" text="Rev."/>
+          <TableColumn fx:id="apply1" text="적용1"/>
+          <TableColumn fx:id="apply2" text="적용2"/>
+          <TableColumn fx:id="blueprintDate" styleClass="center-align" text="고객도면 작성일"/>
+          <TableColumn fx:id="clientBlueprint" styleClass="center-align" text="고객도면"/>
+          <TableColumn fx:id="scan" styleClass="center-align" text="스캔"/>
+          <TableColumn fx:id="selfBlueprint" styleClass="center-align" text="자체도면"/>
+          <TableColumn fx:id="category" text="대분류"/>
+          <TableColumn fx:id="name" text="Name"/>
+          <TableColumn fx:id="spec" text="규격"/>
+          <TableColumn fx:id="maker" text="Maker"/>
+          <TableColumn fx:id="vendor" text="구입처"/>
+          <TableColumn fx:id="unitPrice" styleClass="right-align" text="구입단가"/>
+          <TableColumn fx:id="mgmtCost" styleClass="right-align" text="관리비"/>
+          <TableColumn fx:id="estPrice" styleClass="right-align" text="견적단가"/>
+          <TableColumn fx:id="refPrice" styleClass="right-align" text="을지단가"/>
+          <TableColumn fx:id="note" text="비 고"/>
+        </columns>
+      </TableView>
+    </AnchorPane>
+  </Tab>
+
+  <!-- Second tab -->
+  <Tab text="상하위 입력">
+    <VBox alignment="CENTER" prefHeight="980" prefWidth="1900" spacing="20.0">
+      <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+      </padding>
+
+      <TextField promptText="기준 부품"/>
+      <Label fx:id="refComponent" text="기준 부품을 검색하시오"/>
+      <TableView prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn fx:id="refInsertNo" styleClass="center-align" text="등록 No"/>
+          <TableColumn fx:id="refPartCode" text="부품 코드"/>
+          <TableColumn fx:id="refApply1" text="적용1"/>
+          <TableColumn fx:id="refCategory" text="대분류"/>
+          <TableColumn fx:id="refName" text="Name"/>
+          <TableColumn fx:id="refSpec" text="규격"/>
+          <TableColumn fx:id="refMaker" text="Maker"/>
+        </columns>
+      </TableView>
+
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints minWidth="10.0" prefWidth="100.0"/>
+          <ColumnConstraints minWidth="10.0" prefWidth="100.0"/>
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0"/>
+        </rowConstraints>
+        <AnchorPane>
+          <RadioButton mnemonicParsing="false" text="상위 부품 검색"/>
+        </AnchorPane>
+
+        <AnchorPane GridPane.columnIndex="1">
+          <RadioButton mnemonicParsing="false" text="하위 부품 검색"/>
+        </AnchorPane>
+      </GridPane>
+
+      <TextField promptText="다른 부품"/>
+      <TableView prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn fx:id="srhInsertNo" styleClass="center-align" text="등록 No"/>
+          <TableColumn fx:id="srhPartCode" text="부품 코드"/>
+          <TableColumn fx:id="srhApply1" text="적용1"/>
+          <TableColumn fx:id="srhCategory" text="대분류"/>
+          <TableColumn fx:id="srhName" text="Name"/>
+          <TableColumn fx:id="srhSpec" text="규격"/>
+          <TableColumn fx:id="srhMaker" text="Maker"/>
+        </columns>
+      </TableView>
+
+      <Label fx:id="checkedTable" text="선택된 부품들"/>
+      <TableView prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn fx:id="chkInsertNo" styleClass="center-align" text="등록 No"/>
+          <TableColumn fx:id="chkPartCode" text="부품 코드"/>
+          <TableColumn fx:id="chkApply1" text="적용1"/>
+          <TableColumn fx:id="chkCategory" text="대분류"/>
+          <TableColumn fx:id="chkName" text="Name"/>
+          <TableColumn fx:id="chkSpec" text="규격"/>
+          <TableColumn fx:id="chkMaker" text="Maker"/>
+        </columns>
+      </TableView>
+
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints minWidth="10.0" prefWidth="100.0"/>
+          <ColumnConstraints minWidth="10.0" prefWidth="100.0"/>
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0"/>
+        </rowConstraints>
+        <AnchorPane>
+          <Button layoutX="30.0" layoutY="1.0" mnemonicParsing="false" text="취소"/>
+        </AnchorPane>
+
+        <AnchorPane GridPane.columnIndex="1">
+          <Button layoutX="30.0" layoutY="1.0" mnemonicParsing="false" text="등록"/>
+        </AnchorPane>
+      </GridPane>
+    </VBox>
+  </Tab>
+</TabPane>
