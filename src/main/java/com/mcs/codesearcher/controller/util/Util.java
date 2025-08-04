@@ -8,27 +8,27 @@ import javafx.scene.control.TextField;
 
 public class Util {
 
-  public String[] insertValueToExcel(Excel record) {
-    return new String[] {
-      record.getInsertNo(),
-      record.getPartCode(),
-      record.getRev(),
-      record.getApply1(),
-      record.getApply2(),
-      record.getBlueprintDate(),
-      record.getClientBlueprint(),
-      record.getScan(),
-      record.getSelfBlueprint(),
-      record.getCategory(),
-      record.getName(),
-      record.getSpec(),
-      record.getMaker(),
-      record.getVendor(),
-      record.getUnitPrice() == 0 ? null : String.valueOf(record.getUnitPrice()),
-      record.getMgmtCost() == 0 ? null : String.valueOf(record.getMgmtCost()),
-      record.getEstPrice() == 0 ? null : String.valueOf(record.getEstPrice()),
-      record.getRefPrice() == 0 ? null : String.valueOf(record.getRefPrice()),
-      record.getNote()
+  public String[] insertValueToExcel(Excel excel) {
+    return new String[]{
+        excel.getInsertNo(),
+        excel.getPartCode(),
+        excel.getRev(),
+        excel.getApply1(),
+        excel.getApply2(),
+        excel.getBlueprintDate(),
+        excel.getClientBlueprint(),
+        excel.getScan(),
+        excel.getSelfBlueprint(),
+        excel.getCategory(),
+        excel.getName(),
+        excel.getSpec(),
+        excel.getMaker(),
+        excel.getVendor(),
+        excel.getUnitPrice() == 0 ? null : String.valueOf(excel.getUnitPrice()),
+        excel.getMgmtCost() == 0 ? null : String.valueOf(excel.getMgmtCost()),
+        excel.getEstPrice() == 0 ? null : String.valueOf(excel.getEstPrice()),
+        excel.getRefPrice() == 0 ? null : String.valueOf(excel.getRefPrice()),
+        excel.getNote()
     };
   }
 

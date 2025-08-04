@@ -52,8 +52,8 @@ public class ExcelHandler {
     util = new Util();
   }
 
-  public int writeToExcel(Excel record) {
-    String[] data = util.insertValueToExcel(record);
+  public int writeToExcel(Excel excel) {
+    String[] data = util.insertValueToExcel(excel);
 
     FileController fCon = new FileController();
     String path = fCon.selectPath();
@@ -352,8 +352,8 @@ public class ExcelHandler {
     }
   }
 
-  public int editFromExcel(Excel record) {
-    String[] data = util.insertValueToExcel(record);
+  public int editFromExcel(Excel excel) {
+    String[] data = util.insertValueToExcel(excel);
 
     FileController fCon = new FileController();
     String path = fCon.selectPath();
@@ -379,7 +379,7 @@ public class ExcelHandler {
         }
 
         String value = getString(cell);
-        if (!record.getOriginalInsertNo().equals(value)) {
+        if (!excel.getOriginalInsertNo().equals(value)) {
           continue;
         }
 
@@ -414,10 +414,10 @@ public class ExcelHandler {
       try (FileOutputStream fos = new FileOutputStream(
           path); BufferedOutputStream bos = new BufferedOutputStream(fos)) {
         workbook.write(bos);
-        System.out.println("eHand.editFromExcel - success " + record.getInsertNo());
+        System.out.println("eHand.editFromExcel - success " + excel.getInsertNo());
         return 1;
       } catch (IOException e) {
-        System.out.println("eHand.editFromExcel - while saving: " + record.getInsertNo());
+        System.out.println("eHand.editFromExcel - while saving: " + excel.getInsertNo());
         MainController mCon = new MainController();
         mCon.errorModal(e.getMessage());
         return 0;
