@@ -87,7 +87,7 @@ public class Util {
     if (text.equals("0")) {
       return "○";
     } else {
-      return null;
+      return text; // to take "X" as input
     }
   }
 }

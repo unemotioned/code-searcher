@@ -91,11 +91,12 @@ public class HashController {
 
     if (refHash == null) {
       insertHash(sheetHash);
+      sheetSpecificDBAction(todo, sheetIndex);
     } else if (!refHash.equals(sheetHash.getHash())) {
       updateHash(sheetHash);
       todo = "update";
+      sheetSpecificDBAction(todo, sheetIndex);
     }
-    sheetSpecificDBAction(todo, sheetIndex);
   }
 
   public void sheetSpecificDBAction(String todo, int sheetIndex) {
