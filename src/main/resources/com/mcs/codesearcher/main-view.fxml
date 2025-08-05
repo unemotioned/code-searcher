@@ -31,7 +31,7 @@
         prefWidth="559.0" promptText="통합 검색 (띄어쓰기로 키워드 구분)"/>
       <Button layoutX="590.0" layoutY="63.0" onAction="#onInsert" text="부품 삽입"/>
 
-      <Label layoutX="1685.0" layoutY="20.0" text="code-searcher Version 1.0.3"/>
+      <Label layoutX="1685.0" layoutY="20.0" text="code-searcher Version 1.0.4"/>
 
       <TableView fx:id="excelData" layoutX="20.0" layoutY="138.0" prefHeight="790.0"
         prefWidth="1860.0">
