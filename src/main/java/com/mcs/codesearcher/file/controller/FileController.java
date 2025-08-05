@@ -42,8 +42,8 @@ public class FileController {
   }
 
   private void delInvalidPath() {
-    int delPathResult = fServ.delInvalidPath();
-    if (delPathResult == 1) {
+    int result = fServ.delInvalidPath();
+    if (result == 1) {
       System.out.println("fCon.delInvalidPath: success");
     } else {
       System.out.println("fCon.delInvalidPath: fail");
@@ -51,13 +51,13 @@ public class FileController {
   }
 
   private String chooseFile(Stage stage) {
-    FileChooser fileChooser = new FileChooser();
-    fileChooser.getExtensionFilters()
+    FileChooser fc = new FileChooser();
+    fc.getExtensionFilters()
         .add(new FileChooser.ExtensionFilter("Excel Files", "*.xls", "*.xlsx"));
 
-    File file = fileChooser.showOpenDialog(stage);
-    if (file != null) {
-      return file.getAbsolutePath();
+    File f = fc.showOpenDialog(stage);
+    if (f != null) {
+      return f.getAbsolutePath();
     } else {
       System.out.println("fCon.chooseFile: File not selected");
       return null;
@@ -65,9 +65,8 @@ public class FileController {
   }
 
   private void insertPath(String path) {
-    int insertPath = fServ.insertPath(path);
-
-    if (insertPath == 1) {
+    int result = fServ.insertPath(path);
+    if (result == 1) {
       System.out.println("fCon.insertPath: success");
     } else {
       System.out.println("fCon.insertPath: fail");

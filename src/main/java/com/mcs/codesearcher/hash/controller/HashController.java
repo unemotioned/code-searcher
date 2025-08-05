@@ -91,12 +91,11 @@ public class HashController {
 
     if (refHash == null) {
       insertHash(sheetHash);
-      sheetSpecificDBAction(todo, sheetIndex);
     } else if (!refHash.equals(sheetHash.getHash())) {
       updateHash(sheetHash);
       todo = "update";
-      sheetSpecificDBAction(todo, sheetIndex);
     }
+    sheetSpecificDBAction(todo, sheetIndex);
   }
 
   public void sheetSpecificDBAction(String todo, int sheetIndex) {
@@ -124,7 +123,6 @@ public class HashController {
 
   public void insertHash(SheetHash sheetHash) {
     int result = hServ.insertHash(sheetHash);
-
     if (result == 1) {
       System.out.println("hCon.insertHash: success");
     } else {
@@ -133,9 +131,8 @@ public class HashController {
   }
 
   public void updateHash(SheetHash sheetHash) {
-    int hashUpdateResult = hServ.updateHash(sheetHash);
-
-    if (hashUpdateResult == 1) {
+    int result = hServ.updateHash(sheetHash);
+    if (result == 1) {
       System.out.println("hCon.updateHash: success");
     } else {
       System.out.println("hCon.updateHash: fail");

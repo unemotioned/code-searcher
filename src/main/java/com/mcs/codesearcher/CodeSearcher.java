@@ -17,8 +17,8 @@ public class CodeSearcher extends Application {
   public void start(Stage stage) throws IOException {
     new DatabaseInitializer();
 
-    FileController fileController = new FileController();
-    fileController.openFile(stage);
+    FileController fCon = new FileController();
+    fCon.openFile(stage);
 
     FXMLLoader fxmlLoader = new FXMLLoader(CodeSearcher.class.getResource("main-view.fxml"));
     Scene scene = new Scene(fxmlLoader.load());
@@ -27,10 +27,10 @@ public class CodeSearcher extends Application {
             .toExternalForm());
 
     // Get the controller and pass the stage
-    MainController con = fxmlLoader.getController();
-    con.setFileChooserStage(stage);
-    con.setFileController(fileController);
-    con.refreshFilePathLabel();
+    MainController mCon = fxmlLoader.getController();
+    mCon.setFileChooserStage(stage);
+    mCon.setFileController(fCon);
+    mCon.refreshFilePathLabel();
 
     stage.setTitle("Component code searcher");
     stage.setScene(scene);
