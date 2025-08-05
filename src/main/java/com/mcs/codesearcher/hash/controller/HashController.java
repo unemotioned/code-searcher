@@ -22,7 +22,7 @@ public class HashController {
 
   SheetHash sheetHash;
   HashService hServ;
-  ExcelController excelCon;
+  ExcelController eCon;
 
   public HashController() {
     fCon = new FileController();
@@ -30,7 +30,7 @@ public class HashController {
 
     sheetHash = new SheetHash();
     hServ = new HashService();
-    excelCon = new ExcelController();
+    eCon = new ExcelController();
   }
 
   public void performHash() {
@@ -106,15 +106,15 @@ public class HashController {
     if (sheetIndex == bomSheet) {
       // To update, delete every records inside the table and insert fresh.
       if (todo.equals("update")) {
-        excelCon.clearDataTable();
+        eCon.clearDataTable();
       }
-      excelCon.newDataTable();
+      eCon.newDataTable();
 
     } else if (sheetIndex == hierarchySheet) {
       if (todo.equals("update")) {
-        excelCon.clearHierarchyTable();
+        eCon.clearHierarchyTable();
       }
-      excelCon.newHierarchyTable();
+      eCon.newHierarchyTable();
     }
   }
 
