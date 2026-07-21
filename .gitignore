@@ -1,29 +1,15 @@
-# Apple
-.DStore
+.DS_Store
 
-# IntelliJ IDEA
 .idea/
 *.iml
 
-# Build output
-/out/
-build/
-bin/
+.settings/
+.classpath
+.factorypath
+.project
+
+.vscode/
+
 target/
-
-# Logs
-*.log
-
-# Compiled files
-*.class
-
-# Maven
-.mvn/
-!**/src/main/**/maven-wrapper.jar
-
-# JavaFX lib cache
-javafx-sdk*/
-
-# Deployment
-dist/
 runtime/
+dist/
