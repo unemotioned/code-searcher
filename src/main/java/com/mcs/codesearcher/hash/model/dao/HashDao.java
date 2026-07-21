@@ -5,19 +5,19 @@ import org.apache.ibatis.session.SqlSession;
 
 public class HashDao {
 
-  public String selectHash(SqlSession session, String sheetName) {
-    return session.selectOne("sheetHash.selectHash", sheetName);
-  }
+    public String selectHash(SqlSession session, String sheetName) {
+        return session.selectOne("sheetHash.selectHash", sheetName);
+    }
 
-  public int insertHash(SqlSession session, SheetHash sheetHash) {
-    return session.insert("sheetHash.insertHash", sheetHash);
-  }
+    public int insertHash(SqlSession session, SheetHash sheetHash) {
+        return session.insert("sheetHash.insertHash", sheetHash);
+    }
 
-  public int updateHash(SqlSession session, SheetHash sheetHash) {
-    return session.update("sheetHash.updateHash", sheetHash);
-  }
+    public int updateHash(SqlSession session, SheetHash sheetHash) {
+        return session.update("sheetHash.updateHash", sheetHash);
+    }
 
-  public int fakeHash(SqlSession session) {
-    return session.update("sheetHash.fakeHash");
-  }
+    public int fakeHash(SqlSession session) {
+        return session.update("sheetHash.fakeHash");
+    }
 }

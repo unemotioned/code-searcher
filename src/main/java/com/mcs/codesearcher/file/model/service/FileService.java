@@ -6,30 +6,30 @@ import org.apache.ibatis.session.SqlSession;
 
 public class FileService {
 
-  private final FileDao dao;
+    private final FileDao dao;
 
-  public FileService() {
-    dao = new FileDao();
-  }
+    public FileService() {
+        dao = new FileDao();
+    }
 
-  public String selectPath() {
-    SqlSession session = SqlSessionTemplate.getSqlSession();
-    String path = dao.selectPath(session);
-    session.close();
-    return path;
-  }
+    public String selectPath() {
+        SqlSession session = SqlSessionTemplate.getSqlSession();
+        String path = dao.selectPath(session);
+        session.close();
+        return path;
+    }
 
-  public int delInvalidPath() {
-    SqlSession session = SqlSessionTemplate.getSqlSession();
-    int result = dao.delInvalidPath(session);
-    session.close();
-    return result;
-  }
+    public int delInvalidPath() {
+        SqlSession session = SqlSessionTemplate.getSqlSession();
+        int result = dao.delInvalidPath(session);
+        session.close();
+        return result;
+    }
 
-  public int insertPath(String path) {
-    SqlSession session = SqlSessionTemplate.getSqlSession();
-    int result = dao.insertPath(session, path);
-    session.close();
-    return result;
-  }
+    public int insertPath(String path) {
+        SqlSession session = SqlSessionTemplate.getSqlSession();
+        int result = dao.insertPath(session, path);
+        session.close();
+        return result;
+    }
 }

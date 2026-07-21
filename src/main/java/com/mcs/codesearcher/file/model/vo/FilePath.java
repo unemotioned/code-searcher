@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class FilePath {
 
-  private String filePath;
+    private String filePath;
 }
