@@ -17,6 +17,7 @@ and editing.
   - [Run Built JAR](#run-built-jar)
   - [Runtime with jlink](#runtime-with-jlink)
   - [Package with jpackage](#package-with-jpackage)
+- [TODO](#todo)
 
 ---
 
@@ -58,7 +59,7 @@ and editing.
 
 - 엑셀 파일을 읽음 전체 데이터를 HASH 하여서 현재 상태를 이전 값과 비교
 
-- HASH 값이 다르면 프로그램 자체 데이터베이스 `(경로: C:/사용자/{사용자이름}/./code-searcher/sqlite.db)`를
+- HASH 값이 다르면 프로그램 자체 데이터베이스 `(경로: C:/사용자/{사용자이름}/.code-searcher/sqlite.db)`를
   전부 지우고 다시 생성
 
 - 검색 및 편집 작업 수행
@@ -168,8 +169,7 @@ jlink ^
 
 ### Package with jpackage
 
-_Finally_ create Windows executable **Application Image**. Creates `dist`
-directory.
+Create Windows executable **Application Image**. Creates `dist` directory.
 
 ```sh
 jpackage ^
@@ -182,3 +182,16 @@ jpackage ^
   --dest dist ^
   --icon C:\dev\code-searcher\src\main\resources\icon\code-searcher.ico
 ```
+
+> [!NOTE]
+> Now you can distribute `dist` folder to other machines and use **Code Searcher** program.
+
+---
+
+## TODO
+
+- [ ] Check DB integrity by last modified date instead of hashing entire file
+- [ ] After insert or edit update db's last modified data
+- [ ] Allow search of rows without insert_no
+- [ ] When inserting new data must account for rows without insert_no
+- [ ] Update JDK and JavaFX to version 25
