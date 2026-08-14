@@ -184,7 +184,8 @@ jpackage ^
 ```
 
 > [!NOTE]
-> Now you can distribute `dist` folder to other machines and use **Code Searcher** program.
+> Now you can distribute `dist` folder to other machines and use **Code
+> Searcher** program.
 
 ---
 
